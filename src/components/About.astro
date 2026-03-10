@@ -1,0 +1,208 @@
+---
+const stats = [
+  { value: '15+', label: 'År teknologierfaring' },
+  { value: '150+', label: 'Ansatte ledet i vekst' },
+  { value: '10+', label: 'År i Forsvarsmateriell' },
+  { value: '12', label: 'År i Heimevernet' },
+];
+
+const certs = [
+  'MSc Computer Science, NTNU',
+  'SAFe Agilist',
+  'TOGAF',
+  'Certified Ethical Hacker (CEH)',
+  'MoP Foundation',
+];
+---
+
+<section class="about" id="om-oss">
+  <div class="container about__inner">
+    <div class="about__text">
+      <p class="section-eyebrow">Om oss</p>
+      <h2 class="section-title">Dyp teknisk kompetanse.<br />Strategisk ledererfaring.</h2>
+      <p class="about__lead">
+        Vardark Technologies AS er grunnlagt av Kristian Høegh Mysen — sivilingeniør
+        med 15+ års erfaring fra forsvarsteknologi og digital transformasjon.
+      </p>
+      <p class="about__body">
+        Etter 10+ år i Forsvarsmateriell — som prosessleder, programsjef og senior
+        løsningsarkitekt — og 12 år i Heimevernet, kombinerer Kristian militær
+        beslutningskraft med moderne teknologiledelse. Han bygde en leveranseorganisasjon
+        fra 15 til over 150 personer og driver i dag sin egen lokale AI-plattform.
+      </p>
+      <p class="about__body">
+        Vardark betyr varde og arkitektur — et fyrtårn for teknologi med retning.
+        Vi hjelper organisasjoner med å navigere AI-transformasjon, styrke sikkerhetsposturen
+        og innføre smidig arbeidsmetodikk — også i tungt regulerte miljøer.
+      </p>
+
+      <div class="about__certs">
+        <p class="about__certs-label">Sertifiseringer &amp; bakgrunn</p>
+        <ul class="about__certs-list">
+          {certs.map(cert => (
+            <li class="about__cert-item">
+              <span class="about__cert-check" aria-hidden="true">✓</span>
+              {cert}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="about__stats">
+      {stats.map(stat => (
+        <div class="stat-card">
+          <span class="stat-card__value">{stat.value}</span>
+          <span class="stat-card__label">{stat.label}</span>
+        </div>
+      ))}
+
+      <div class="about__callout">
+        <p class="about__callout-text">
+          "Sjelden kombinasjon: dyp tech, strategisk ledelse og militær bakgrunn."
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 6rem 0;
+    background: var(--bg-primary);
+  }
+
+  .about__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  @media (min-width: 960px) {
+    .about__inner {
+      grid-template-columns: 1fr 380px;
+      gap: 5rem;
+      align-items: start;
+    }
+  }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .about__lead {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .about__body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  .about__certs {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .about__certs-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .about__certs-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .about__cert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .about__cert-check {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Stats */
+  .about__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  .stat-card__value {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-card__label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .about__callout {
+    background: var(--accent-dim);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .about__callout-text {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+</style>

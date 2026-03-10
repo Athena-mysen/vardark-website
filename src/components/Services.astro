@@ -1,0 +1,193 @@
+---
+const services = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><circle cx="18" cy="6" r="4"/><path d="m16 6 2 2 4-4"/></svg>`,
+    title: 'AI &amp; Maskinlæring',
+    description:
+      'Lokal AI-implementering som holder data hos deg. RAG-systemer, agentarkitekturer og personvernvennlige løsninger tilpasset din virksomhet.',
+    tags: ['Lokal LLM', 'RAG', 'Agentsystemer', 'Personvern'],
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><path d="M3 17h4m-2-2v4"/></svg>`,
+    title: 'Teknologirådgivning',
+    description:
+      'Virksomhetsarkitektur (TOGAF), DevSecOps og sikker systemutvikling. Erfaring fra tungt regulerte miljøer og komplekse offentlige systemer.',
+    tags: ['TOGAF', 'DevSecOps', 'Arkitektur', 'Sikkerhet'],
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    title: 'Smidig Transformasjon',
+    description:
+      'SAFe-innføring, produktorganisering og porteføljestyring. Bygget leveranseorganisasjon fra 15 til 150+ personer i Forsvaret.',
+    tags: ['SAFe Agilist', 'Porteføljestyring', 'Org-design', 'Ledelse'],
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
+    title: 'App-utvikling',
+    description:
+      'iOS, Android og fullstack web-applikasjoner. Fra idé til App Store — med fokus på brukeropplevelse, ytelse og langsiktig vedlikehold.',
+    tags: ['iOS / Android', 'Fullstack Web', 'UX-fokus', 'App Store'],
+  },
+];
+---
+
+<section class="services" id="tjenester">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Hva vi tilbyr</p>
+      <h2 class="section-title">Tjenester</h2>
+      <p class="section-desc">
+        Bred kompetanse med dyp spesialisering — fra strategi til implementering.
+      </p>
+    </div>
+
+    <div class="services__grid">
+      {services.map((service) => (
+        <div class="service-card">
+          <div class="service-card__icon" set:html={service.icon} />
+          <h3 class="service-card__title" set:html={service.title} />
+          <p class="service-card__desc">{service.description}</p>
+          <div class="service-card__tags">
+            {service.tags.map(tag => (
+              <span class="service-card__tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding: 6rem 0;
+    background: var(--bg-secondary);
+    position: relative;
+  }
+
+  .services::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+  }
+
+  .services::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .services__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .services__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
+  }
+
+  .service-card:hover {
+    border-color: rgba(56, 189, 248, 0.35);
+    background: var(--bg-card-hover);
+    transform: translateY(-3px);
+  }
+
+  .service-card__icon {
+    color: var(--accent);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-dim);
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .service-card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .service-card__desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    flex-grow: 1;
+  }
+
+  .service-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+
+  .service-card__tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+</style>

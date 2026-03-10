@@ -1,0 +1,152 @@
+---
+const year = new Date().getFullYear();
+
+const navLinks = [
+  { href: '#tjenester', label: 'Tjenester' },
+  { href: '#om-oss', label: 'Om oss' },
+  { href: '#kontakt', label: 'Kontakt' },
+];
+---
+
+<footer class="footer">
+  <div class="footer__top-border" aria-hidden="true"></div>
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="/" class="footer__logo" aria-label="Vardark Technologies">
+        <span class="footer__logo-mark">V</span>
+        <span class="footer__logo-text">ARDARK</span>
+      </a>
+      <p class="footer__tagline">Teknologi med retning og mening.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footernavigasjon">
+      {navLinks.map(link => (
+        <a href={link.href} class="footer__nav-link">{link.label}</a>
+      ))}
+    </nav>
+
+    <div class="footer__contact">
+      <a href="mailto:kontakt@vardark.no" class="footer__email">kontakt@vardark.no</a>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <p class="footer__copy">
+      &copy; {year} Vardark Technologies AS. Org.nr: (kommer).
+    </p>
+    <p class="footer__domain">vardark.no</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--bg-primary);
+    position: relative;
+  }
+
+  .footer__top-border {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+  }
+
+  .footer__logo-mark {
+    color: var(--accent);
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .footer__logo-text {
+    letter-spacing: 0.12em;
+  }
+
+  .footer__tagline {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .footer__nav {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer__nav-link {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+
+  .footer__nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .footer__email {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+
+  .footer__email:hover {
+    color: var(--accent);
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-bottom: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer__copy {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .footer__domain {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+</style>

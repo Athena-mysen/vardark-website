@@ -1,0 +1,219 @@
+---
+---
+
+<section class="hero" id="hjem">
+  <div class="hero__grid-bg" aria-hidden="true"></div>
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="container hero__content">
+    <div class="hero__tag">
+      <span class="hero__tag-dot"></span>
+      Norsk teknologiselskap
+    </div>
+
+    <h1 class="hero__title">
+      Teknologi med<br />
+      <span class="hero__title-accent">retning og mening</span>
+    </h1>
+
+    <p class="hero__subtitle">
+      Vi bygger, rådgir og implementerer — med fokus på AI,
+      sikkerhet og smidig transformasjon.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#tjenester" class="btn btn--primary">Se tjenester</a>
+      <a href="#kontakt" class="btn btn--ghost">Ta kontakt</a>
+    </div>
+
+    <div class="hero__badges">
+      <span class="hero__badge">AI &amp; Lokal LLM</span>
+      <span class="hero__badge">Forsvarsteknologi</span>
+      <span class="hero__badge">SAFe Agilist</span>
+      <span class="hero__badge">TOGAF</span>
+      <span class="hero__badge">CEH</span>
+    </div>
+  </div>
+
+  <div class="hero__scroll-hint" aria-hidden="true">
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 0 4rem;
+    overflow: hidden;
+    background-color: var(--bg-primary);
+  }
+
+  /* Subtle grid background */
+  .hero__grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 30%, transparent 100%);
+  }
+
+  /* Top glow */
+  .hero__glow {
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.09) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+  }
+
+  .hero__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.75rem;
+    padding: 0.35rem 0.85rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 100px;
+  }
+
+  .hero__tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__title-accent {
+    color: var(--accent);
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    border: none;
+    text-decoration: none;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    color: #07111f;
+  }
+
+  .btn--primary:hover {
+    background: #7dd3fc;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.25);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+  }
+
+  .btn--ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hero__badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+  }
+
+  /* Scroll hint line */
+  .hero__scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    40% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: scaleY(1); }
+  }
+</style>

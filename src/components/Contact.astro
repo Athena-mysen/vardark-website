@@ -52,10 +52,16 @@
 
 <style>
   .contact {
-    padding: 6rem 0;
+    padding: 4rem 0;
     background: var(--bg-secondary);
     position: relative;
     overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .contact {
+      padding: 6rem 0;
+    }
   }
 
   .contact::before {
@@ -86,7 +92,13 @@
 
   .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-header {
+      margin-bottom: 3rem;
+    }
   }
 
   .section-eyebrow {
@@ -176,6 +188,7 @@
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-primary);
+    overflow-wrap: anywhere;
   }
 
   .contact-card__arrow {

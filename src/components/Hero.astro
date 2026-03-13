@@ -43,16 +43,17 @@
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: auto;
     display: flex;
     align-items: center;
-    padding: 5rem 0 3rem;
+    padding: 5rem 0 3.5rem;
     overflow: hidden;
     background-color: var(--bg-primary);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .hero {
+      min-height: 100svh;
       padding: 6rem 0 4rem;
     }
   }
@@ -208,6 +209,14 @@
     padding: 0.3rem 0.75rem;
     border-radius: 4px;
     letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .hero__badge {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+    }
   }
 
   /* Scroll hint line */
@@ -216,8 +225,14 @@
     bottom: 2.5rem;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
+    display: none;
     justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero__scroll-hint {
+      display: flex;
+    }
   }
 
   .hero__scroll-line {

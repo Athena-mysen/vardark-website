@@ -4,6 +4,7 @@ const year = new Date().getFullYear();
 const navLinks = [
   { href: '#tjenester', label: 'Tjenester' },
   { href: '#om-oss', label: 'Om oss' },
+  { href: 'https://geopolitics.vardark.no', label: 'Geopolitikk', external: true },
   { href: '#kontakt', label: 'Kontakt' },
 ];
 ---
@@ -21,7 +22,7 @@ const navLinks = [
 
     <nav class="footer__nav" aria-label="Footernavigasjon">
       {navLinks.map(link => (
-        <a href={link.href} class="footer__nav-link">{link.label}</a>
+        <a href={link.href} class="footer__nav-link" target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}>{link.label}</a>
       ))}
     </nav>
 

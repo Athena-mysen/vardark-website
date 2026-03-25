@@ -34,6 +34,9 @@ src/
 - Mobil først — test alltid responsivt
 - Commit-meldinger på engelsk, korte og beskrivende
 
+## Learnings
+Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppdater den etter hver kodeøkt med det du lærte.
+
 ## Før push
 1. `npm run build` — ingen feil?
 2. Test mobil viewport (360px) og desktop

@@ -45,3 +45,9 @@ Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppd
 ## Domener
 - vardark.no → Cloudflare Pages (denne siden)
 - geopolitics.vardark.no → eget repo (geopolitics-vardark)
+
+## Astro-økosystem status (mars 2026)
+- **Kjører:** Astro 5.18.0 — stabil, ingen breaking changes
+- **Astro 6 beta:** Rebuildt dev-server på Vite Environment API + Cloudflare workerd runtime (lokal dev = produksjon-runtime). Ikke oppgrader ennå — vent til stabil release.
+- **Cloudflare kjøpte Astro** (januar 2026): Hele teamet ansatt av Cloudflare, framework forblir MIT/open source. Deploy til alle plattformer fungerer fortsatt, men Cloudflare Pages blir "golden path". Ingen umiddelbar handlingsendring for oss — vi er allerede på Cloudflare Pages.
+- **Vurdering:** Hold Astro 5 til 6.x er stabil. Oppgraderingsvei blir trolig smidig siden vi bruker statisk output og Cloudflare Pages allerede.

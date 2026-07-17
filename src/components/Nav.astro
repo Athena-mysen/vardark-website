@@ -28,7 +28,7 @@ const navLinks = [
     </button>
   </div>
 
-  <div class="nav__mobile" id="mobileMenu" aria-hidden="true">
+  <div class="nav__mobile" id="mobileMenu" aria-hidden="true" inert>
     {navLinks.map(link => (
       <a href={link.href} class="nav__mobile-link" target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}>{link.label}</a>
     ))}
@@ -36,35 +36,7 @@ const navLinks = [
   </div>
 </header>
 
-<script>
-  const nav = document.getElementById('nav')!;
-  const burger = document.getElementById('navBurger')!;
-  const menu = document.getElementById('mobileMenu')!;
-
-  // Scroll: add solid background
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('nav--scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  // Burger toggle
-  burger.addEventListener('click', () => {
-    const open = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!open));
-    menu.setAttribute('aria-hidden', String(open));
-    burger.classList.toggle('is-open', !open);
-    menu.classList.toggle('is-open', !open);
-  });
-
-  // Close on link click
-  menu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      burger.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
-      burger.classList.remove('is-open');
-      menu.classList.remove('is-open');
-    });
-  });
-</script>
+<script is:inline src="/scripts/nav.js"></script>
 
 <style>
   .nav {

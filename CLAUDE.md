@@ -3,7 +3,7 @@
 Nettside for Vardark Technologies AS — vardark.no
 
 ## Stack
-- **Astro 5** (statisk site, `astro build` → `dist/`)
+- **Astro 7** (statisk site, `astro build` → `dist/`; Node >=22.12)
 - **Vanilla CSS** med CSS custom properties (se Layout.astro `:root`)
 - **TypeScript** config, men komponentene er ren Astro + HTML/CSS
 - **Deploy:** Cloudflare Pages via GitHub Actions (`.github/workflows/deploy.yml`)
@@ -46,8 +46,8 @@ Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppd
 - vardark.no → Cloudflare Pages (denne siden)
 - geopolitics.vardark.no → eget repo (geopolitics-vardark)
 
-## Astro-økosystem status (mars 2026)
-- **Kjører:** Astro 5.18.0 — stabil, ingen breaking changes
-- **Astro 6 beta:** Rebuildt dev-server på Vite Environment API + Cloudflare workerd runtime (lokal dev = produksjon-runtime). Ikke oppgrader ennå — vent til stabil release.
+## Astro-økosystem status (juli 2026)
+- **Kjører:** Astro 7.1.1 med Node >=22.12.0. Oppgradert fra Astro 5 for å lukke høy-alvorlige avhengighetsfunn.
+- **Oppgradering:** CI bruker Node 22. Kjør alltid `npm ci`, `npm run build` og `npm audit --omit=dev --audit-level=high` før deploy.
 - **Cloudflare kjøpte Astro** (januar 2026): Hele teamet ansatt av Cloudflare, framework forblir MIT/open source. Deploy til alle plattformer fungerer fortsatt, men Cloudflare Pages blir "golden path". Ingen umiddelbar handlingsendring for oss — vi er allerede på Cloudflare Pages.
-- **Vurdering:** Hold Astro 5 til 6.x er stabil. Oppgraderingsvei blir trolig smidig siden vi bruker statisk output og Cloudflare Pages allerede.
+- **Vurdering:** Hold Astro 7 oppdatert med kontrollert audit/build; ikke bruk tvungne major-oppgraderinger blindt.

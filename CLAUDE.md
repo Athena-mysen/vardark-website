@@ -45,6 +45,7 @@ Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppd
 ## Domener
 - vardark.no → Cloudflare Pages (denne siden)
 - geopolitics.vardark.no → eget repo (geopolitics-vardark)
+- presentasjoner.vardark.no → eget repo (vardark-presentations), Cloudflare Pages med serverside-passord
 
 ## Astro-økosystem status (juli 2026)
 - **Kjører:** Astro 7.1.1 med Node >=22.12.0. Oppgradert fra Astro 5 for å lukke høy-alvorlige avhengighetsfunn.

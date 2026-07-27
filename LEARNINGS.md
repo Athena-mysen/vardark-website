@@ -4,7 +4,7 @@ Automatisk oppdatert etter kodeøkter. Leses ved oppstart av ny økt.
 
 ## 2026-07-28
 - **Plassering av produktlenker:** Hovednavigasjonen er allerede tett ved 768 px, mens footernavigasjonen har `flex-wrap`. Små produkt-snarveier kan derfor legges diskret i `Footer.astro` uten å presse headeren eller endre mobilmenyen.
-- **Sharp/SVGO-sikkerhetsoppdateringer:** Når transitive bildeavhengigheter oppdateres for å klarere audit-gaten, sammenlign hele `dist/` og bildehashene mot en før-build, og kjør en faktisk Sharp-transformasjon før push. En grønn Astro-build alene beviser ikke at native bildekode fungerer.
+- ✅ **Mønster — Sharp/SVGO-sikkerhetsoppdateringer:** Når transitive bildeavhengigheter oppdateres for å klarere audit-gaten, sammenlign hele `dist/` og bildehashene mot en før-build, og kjør en faktisk Sharp-transformasjon før push. En grønn Astro-build alene beviser ikke at native bildekode fungerer.
 
 ## 2026-07-17
 - **Sikker CSP og Astro-skript:** Astro kan inline-bundle små lokale skript. For `script-src 'self'` uten `unsafe-inline`, legg vanlig JavaScript i `public/scripts/` og last det med `<script is:inline src="/scripts/nav.js"></script>`; verifiser den bygde HTML-en.

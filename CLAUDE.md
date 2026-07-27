@@ -41,6 +41,7 @@ Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppd
 1. `npm run build` — ingen feil?
 2. Test mobil viewport (360px) og desktop
 3. Sjekk at Nav fungerer på mobil (hamburger-meny er `position: fixed`)
+4. Ved endringer i Sharp/SVGO eller andre bildeavhengigheter: sammenlign `dist/`-bilder mot før-build og kjør en faktisk Sharp-transformasjon
 
 ## Domener
 - vardark.no → Cloudflare Pages (denne siden)

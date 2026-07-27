@@ -2,6 +2,9 @@
 
 Automatisk oppdatert etter kodeøkter. Leses ved oppstart av ny økt.
 
+## 2026-07-28
+- **Plassering av produktlenker:** Hovednavigasjonen er allerede tett ved 768 px, mens footernavigasjonen har `flex-wrap`. Små produkt-snarveier kan derfor legges diskret i `Footer.astro` uten å presse headeren eller endre mobilmenyen.
+
 ## 2026-07-17
 - **Sikker CSP og Astro-skript:** Astro kan inline-bundle små lokale skript. For `script-src 'self'` uten `unsafe-inline`, legg vanlig JavaScript i `public/scripts/` og last det med `<script is:inline src="/scripts/nav.js"></script>`; verifiser den bygde HTML-en.
 - **Astro 7:** Krever Node >=22.12.0. Hold `engines`, GitHub Actions og lokal CI på samme minimum, og la `npm audit --omit=dev --audit-level=high` være en deploy-gate.

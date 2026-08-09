@@ -2,6 +2,9 @@
 
 Automatisk oppdatert etter kodeøkter. Leses ved oppstart av ny økt.
 
+## 2026-08-10
+- **Observatoriet fra hovedsiden:** Singularity Observatory har kanonisk adresse `singularity.vardark.no`. Lenken ligger i footernavigasjonen, som tåler flere produktlenker uten å presse den allerede fulle toppnavigasjonen.
+
 ## 2026-07-30
 - **Toppnavigasjon med Council:** Seks navigasjonslenker og CTA får ikke plass ved det gamle 768 px-breakpointet. Bruk mobilmenyen til 1023 px og full toppnavigasjon fra 1024 px; verifisert visuelt ved begge bredder.
 

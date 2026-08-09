@@ -1,0 +1,63 @@
+name: Configure Singularity DNS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  configure:
+    name: Upsert singularity.vardark.no records
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Cloudflare DNS
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          api="https://api.cloudflare.com/client/v4"
+          auth="Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"
+          zone_id="$(curl --fail --silent --show-error "${api}/zones?name=vardark.no" \
+            --header "${auth}" \
+            --header "Content-Type: application/json" | jq -er '.result[0].id')"
+
+          upsert_record() {
+            type="$1"
+            name="$2"
+            content="$3"
+            proxied="$4"
+            existing_id="$(curl --fail --silent --show-error \
+              "${api}/zones/${zone_id}/dns_records?type=${type}&name=${name}" \
+              --header "${auth}" \
+              --header "Content-Type: application/json" | jq -r '.result[0].id // empty')"
+            payload="$(jq -nc \
+              --arg type "${type}" \
+              --arg name "${name}" \
+              --arg content "${content}" \
+              --argjson proxied "${proxied}" \
+              '{type:$type,name:$name,content:$content,ttl:1,proxied:$proxied}')"
+
+            if [ -n "${existing_id}" ]; then
+              endpoint="${api}/zones/${zone_id}/dns_records/${existing_id}"
+              method="PUT"
+            else
+              endpoint="${api}/zones/${zone_id}/dns_records"
+              method="POST"
+            fi
+
+            curl --fail --silent --show-error \
+              --request "${method}" \
+              "${endpoint}" \
+              --header "${auth}" \
+              --header "Content-Type: application/json" \
+              --data "${payload}" | jq -e '.success == true' >/dev/null
+          }
+
+          upsert_record CNAME singularity.vardark.no custom-domains.chatgpt.site false
+          upsert_record TXT _openai-site-verification.singularity.vardark.no \
+            openai-site-verification=tGY4ynoiCalaN1RsZP52Pd8XwzEgHhurebgUZUVJgPU false
+          upsert_record TXT _cf-custom-hostname.singularity.vardark.no \
+            15831b1d-b6f6-48b9-85a0-f021d66a9d84 false
+

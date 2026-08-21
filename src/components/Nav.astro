@@ -5,7 +5,7 @@ const navLinks = [
   { href: 'https://geopolitics.vardark.no', label: 'Geopolitikk', external: true },
   { href: 'https://presentasjoner.vardark.no', label: 'Presentasjoner' },
   { href: 'https://council.vardark.no', label: 'Council' },
-  { href: '#kontakt', label: 'Kontakt' },
+  { href: 'https://singularity.vardark.no/tracker', label: 'Tracker', mobileLabel: 'Singularity Tracker' },
 ];
 ---
 
@@ -32,7 +32,7 @@ const navLinks = [
 
   <div class="nav__mobile" id="mobileMenu" aria-hidden="true" inert>
     {navLinks.map(link => (
-      <a href={link.href} class="nav__mobile-link" target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}>{link.label}</a>
+      <a href={link.href} class="nav__mobile-link" target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}>{link.mobileLabel ?? link.label}</a>
     ))}
     <a href="#kontakt" class="nav__mobile-cta">Ta kontakt</a>
   </div>

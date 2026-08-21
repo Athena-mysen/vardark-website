@@ -2,6 +2,9 @@
 
 Automatisk oppdatert etter kodeøkter. Leses ved oppstart av ny økt.
 
+## 2026-08-22
+- **Tracker i toppnavigasjonen:** Tracker skal peke direkte til `https://singularity.vardark.no/tracker` fra både desktopnavigasjonen og hamburgermenyen. Bruk den kompakte etiketten `Tracker` på desktop og `Singularity Tracker` på mobil. Erstatt den overflødige `Kontakt`-lenken i lenkelisten; `Ta kontakt`-CTA-en bevarer kontaktveien uten å øke navigasjonstettheten.
+
 ## 2026-08-10
 - **Observatoriet fra hovedsiden:** Singularity Observatory har kanonisk adresse `singularity.vardark.no`. Lenken ligger i footernavigasjonen, som tåler flere produktlenker uten å presse den allerede fulle toppnavigasjonen.
 - **DNS for Observatory:** Sites-hostnavnet krever en DNS-only CNAME til `custom-domains.chatgpt.site` og de to verifikasjonspostene Sites oppgir. Den manuelle GitHub-workflowen gjør oppsettet idempotent med repoets eksisterende Cloudflare-token.

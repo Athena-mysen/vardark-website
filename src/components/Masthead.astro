@@ -1,0 +1,32 @@
+---
+import Cairn from './Cairn.astro';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/', label: 'Essays' },
+  { href: '/lab/', label: 'Lab' },
+  { href: '/om/', label: 'Om' },
+];
+const active = (href) => (href === '/' ? path === '/' || path.startsWith('/essays/') : path.startsWith(href));
+---
+<header class="mast wrap">
+  <a href="/" class="mast__logo" aria-label="Vardark, til forsiden">
+    <Cairn size={26} />
+    <span class="mast__word">VARDARK</span>
+  </a>
+  <nav class="mast__nav" aria-label="Hovednavigasjon">
+    {links.map((l) => (
+      <a href={l.href} class="mast__link" aria-current={active(l.href) ? 'page' : undefined}>{l.label}</a>
+    ))}
+    <a href="/rss.xml" class="mast__link mast__rss">RSS</a>
+  </nav>
+</header>
+
+<style>
+  .mast { display: flex; align-items: center; justify-content: space-between; height: 4.5rem; }
+  .mast__logo { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+  .mast__word { font-family: var(--font-display); font-size: 1.375rem; letter-spacing: 0.14em; line-height: 1; padding-top: 2px; }
+  .mast__nav { display: flex; gap: var(--s-4); }
+  .mast__link { font-family: var(--font-mono); font-size: 0.8125rem; text-decoration: none; color: var(--muted); padding-bottom: 2px; border-bottom: 1px solid transparent; }
+  .mast__link:hover, .mast__link[aria-current='page'] { color: var(--text); border-bottom-color: var(--ember); }
+  @media (min-width: 640px) { .mast__nav { gap: var(--s-6); } }
+</style>

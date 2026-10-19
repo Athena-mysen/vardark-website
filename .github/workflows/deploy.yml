@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - blogg
 
 permissions:
   contents: read
@@ -38,4 +39,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4.112.0'
-          command: pages deploy dist --project-name=vardark-website
+          command: pages deploy dist --project-name=vardark-website --branch=${{ github.ref_name }}

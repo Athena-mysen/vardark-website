@@ -1,55 +1,49 @@
-# Vardark Website
+# Vardark
 
-Nettside for Vardark Technologies AS — vardark.no
+Kristian Høegh Mysens personlige side — vardark.no. Essayblogg (fra LinkedIn-innlegg) og en lab-liste over prototyper. Bygget om 2026-10-20 etter designbriefet i `athenatech-planlegging/utkast/nettsider-athenatech-vardark.md`. Vardark var aldri et selskap; selskapet er AthenaTech AS (athenatech.no, eget repo `athenatech-site`).
 
 ## Stack
-- **Astro 7** (statisk site, `astro build` → `dist/`; Node >=22.12)
-- **Vanilla CSS** med CSS custom properties (se Layout.astro `:root`)
-- **TypeScript** config, men komponentene er ren Astro + HTML/CSS
-- **Deploy:** Cloudflare Pages via GitHub Actions (`.github/workflows/deploy.yml`)
+- **Astro 7** med content collections (`src/content/essays/*.md`, skjema i `src/content.config.ts`); Node >=22.12
+- **Vanlig CSS** med tokens i `src/layouts/Layout.astro` `:root` (lys) og `@media (prefers-color-scheme: dark)` (mørk)
+- **Selvhostede fonter** via fontsource: Source Serif 4 (brødtekst 19 px), JetBrains Mono (metadata), Fjalla One (bare logotypen). CSP tillater ikke eksterne fonter.
+- **RSS** på `/rss.xml` (`@astrojs/rss`), sitemap via `@astrojs/sitemap`
+- **Deploy:** Cloudflare Pages via GitHub Actions. `main` → produksjon (vardark.no). Grenen `blogg` → forhåndsvisning (`--branch=blogg`, URL `blogg.vardark-website.pages.dev`).
 
 ## Kommandoer
-- `npm run dev` — lokal dev server (port 4321)
-- `npm run build` — produksjonsbygg
-- `npm run preview` — forhåndsvis bygget
+- `npm run dev` / `npm run build` / `npm run preview`
+- `node scripts/linkedin-to-md.mjs <Shares.csv>` — konverterer LinkedIn-eksporten til essays. Overskriver aldri eksisterende filer; innlegg under 400 tegn og rene hashtag-linjer droppes. Titler for innlegg uten tittellinje står i `TITLES` i scriptet og i `titleBy: claude` i frontmatter; Kristian kan endre fritt i fila.
 
 ## Struktur
 ```
 src/
-├── components/   # Nav, Hero, Services, About, Contact, Footer
-├── layouts/      # Layout.astro (global CSS variabler + reset)
-└── pages/        # index.astro (eneste side)
+├── components/   # Masthead (logo + 3 lenker + RSS), Footer, Cairn (merket)
+├── content/essays/  # ett markdown-essay per innlegg, YYYY-MM-DD-slug.md
+├── layouts/      # Layout.astro
+└── pages/        # index (krønike), essays/[id], lab, om, rss.xml.ts
 ```
 
-## Design system
-- **Fonts:** Space Grotesk (headings), Inter (body)
-- **Farger:** Mørkt tema. `--accent: #38bdf8`, `--bg-primary: #070c14`
-- **Breakpoint:** 768px (mobil → desktop)
-- **Container:** max-width 1140px, padding 1.5rem (mobil) / 2rem (desktop)
+## Designsystem (norrøn undertone: struktur og materiale, aldri ornament)
+- **Kaldt mørke, ett varmt lys.** Lys modus: `--bg #f6f6f3`, `--text #0f1c2e`, `--muted #4b5565`, `--line #d5d7d2`, `--ember #b8651c`. Mørk: `--bg #0b1220`, `--text #e6e3dc`, `--muted #9aa3b2`, `--line #22304a`, `--ember #f0a24b`.
+- **Ravgul (`--ember`) brukes bare til understreker, merkets lys og fokus.** Aldri som liten tekst på lys bakgrunn (for lav kontrast).
+- **Lest først:** ingen hero, ingen kort, ingen sidekolonne, ingen «les også». Maks linjelengde 68 tegn, innholdsbredde 46 rem.
+- **Krøniken:** år som mono-delskiller, dato i mono, tittel i serif. Det er saga-strukturen; ingen runer, ravner, hammere eller knutemønster.
+- **Merke:** varden (`Cairn.astro`, `public/favicon.svg`): tre steiner og ett lys over én horisont.
+- **Forbudt:** stock-foto, gradienter, sporing, kommentarfelt, karuseller.
 
 ## Konvensjoner
-- Norsk UI-tekst (`lang="nb"`)
-- BEM-lignende CSS i `<style>` scoped per komponent
-- Semantisk HTML, ARIA-labels på interaktive elementer
-- Mobil først — test alltid responsivt
-- Commit-meldinger på engelsk, korte og beskrivende
-
-## Learnings
-Les `LEARNINGS.md` — akkumulerte feil og lærdommer fra tidligere økter. Oppdater den etter hver kodeøkt med det du lærte.
-
-## Før push
-1. `npm run build` — ingen feil?
-2. Test mobil viewport (360px) og desktop
-3. Sjekk at Nav fungerer på mobil (hamburger-meny er `position: fixed`)
-4. Ved endringer i Sharp/SVGO eller andre bildeavhengigheter: sammenlign `dist/`-bilder mot før-build og kjør en faktisk Sharp-transformasjon
+- Norsk bokmål, `lang="nb"`. Essayene gjengis ordrett slik Kristian skrev dem; rett aldri innhold uten beskjed.
+- Nye essays: skriv markdown her først, post utdrag med lenke på LinkedIn etterpå. `linkedin:` i frontmatter peker på originalen.
+- Commit-meldinger på engelsk, korte.
 
 ## Domener
-- vardark.no → Cloudflare Pages (denne siden)
-- geopolitics.vardark.no → eget repo (geopolitics-vardark)
-- presentasjoner.vardark.no → eget repo (vardark-presentations), Cloudflare Pages med serverside-passord
+- vardark.no → Cloudflare Pages-prosjekt `vardark-website` (denne siden)
+- singularity.vardark.no, council.vardark.no, geopolitics.vardark.no → egne repo/tjenester, listet på /lab
+- presentasjoner.vardark.no → flyttes til presentasjoner.athenatech.no (pakke 4 i briefet); gammel adresse skal videresende
 
-## Astro-økosystem status (juli 2026)
-- **Kjører:** Astro 7.1.1 med Node >=22.12.0. Oppgradert fra Astro 5 for å lukke høy-alvorlige avhengighetsfunn.
-- **Oppgradering:** CI bruker Node 22. Kjør alltid `npm ci`, `npm run build` og `npm audit --omit=dev --audit-level=high` før deploy.
-- **Cloudflare kjøpte Astro** (januar 2026): Hele teamet ansatt av Cloudflare, framework forblir MIT/open source. Deploy til alle plattformer fungerer fortsatt, men Cloudflare Pages blir "golden path". Ingen umiddelbar handlingsendring for oss — vi er allerede på Cloudflare Pages.
-- **Vurdering:** Hold Astro 7 oppdatert med kontrollert audit/build; ikke bruk tvungne major-oppgraderinger blindt.
+## Før push
+1. `npm run build` — ingen feil
+2. Skjermbilder 390 px og 1280 px, lys og mørk, av endrede sider; se på dem
+3. `/rss.xml` validerer
+
+## Learnings
+Les `LEARNINGS.md`; oppdater etter hver økt.

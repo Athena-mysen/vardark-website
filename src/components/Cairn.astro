@@ -1,15 +1,19 @@
 ---
+// Varden: tørrmurte heller i skift mot én horisont, med ett lys på toppen
 interface Props { size?: number; class?: string }
 const { size = 28, class: cls = '' } = Astro.props;
 ---
-<!-- Varden: tre steiner og ett lys over én horisont -->
-<svg class={cls} width={size} height={size} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <path d="M2 27 H30" />
-  <path d="M7 27 L9.5 21.5 H22.5 L25 27" />
-  <path d="M10 21.5 L12 16.5 H20 L22 21.5" />
-  <path d="M12.5 16.5 L14 12.5 H18 L19.5 16.5" />
-  <path class="cairn__light" d="M16 9.5 L14.6 6.5 L16 3 L17.4 6.5 Z" fill="currentColor" stroke="none" />
+<svg class={cls} width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
+  <path d="M1 29.25 H31" stroke="currentColor" stroke-width="1.5" />
+  <g fill="currentColor">
+    <rect x="8.5" y="25" width="15" height="3.5" rx="0.6" />
+    <rect x="9.6" y="21" width="7" height="3.4" rx="0.6" /><rect x="17.2" y="21" width="5.4" height="3.4" rx="0.6" />
+    <rect x="10.6" y="17.2" width="11" height="3.2" rx="0.6" />
+    <rect x="11.6" y="13.6" width="4.4" height="3" rx="0.6" /><rect x="16.6" y="13.6" width="4.2" height="3" rx="0.6" />
+    <rect x="12.8" y="10.4" width="6.6" height="2.6" rx="0.6" />
+  </g>
+  <path class="cairn__light" d="M16 2.2 C 17.6 4.4 18.4 5.8 18.4 7 C 18.4 8.4 17.3 9.3 16 9.3 C 14.7 9.3 13.6 8.4 13.6 7 C 13.6 5.8 14.4 4.4 16 2.2 Z" />
 </svg>
 <style>
-  .cairn__light { color: var(--ember); }
+  .cairn__light { fill: var(--ember, #b8651c); }
 </style>

@@ -14,3 +14,11 @@ Oppdateres etter hver kodeøkt. Leses ved oppstart.
 - For `script-src 'self'` uten `unsafe-inline`: legg JavaScript i `public/scripts/` og last med `<script is:inline src>`. (Bloggen har per nå ingen JavaScript.)
 - Hold `engines`, GitHub Actions og lokal CI på samme Node-minimum; `npm audit --omit=dev --audit-level=high` er deploy-gate.
 - Sett `wranglerVersion` eksplisitt i `cloudflare/wrangler-action`.
+
+## 2026-10-20 (designrunde 2)
+- **CSP og Astro-bygg:** Astro inliner små stilark som `<style>` og Vite inliner små fonter som `data:`-URI. Begge blokkeres av CSP-en vår. `astro.config.mjs` har nå `build.inlineStylesheets: 'never'` og `vite.build.assetsInlineLimit: 0`. Test med CSP-headeren injisert i Playwright og se etter konsollfeil.
+- **Bakgrunnsflis må være sømløs:** prosedyrisk tekstur speiles (bilde + speilvendt, i begge akser) før den brukes som flis, ellers synes kantene.
+- **`background-attachment: fixed`** gir brudd i helsideskjermbilder og ignoreres på iOS. Legg bakgrunnen på en topp-seksjon og ton den ut i selve bildet.
+- **Horisontal rulling som starter til høyre:** `direction: rtl` på rullecontaineren, `direction: ltr` på innholdet. Ingen JavaScript.
+- **Store versaler med understrek:** «Å»-ringen kolliderer med understreken i linjen over. Gi linjehøyde ≥ 1,08 og kort `text-underline-offset`.
+- **Tekst inne i bokstaver** (`background-clip: text`) kan ikke ha `text-shadow` (den skinner gjennom). Bruk `filter: drop-shadow`.

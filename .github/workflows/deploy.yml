@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - blogg
+      - design-2
 
 permissions:
   contents: read

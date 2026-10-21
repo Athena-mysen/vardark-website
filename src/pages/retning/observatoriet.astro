@@ -4,6 +4,7 @@ import '@fontsource-variable/jetbrains-mono/wght.css';
 import '@fontsource/fjalla-one/latin.css';
 import Retning from '../../layouts/Retning.astro';
 import Cairn from '../../components/Cairn.astro';
+import Urnes from '../../components/Urnes.astro';
 import { essays, fmtDate, iso } from '../../lib/essays';
 import { projects } from '../../data/lab';
 
@@ -91,6 +92,8 @@ const years = [...new Set(list.map((e) => e.date.getFullYear()))];
     </figure>
     </div>
 
+    <div class="orn wrap"><Urnes /></div>
+
     <section class="log wrap" aria-labelledby="logg">
       <header class="log__head">
         <h2 id="logg" class="label">Observasjonslogg</h2>
@@ -126,6 +129,7 @@ const years = [...new Set(list.map((e) => e.date.getFullYear()))];
     </section>
   </main>
 
+  <div class="orn orn--foot wrap"><Urnes /></div>
   <footer class="foot wrap">
     <p>© 2026 Kristian Høegh Mysen · <a href="/rss.xml">RSS</a> · Selskapet: <a href="https://athenatech.no">athenatech.no</a></p>
   </footer>
@@ -189,8 +193,11 @@ const years = [...new Set(list.map((e) => e.date.getFullYear()))];
   .key--lab { width: 9px; height: 9px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 10px 2px rgba(240, 162, 75, 0.5); }
   .key--line { width: 1.5rem; border-top: 1px solid rgba(223, 230, 242, 0.5); }
 
+  .orn { color: var(--star); opacity: 0.28; --urnes-bg: var(--bg); padding-top: 3rem; }
+  .orn--foot { padding-top: 0; padding-bottom: 1.5rem; opacity: 0.25; }
+
   /* Logg: vertikal tidslinje */
-  .log { padding-top: 5rem; padding-bottom: 3rem; }
+  .log { padding-top: 2.5rem; padding-bottom: 3rem; }
   .log__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
   .log__ext { font: 0.75rem/1 var(--mono); color: var(--text); text-decoration-color: var(--ember); }
   .yr { display: grid; gap: 0.5rem; padding-top: 2rem; }
@@ -212,7 +219,7 @@ const years = [...new Set(list.map((e) => e.date.getFullYear()))];
   .instr__grid p { font-size: 1rem; color: var(--muted); }
   .instr__status { font: 0.6875rem/1 var(--mono); color: var(--ember); text-transform: uppercase; letter-spacing: 0.08em; }
 
-  .foot { padding-top: 2rem; padding-bottom: 3rem; border-top: 1px solid var(--line); font: 0.75rem/1.5 var(--mono); color: var(--muted); }
+  .foot { padding-top: 0.5rem; padding-bottom: 3rem; font: 0.75rem/1.5 var(--mono); color: var(--muted); }
   .foot a { color: var(--text); text-decoration-color: var(--ember); }
 
   @media (min-width: 768px) {

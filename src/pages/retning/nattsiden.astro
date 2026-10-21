@@ -5,6 +5,7 @@ import '@fontsource-variable/jetbrains-mono/wght.css';
 import '@fontsource/fjalla-one/latin.css';
 import Retning from '../../layouts/Retning.astro';
 import Cairn from '../../components/Cairn.astro';
+import Urnes from '../../components/Urnes.astro';
 import { essays, fmtDate, iso } from '../../lib/essays';
 import { projects } from '../../data/lab';
 
@@ -40,6 +41,8 @@ const links = [
         </a>
       </div>
     </section>
+
+    <div class="orn wrap"><Urnes /></div>
 
     <section class="chron" aria-labelledby="kronike">
       <header class="chron__head wrap">
@@ -83,6 +86,7 @@ const links = [
     </section>
   </main>
 
+  <div class="orn orn--foot wrap"><Urnes /></div>
   <footer class="foot wrap">
     <Cairn size={22} />
     <p>© 2026 Kristian Høegh Mysen · <a href="/rss.xml">RSS</a> · Selskapet: <a href="https://athenatech.no">athenatech.no</a></p>
@@ -124,8 +128,12 @@ const links = [
   .hero__latest span { display: block; margin-bottom: 0.4rem; font: 0.75rem/1 var(--mono); color: var(--muted); }
   .hero__latest:hover { color: var(--ember); }
 
+  /* Urnes-linjen: ett ornament, i ravgult, som skille */
+  .orn { color: var(--ember); opacity: 0.6; --urnes-bg: var(--bg); padding-top: 4rem; }
+  .orn--foot { padding-top: 1rem; padding-bottom: 1.5rem; opacity: 0.4; }
+
   /* Krønike */
-  .chron { padding: 5rem 0 2rem; }
+  .chron { padding: 3rem 0 2rem; }
   .chron__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 2rem; }
   .chron__head h2 { font: 2.25rem/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
   .chron__head p { font: 0.75rem/1.4 var(--mono); color: var(--muted); text-align: right; }
@@ -139,7 +147,9 @@ const links = [
   .entry a:hover .entry__title { color: var(--ember); }
 
   /* Lab: lysende punkter */
-  .lab { padding-top: 3rem; padding-bottom: 5rem; }
+  /* Lab på stavkirkespon: svak tekstur, bare her */
+  .lab { position: relative; padding-top: 3rem; padding-bottom: 5rem; }
+  .lab::before { content: ''; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1; mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='26' fill='none' stroke='%23f0a24b' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M0 0Q0 10 11 13Q22 10 22 0M-11 13Q-11 23 0 26Q11 23 11 13M11 13Q11 23 22 26Q33 23 33 13'/%3E%3C/svg%3E") 0 0 / 22px 26px; }
   .beacons { border-top: 1px solid var(--line); }
   .beacon { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.3rem 0.75rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
   .beacon__dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--muted); align-self: center; }
@@ -148,7 +158,7 @@ const links = [
   .beacon__what { grid-column: 2 / -1; color: var(--muted); font-size: 1rem; }
   .beacon__status { grid-row: 1; grid-column: 3; font: 0.75rem/1 var(--mono); color: var(--muted); }
 
-  .foot { display: flex; align-items: center; gap: 1rem; padding-top: 2rem; padding-bottom: 3rem; border-top: 1px solid var(--line); color: var(--muted); font: 0.75rem/1.5 var(--mono); }
+  .foot { display: flex; align-items: center; gap: 1rem; padding-top: 0.5rem; padding-bottom: 3rem; color: var(--muted); font: 0.75rem/1.5 var(--mono); }
   .foot a { color: var(--text); text-decoration-color: var(--ember); }
 
   @media (min-width: 768px) {

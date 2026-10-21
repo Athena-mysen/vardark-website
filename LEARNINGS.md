@@ -22,3 +22,9 @@ Oppdateres etter hver kodeøkt. Leses ved oppstart.
 - **Horisontal rulling som starter til høyre:** `direction: rtl` på rullecontaineren, `direction: ltr` på innholdet. Ingen JavaScript.
 - **Store versaler med understrek:** «Å»-ringen kolliderer med understreken i linjen over. Gi linjehøyde ≥ 1,08 og kort `text-underline-offset`.
 - **Tekst inne i bokstaver** (`background-clip: text`) kan ikke ha `text-shadow` (den skinner gjennom). Bruk `filter: drop-shadow`.
+
+## 2026-10-21 (norrøn ikonografi)
+- **Urnes-ornament som kode:** båndene tegnes som Bézier-senterlinjer og gjøres om til fylte, tilspissede stier (`docs/designrunde-2/urnes.py` → `src/components/Urnes.astro`). Fletting uten maskering: ormen tegnes først som en strek i bakgrunnsfargen («glorie», `--urnes-bg`), så fylt oppå dyret.
+- **Fast høyde, ikke fast bredde:** med `preserveAspectRatio="slice"` og fast `height` holder ornamentet samme strektykkelse på mobil og desktop. Pad viewBox vertikalt, ellers klippes rankene.
+- **Teksturbånd i full bredde inne i en sentrert container:** `inset: 0 calc(50% - 50vw)`, aldri `-100vw` (gir horisontal rulling og dobbelt så brede helsideskjermbilder).
+- **Relieff-effekt med lys/mørk `drop-shadow` på tynne bånd** ser ut som piggtråd. Bare på store flater.

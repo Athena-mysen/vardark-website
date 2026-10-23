@@ -1,36 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import EssayView from '../../views/Essay.astro';
+import { essays } from '../../lib/essays';
 
 export async function getStaticPaths() {
-  const essays = await getCollection('essays');
-  return essays.map((e) => ({ params: { id: e.id }, props: { e } }));
+  const list = await essays('nb');
+  return list.map((e, i) => ({ params: { id: e.id }, props: { e, next: list[i - 1], prev: list[i + 1] } }));
 }
-const { e } = Astro.props;
-const { Content } = await render(e);
-const words = e.body.split(/\s+/).length;
-const minutes = Math.max(1, Math.round(words / 200));
-const date = e.data.date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Layout title={`${e.data.title} — Vardark`} description={e.data.summary ?? e.body.slice(0, 160).replace(/\s+/g, ' ')} type="article">
-  <article class="essay">
-    <header class="essay__head">
-      <p class="mono"><time datetime={e.data.date.toISOString().slice(0, 10)}>{date}</time> · {minutes} min</p>
-      <h1>{e.data.title}</h1>
-    </header>
-    <div class="prose">
-      <Content />
-    </div>
-    <footer class="essay__foot">
-      {e.data.linkedin && <p class="mono">Først publisert på <a href={e.data.linkedin}>LinkedIn</a>.</p>}
-      <p class="mono"><a href="/">Alle essays</a></p>
-    </footer>
-  </article>
-</Layout>
-
-<style>
-  .essay { padding-top: var(--s-8); }
-  .essay__head { margin-bottom: var(--s-8); }
-  .essay__head h1 { margin-top: var(--s-3); }
-  .essay__foot { margin-top: var(--s-12); padding-top: var(--s-4); border-top: 1px solid var(--line); display: grid; gap: var(--s-2); }
-</style>
+<EssayView lang="nb" {...Astro.props} />

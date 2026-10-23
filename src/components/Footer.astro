@@ -1,9 +1,16 @@
 ---
-const year = new Date().getFullYear();
+import Cairn from './Cairn.astro';
+import Urnes from './Urnes.astro';
+import { t, paths, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
 ---
+<div class="orn wrap"><Urnes /></div>
 <footer class="foot wrap">
-  <p class="mono">© {year} Kristian Høegh Mysen · <a href="/rss.xml">RSS</a> · Selskapet: <a href="https://athenatech.no">athenatech.no</a></p>
+  <Cairn size={22} />
+  <p>© {new Date().getFullYear()} Kristian Høegh Mysen · <a href={paths[lang].rss}>RSS</a> · {t[lang].company}: <a href="https://athenatech.no">athenatech.no</a></p>
 </footer>
 <style>
-  .foot { margin-top: var(--s-24); padding: var(--s-8) var(--s-6) var(--s-12); border-top: 1px solid var(--line); }
+  .orn { color: var(--ember); opacity: 0.4; --urnes-bg: var(--bg); padding-top: 5rem; }
+  .foot { display: flex; align-items: center; gap: 1rem; padding-top: 1rem; padding-bottom: 3rem; color: var(--muted); font: 0.75rem/1.5 var(--mono); }
+  .foot a { color: var(--text); text-decoration-color: var(--ember); }
 </style>

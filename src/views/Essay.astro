@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Cairn from '../components/Cairn.astro';
+import Varde from '../components/Varde.astro';
+import { render } from 'astro:content';
+import { t, paths, fmtDate, iso, type Lang } from '../i18n';
+import type { Essay } from '../lib/essays';
+
+interface Props { lang: Lang; e: Essay; prev?: Essay; next?: Essay }
+const { lang, e, prev, next } = Astro.props;
+const s = t[lang];
+const { Content } = await render(e.entry);
+const site = Astro.site!.href;
+const url = new URL(e.url, site).href;
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: e.title,
+  description: e.excerpt,
+  datePublished: iso(e.date),
+  inLanguage: lang === 'nb' ? 'nb-NO' : 'en',
+  url,
+  mainEntityOfPage: url,
+  image: new URL('/og.jpg', site).href,
+  author: { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', url: site },
+  isPartOf: { '@type': 'Blog', name: 'Vardark', url: new URL(paths[lang].home, site).href },
+  ...(e.alt && { [lang === 'nb' ? 'workTranslation' : 'translationOfWork']: { '@type': 'BlogPosting', url: new URL(e.alt, site).href, inLanguage: lang === 'nb' ? 'en' : 'nb-NO' } }),
+};
+---
+<Layout lang={lang} title={`${e.title} · Vardark`} description={e.excerpt} type="article" alt={e.alt} jsonld={jsonld} published={e.date}>
+  <article class="essay">
+    <header class="essay__head wrap">
+      <Varde id="essay" class="essay__varde" />
+      <p class="essay__meta"><Cairn size={16} /><time datetime={iso(e.date)}>{fmtDate(e.date, lang, { day: 'numeric', month: 'long', year: 'numeric' })}</time></p>
+      <h1>{e.title}</h1>
+    </header>
+    <div class="prose wrap"><Content /></div>
+    <footer class="essay__foot wrap">
+      {e.linkedin && <p class="essay__src">{s.linkedin} <a href={e.linkedin} rel="noopener">LinkedIn</a></p>}
+      <nav class="pn" aria-label={s.all}>
+        {prev ? <a href={prev.url} class="pn__a" rel="prev"><span>← {s.prev}</span>{prev.title}</a> : <span />}
+        {next ? <a href={next.url} class="pn__a pn__a--next" rel="next"><span>{s.next} →</span>{next.title}</a> : <span />}
+      </nav>
+      <p><a href={paths[lang].home} class="essay__all">{s.all}</a></p>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .essay__head, .prose, .essay__foot { max-width: 50rem; margin-inline: auto; }
+  .essay__head { position: relative; padding-top: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+  .essay__head :global(.essay__varde) { display: none; }
+  @media (min-width: 1024px) { .essay__head { padding-right: 12rem; } .essay__head :global(.essay__varde) { display: block; position: absolute; right: 2.5rem; bottom: -1px; height: 11rem; width: auto; } }
+  .essay__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.8125rem/1 var(--mono); color: var(--ember); }
+  .essay h1 { margin-top: 1.25rem; font: 400 clamp(2.4rem, 6vw, 4.5rem)/1.02 var(--serif); letter-spacing: -0.025em; text-wrap: balance; }
+
+  .prose { padding-top: 2.5rem; font-size: 1.25rem; line-height: 1.7; color: #d9d6cf; }
+  .prose :global(> * + *) { margin-top: 1.1em; }
+  .prose :global(a) { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; word-break: break-word; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.25rem; list-style: disc; }
+  .prose :global(blockquote) { border-left: 2px solid var(--ember); padding-left: 1rem; color: var(--muted); }
+
+  .essay__foot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: grid; gap: 1.5rem; font: 0.8125rem/1.5 var(--mono); color: var(--muted); }
+  .essay__foot a { color: var(--text); text-decoration-color: var(--ember); }
+  .pn { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .pn__a { display: grid; gap: 0.4rem; text-decoration: none; font: 400 1.125rem/1.3 var(--serif); color: var(--text); }
+  .pn__a span { font: 0.75rem/1 var(--mono); color: var(--ember); }
+  .pn__a--next { text-align: right; }
+  .pn__a:hover { color: #ffe2b8; }
+</style>

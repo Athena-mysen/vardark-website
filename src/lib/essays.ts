@@ -1,23 +1,29 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { paths, type Lang } from '../i18n';
 
-// Essays nyest først, med lesetid og første setninger som utdrag (til forsideretningene).
-export async function essays() {
-  const all = await getCollection('essays');
-  return all
+const excerpt = (body = '') => {
+  const text = body.replace(/https?:\/\/\S+/g, '').replace(/[#*_>\[\]]/g, '').replace(/\s+/g, ' ').trim();
+  const cut = text.slice(0, 200);
+  return text.length > 200 ? cut.slice(0, cut.lastIndexOf(' ')) + ' …' : text;
+};
+
+// Essays på ett språk, nyest først, med adressen til samme essay på det andre språket.
+export async function essays(lang: Lang) {
+  const nb = await getCollection('essays');
+  const en = await getCollection('essaysEn');
+  const enByNb = new Map(en.map((e) => [e.data.nb, e]));
+  const list = (lang === 'nb' ? nb : en) as (CollectionEntry<'essays'> | CollectionEntry<'essaysEn'>)[];
+  return list
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
     .map((e) => {
-      const text = (e.body ?? '').replace(/[#*_>\[\]]/g, '').replace(/\(http[^)]*\)/g, '').replace(/\s+/g, ' ').trim();
-      const cut = text.slice(0, 190);
+      const nbId = 'nb' in e.data ? e.data.nb : e.id;
+      const enEntry = enByNb.get(nbId);
       return {
-        id: e.id,
-        title: e.data.title,
-        date: e.data.date,
-        words: text.split(' ').length,
-        minutes: Math.max(1, Math.round(text.split(' ').length / 220)),
-        excerpt: text.length > 190 ? cut.slice(0, cut.lastIndexOf(' ')) + ' …' : text,
+        entry: e, id: e.id, title: e.data.title, date: e.data.date, linkedin: e.data.linkedin,
+        excerpt: e.data.summary ?? excerpt(e.body),
+        url: paths[lang].essay(e.id),
+        alt: lang === 'nb' ? (enEntry ? paths.en.essay(enEntry.id) : undefined) : paths.nb.essay(nbId),
       };
     });
 }
-
-export const fmtDate = (d: Date) => d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }).replace('.', '');
-export const iso = (d: Date) => d.toISOString().slice(0, 10);
+export type Essay = Awaited<ReturnType<typeof essays>>[number];

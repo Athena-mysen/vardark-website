@@ -5,113 +5,90 @@ import '@fontsource-variable/jetbrains-mono/wght.css';
 import '@fontsource/fjalla-one/latin.css';
 import Masthead from '../components/Masthead.astro';
 import Footer from '../components/Footer.astro';
+import { t, other, paths, type Lang } from '../i18n';
 
-interface Props { title?: string; description?: string; type?: 'website' | 'article' }
-const {
-  title = 'Vardark — Kristian Mysen',
-  description = 'Essays av Kristian Høegh Mysen om frontier-modeller, åpne vekter, sikkerhet og geopolitikk. Pluss en lab med prototyper.',
-  type = 'website',
-} = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article';
+  alt?: string; // samme side på det andre språket
+  jsonld?: object;
+  overlay?: boolean; // menyen ligger oppå et forsidebilde
+  published?: Date;
+}
+const { lang, title = 'Vardark · Kristian Høegh Mysen', description = t[lang].description, type = 'website', alt, jsonld, overlay = false, published } = Astro.props;
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const altHref = alt ? new URL(alt, site).href : undefined;
+const nbHref = lang === 'nb' ? canonical : altHref;
+const enHref = lang === 'en' ? canonical : altHref;
+const og = new URL('/og.jpg', site).href;
 ---
 <!doctype html>
-<html lang="nb">
+<html lang={lang === 'nb' ? 'nb' : 'en'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a101c" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" type="application/rss+xml" title="Vardark" href="/rss.xml" />
+    <meta name="author" content="Kristian Høegh Mysen" />
+    <link rel="canonical" href={canonical} />
+    {nbHref && <link rel="alternate" hreflang="nb" href={nbHref} />}
+    {enHref && <link rel="alternate" hreflang="en" href={enHref} />}
+    {nbHref && <link rel="alternate" hreflang="x-default" href={nbHref} />}
+    <link rel="alternate" type="application/rss+xml" title={`Vardark (${t[lang].name})`} href={paths[lang].rss} />
     <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:locale" content="nb_NO" />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={t[lang].og} />
+    {alt && <meta property="og:locale:alternate" content={t[other(lang)].og} />}
     <meta property="og:site_name" content="Vardark" />
-    <meta name="twitter:card" content="summary" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/scene.css" />
+    {jsonld && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonld)} />}
   </head>
   <body>
-    <a class="skip" href="#innhold">Til innholdet</a>
-    <Masthead />
-    <main id="innhold" class="wrap">
+    <a class="skip" href="#innhold">{t[lang].skip}</a>
+    <Masthead lang={lang} alt={alt} overlay={overlay} />
+    <main id="innhold">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>
 
 <style is:global>
   :root {
-    --bg: #f6f6f3;
-    --bg-2: #ecece7;
-    --text: #0f1c2e;
-    --muted: #4b5565;
-    --line: #d5d7d2;
-    --ember: #b8651c;
-    --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
-    --font-display: 'Fjalla One', 'Arial Narrow', sans-serif-condensed, sans-serif;
-    --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --measure: 68ch;
-    --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-6: 1.5rem;
-    --s-8: 2rem; --s-12: 3rem; --s-16: 4rem; --s-24: 6rem;
+    --bg: #0a101c; --bg-2: #111a2a; --text: #e6e3dc; --muted: #9aa3b2; --line: #1f2b42; --ember: #f0a24b;
+    --serif: 'Source Serif 4 Variable', Georgia, serif;
+    --display: 'Fjalla One', 'Arial Narrow', sans-serif;
+    --mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+    color-scheme: dark;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0b1220;
-      --bg-2: #121b2c;
-      --text: #e6e3dc;
-      --muted: #9aa3b2;
-      --line: #22304a;
-      --ember: #f0a24b;
-    }
-  }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-size-adjust: 100%; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-serif);
-    font-size: 1.1875rem;
-    line-height: 1.6;
-    font-optical-sizing: auto;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='%23cfd8f0'%3E%3Ccircle cx='31' cy='44' r='.7' opacity='.35'/%3E%3Ccircle cx='190' cy='12' r='.5' opacity='.25'/%3E%3Ccircle cx='300' cy='96' r='.9' opacity='.3'/%3E%3Ccircle cx='88' cy='210' r='.6' opacity='.22'/%3E%3Ccircle cx='242' cy='260' r='.7' opacity='.3'/%3E%3Ccircle cx='150' cy='330' r='.5' opacity='.2'/%3E%3Ccircle cx='340' cy='300' r='.6' opacity='.25'/%3E%3C/svg%3E") 0 0 / 360px, radial-gradient(60rem 40rem at 85% 30rem, rgba(240, 162, 75, 0.05), transparent), var(--bg);
+    color: var(--text); font: 1.1875rem/1.6 var(--serif); font-optical-sizing: auto;
   }
-  h1, h2, h3 { font-family: var(--font-serif); font-weight: 450; line-height: 1.15; text-wrap: balance; letter-spacing: -0.005em; }
-  h1 { font-size: clamp(1.875rem, 1.3rem + 2vw, 2.75rem); }
-  h2 { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem); }
-  h3 { font-size: 1.1875rem; }
-  p, li, blockquote { max-width: var(--measure); }
-  a {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-color: var(--ember);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-  }
-  a:hover { text-decoration-thickness: 2px; }
-  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
-  img { max-width: 100%; height: auto; }
-  ::selection { background: var(--bg-2); }
-
-  .skip { position: absolute; left: var(--s-4); top: -100px; background: var(--text); color: var(--bg); padding: var(--s-2) var(--s-4); font-family: var(--font-mono); z-index: 100; }
-  .skip:focus { top: var(--s-4); }
-
-  .wrap { width: 100%; max-width: 46rem; margin: 0 auto; padding: 0 var(--s-6); }
-
-  .mono { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--muted); }
-  .muted { color: var(--muted); }
-
-  .prose > * + * { margin-top: var(--s-4); }
-  .prose h2 { margin-top: var(--s-12); }
-  .prose h3 { margin-top: var(--s-8); }
-  .prose ul, .prose ol { padding-left: 1.25rem; }
-  .prose li + li { margin-top: var(--s-2); }
-  .prose blockquote { border-left: 2px solid var(--ember); padding-left: var(--s-4); color: var(--muted); }
-  .prose hr { border: 0; border-top: 1px solid var(--line); margin: var(--s-8) 0; }
-
+  img, svg { display: block; max-width: 100%; }
+  ul, ol { list-style: none; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 4px; }
+  ::selection { background: rgba(240, 162, 75, 0.3); }
+  .wrap { width: 100%; max-width: 76rem; margin: 0 auto; padding-inline: 1.5rem; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skip { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: 0.5rem 1rem; background: var(--ember); color: #000; font: 0.875rem var(--mono); }
+  .skip:focus { top: 1rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 </style>

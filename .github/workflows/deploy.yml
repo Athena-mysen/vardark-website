@@ -6,6 +6,7 @@ on:
       - main
       - blogg
       - design-2
+      - nattsiden
 
 permissions:
   contents: read

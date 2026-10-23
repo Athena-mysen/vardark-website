@@ -5,3 +5,9 @@
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
+
+# Forhåndsvisninger på pages.dev skal aldri indekseres; bare vardark.no
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

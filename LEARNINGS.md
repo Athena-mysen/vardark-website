@@ -28,3 +28,9 @@ Oppdateres etter hver kodeøkt. Leses ved oppstart.
 - **Fast høyde, ikke fast bredde:** med `preserveAspectRatio="slice"` og fast `height` holder ornamentet samme strektykkelse på mobil og desktop. Pad viewBox vertikalt, ellers klippes rankene.
 - **Teksturbånd i full bredde inne i en sentrert container:** `inset: 0 calc(50% - 50vw)`, aldri `-100vw` (gir horisontal rulling og dobbelt så brede helsideskjermbilder).
 - **Relieff-effekt med lys/mørk `drop-shadow` på tynne bånd** ser ut som piggtråd. Bare på store flater.
+
+## 2026-10-24 (Nattsiden som hele nettstedet, to språk)
+- **Glatte animasjoner:** animer bare `transform`/`opacity` på egne lag over et statisk SVG. `stroke-dashoffset` på en stor sti kostet ~190 ms hovedtråd per sekund; tre ferdigtegnede lag med forskjøvne prikker som tones inn etter tur kostet ~4 ms. Mål med CDP `Performance.getMetrics` (TaskDuration), ikke fps, som er låst til 60 i hodeløs Chrome.
+- **Posisjoner uten style-attributter (CSP):** utregnede koordinater skrives som CSS-variabler fra et statisk endepunkt (`src/pages/scene.css.ts` → `/scene.css`), ikke `define:vars` (som lager inline style).
+- **To språk:** norsk på `/`, engelsk på `/en/` med engelske adresser; `essaysEn` har `nb:` som peker på originalen, og `lib/essays.ts` gir hver side `alt` til hreflang og språkknappen.
+- **Forhåndsvisninger** på `*.pages.dev` får `X-Robots-Tag: noindex` i `_headers`; bare vardark.no skal indekseres.

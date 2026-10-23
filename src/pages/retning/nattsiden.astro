@@ -6,12 +6,13 @@ import '@fontsource/fjalla-one/latin.css';
 import Retning from '../../layouts/Retning.astro';
 import Cairn from '../../components/Cairn.astro';
 import Urnes from '../../components/Urnes.astro';
+import Vardescene from '../../components/Vardescene.astro';
 import { essays, fmtDate, iso } from '../../lib/essays';
 import { projects } from '../../data/lab';
 
 const list = await essays();
-const years = [...new Set(list.map((e) => e.date.getFullYear()))];
-const latest = list[0];
+const [latest, ...rest] = list;
+const years = [...new Set(rest.map((e) => e.date.getFullYear()))];
 const links = [
   { href: '/', label: 'Essays' },
   { href: '/lab/', label: 'Lab' },
@@ -27,10 +28,7 @@ const links = [
 
   <main id="innhold">
     <section class="hero">
-      <picture>
-        <source media="(min-width: 768px)" srcset="/material/natt-varde.webp" />
-        <img src="/material/natt-varde-mobil.webp" alt="En varde på en fjelltopp om natten, med ett ravgult lys på toppen" width="900" height="1500" />
-      </picture>
+      <div class="hero__scene"><Vardescene /></div>
       <div class="hero__text">
         <p class="hero__kicker">Essays og lab · Kristian Høegh Mysen</p>
         <h1 class="hero__title">Varsellys for en tid der intelligens blir billig.</h1>
@@ -42,22 +40,48 @@ const links = [
       </div>
     </section>
 
+    <section class="def wrap" aria-labelledby="varde">
+      <div class="def__head">
+        <h2 id="varde" class="def__hw">varde</h2>
+        <p class="def__pos">substantiv, hankjønn</p>
+      </div>
+      <div class="def__body">
+        <p>Stabel av stein på en fjelltopp eller et nes, med tørrved klar på toppen. Ifølge Snorre lot Håkon den gode bygge varder langs hele kysten. Når fienden ble sett, ble den første tent, og lyset gikk fra fjell til fjell til hele landet var varslet.</p>
+        <svg class="def__chain" viewBox="0 0 640 70" aria-hidden="true">
+          <path d="M0 62 C60 58 70 40 110 40 C150 40 160 56 210 54 C260 52 270 30 320 30 C370 30 380 52 430 50 C480 48 490 26 540 26 C590 26 600 50 640 50" fill="none" stroke="#2a3a58" stroke-width="1.5" />
+          {[[110, 40], [320, 30], [540, 26]].map(([x, y], i) => (
+            <g class={`dc dc${i + 1}`} transform={`translate(${x} ${y})`}>
+              <path d="M-9 0 L9 0 L7 -6 L-7 -6Z M-6 -7 L6 -7 L4 -12 L-4 -12Z" fill="#1a2740" stroke="#4a5b7c" stroke-width="0.8" />
+              <path class="dc__f" d="M0 -24 C3 -19 4 -17 4 -15 C4 -13 2 -12 0 -12 C-2 -12 -4 -13 -4 -15 C-4 -17 -3 -19 0 -24Z" />
+            </g>
+          ))}
+        </svg>
+      </div>
+    </section>
+
     <div class="orn wrap"><Urnes /></div>
 
     <section class="chron" aria-labelledby="kronike">
       <header class="chron__head wrap">
-        <h2 id="kronike">Krønike</h2>
-        <p>{list.length} essays, nyeste først</p>
+        <div><p class="eyebrow">Krønike · {list.length} essays</p><h2 id="kronike">Vardekjeden</h2></div>
+        <p>Nyeste varde først</p>
       </header>
+      <a class="feat wrap" href={`/essays/${latest.id}/`}>
+        <span class="feat__meta"><Cairn size={18} /> Sist tent · <time datetime={iso(latest.date)}>{fmtDate(latest.date)} {latest.date.getFullYear()}</time></span>
+        <span class="feat__title">{latest.title}</span>
+        <span class="feat__ex">{latest.excerpt}</span>
+        <span class="feat__go">Les essayet</span>
+        <span class="feat__mark" aria-hidden="true"><Cairn size={260} /></span>
+      </a>
       {years.map((y) => (
         <div class="year wrap">
           <p class="year__n" aria-hidden="true">{y}</p>
           <h3 class="sr">{y}</h3>
           <ol class="entries">
-            {list.filter((e) => e.date.getFullYear() === y).map((e) => (
+            {rest.filter((e) => e.date.getFullYear() === y).map((e) => (
               <li class="entry">
                 <a href={`/essays/${e.id}/`}>
-                  <span class="entry__meta"><time datetime={iso(e.date)}>{fmtDate(e.date)}</time></span>
+                  <span class="entry__meta"><Cairn size={14} /><time datetime={iso(e.date)}>{fmtDate(e.date)}</time></span>
                   <span class="entry__title">{e.title}</span>
                   <span class="entry__ex">{e.excerpt}</span>
                 </a>
@@ -70,13 +94,13 @@ const links = [
 
     <section class="lab wrap" aria-labelledby="lab">
       <header class="chron__head chron__head--lab">
-        <h2 id="lab">Lab</h2>
+        <div><p class="eyebrow">Lab</p><h2 id="lab">Varder i drift</h2></div>
         <p>Prototyper. De ser ut som prototyper.</p>
       </header>
       <ul class="beacons">
         {projects.map((p) => (
           <li class={`beacon ${p.status === 'i drift' ? 'is-lit' : ''}`}>
-            <span class="beacon__dot" aria-hidden="true"></span>
+            <span class="beacon__cairn" aria-hidden="true"><Cairn size={22} /></span>
             <a href={p.href} class="beacon__name">{p.name}</a>
             <span class="beacon__what">{p.what}</span>
             <span class="beacon__status">{p.status}</span>
@@ -99,7 +123,8 @@ const links = [
     --serif: 'Source Serif 4 Variable', Georgia, serif;
     --display: 'Fjalla One', 'Arial Narrow', sans-serif;
     --mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-    background: var(--bg); color: var(--text); font: 1.1875rem/1.6 var(--serif);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='%23cfd8f0'%3E%3Ccircle cx='31' cy='44' r='.7' opacity='.35'/%3E%3Ccircle cx='190' cy='12' r='.5' opacity='.25'/%3E%3Ccircle cx='300' cy='96' r='.9' opacity='.3'/%3E%3Ccircle cx='88' cy='210' r='.6' opacity='.22'/%3E%3Ccircle cx='242' cy='260' r='.7' opacity='.3'/%3E%3Ccircle cx='150' cy='330' r='.5' opacity='.2'/%3E%3Ccircle cx='340' cy='300' r='.6' opacity='.25'/%3E%3C/svg%3E") 0 0 / 360px, radial-gradient(60rem 40rem at 85% 30rem, rgba(240, 162, 75, 0.05), transparent), var(--bg);
+    color: var(--text); font: 1.1875rem/1.6 var(--serif);
     color-scheme: dark;
   }
 </style>
@@ -117,28 +142,30 @@ const links = [
   .mast__nav a:first-child { color: var(--text); border-bottom: 1px solid var(--ember); padding-bottom: 3px; }
 
   /* Hero: landskapet bærer siden */
-  .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; background: #060a12; }
-  .hero picture, .hero img { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .hero img { object-fit: cover; object-position: 50% 0; }
+  .hero { position: relative; display: flex; align-items: flex-end; overflow: hidden; background: #03060c; padding-top: 54svh; }
+  /* Scenen er 1,6:1 med varden på 72 %. På smale skjermer gjøres den bredere og skyves så varden står på 60 %. */
+  .hero__scene { --sw: max(100vw, 105.6svh); position: absolute; top: 0; height: 66svh; width: var(--sw); left: clamp(calc(100vw - var(--sw)), calc(60vw - 0.72 * var(--sw)), 0px); }
+  .hero::after { content: ''; position: absolute; inset: auto 0 0; height: 55%; background: linear-gradient(transparent, rgba(3, 6, 12, 0.94) 38%, var(--bg)); pointer-events: none; }
   .hero__text { position: relative; z-index: 1; width: 100%; max-width: 76rem; margin: 0 auto; padding: 0 1.5rem 3rem; }
   .hero__kicker { font: 0.75rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); }
-  .hero__title { margin-top: 1rem; max-width: 15ch; font: 400 clamp(2.4rem, 7vw, 5.5rem)/1.02 var(--serif); letter-spacing: -0.02em; text-wrap: balance; }
+  .hero__title { margin-top: 1rem; max-width: 14ch; font: 400 clamp(2.6rem, 7.4vw, 6.25rem)/0.98 var(--serif); letter-spacing: -0.025em; text-wrap: balance; text-shadow: 0 2px 30px rgba(2, 4, 10, 0.8); }
+  .hero__title::first-line { color: #fff; }
   .hero__intro { margin-top: 1.25rem; max-width: 32rem; color: #c3c8d2; font-size: 1.125rem; }
   .hero__latest { display: block; margin-top: 2rem; max-width: 28rem; padding: 1rem 0 0; border-top: 1px solid rgba(240, 162, 75, 0.5); text-decoration: none; font: 400 1.25rem/1.3 var(--serif); }
   .hero__latest span { display: block; margin-bottom: 0.4rem; font: 0.75rem/1 var(--mono); color: var(--muted); }
   .hero__latest:hover { color: var(--ember); }
 
   /* Urnes-linjen: ett ornament, i ravgult, som skille */
-  .orn { color: var(--ember); opacity: 0.6; --urnes-bg: var(--bg); padding-top: 4rem; }
+  .orn { color: var(--ember); opacity: 0.6; --urnes-bg: var(--bg); padding-top: 1rem; }
   .orn--foot { padding-top: 1rem; padding-bottom: 1.5rem; opacity: 0.4; }
 
   /* Krønike */
   .chron { padding: 3rem 0 2rem; }
   .chron__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 2rem; }
   .chron__head h2 { font: 2.25rem/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
-  .chron__head p { font: 0.75rem/1.4 var(--mono); color: var(--muted); text-align: right; }
+  .chron__head > p { display: none; font: 0.75rem/1.4 var(--mono); color: var(--muted); text-align: right; }
   .year { position: relative; padding-top: 1.5rem; padding-bottom: 2.5rem; }
-  .year__n { font: clamp(4.5rem, 20vw, 11rem)/0.8 var(--display); color: transparent; -webkit-text-stroke: 1px #42557a; letter-spacing: 0.02em; margin-bottom: 1rem; }
+  .year__n { font: clamp(4.5rem, 20vw, 11rem)/0.85 var(--display); color: transparent; background: linear-gradient(180deg, rgba(240, 162, 75, 0.35), transparent 70%), url(/material/basalt.webp) center / 380px; -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 1px 0 rgba(255, 220, 170, 0.18)) drop-shadow(0 -1px 0 #000); letter-spacing: 0.02em; margin-bottom: 1rem; }
   .entries { border-top: 1px solid var(--line); }
   .entry__ex { font-size: 1rem; line-height: 1.5; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .entry a { display: grid; align-content: start; gap: 0.5rem; padding: 1.35rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
@@ -146,14 +173,50 @@ const links = [
   .entry__title { font: 400 1.5rem/1.2 var(--serif); letter-spacing: -0.01em; text-wrap: balance; transition: color 150ms; }
   .entry a:hover .entry__title { color: var(--ember); }
 
+
+  /* Oppslagsordet */
+  .def { display: grid; gap: 1.5rem; padding-top: 4rem; padding-bottom: 2rem; }
+  .def__hw { font: italic 300 clamp(4.5rem, 16vw, 9.5rem)/0.85 var(--serif); letter-spacing: -0.04em; color: transparent; background: linear-gradient(180deg, #ffd9a0 0%, var(--ember) 45%, #8a4a1c 100%); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 28px rgba(240, 162, 75, 0.25)); padding-bottom: 0.1em; }
+  .def__pos { margin-top: 0.75rem; font: italic 0.95rem/1 var(--serif); color: var(--muted); }
+  .def__body p { max-width: 36rem; font-size: 1.3rem; line-height: 1.55; color: #cfd3db; }
+  .def__body p::first-letter { float: left; font: 400 3.6em/0.8 var(--display); color: var(--ember); margin: 0.08em 0.12em 0 0; }
+  .def__chain { width: 100%; max-width: 36rem; margin-top: 2rem; }
+  .dc__f { fill: var(--ember); filter: drop-shadow(0 0 5px rgba(240, 162, 75, 0.9)); transform-box: fill-box; transform-origin: 50% 100%; }
+  @supports (animation-timeline: view()) {
+    .dc__f { animation: tenn linear both; animation-timeline: view(); }
+    .dc1 .dc__f { animation-range: entry 40% cover 40%; } .dc2 .dc__f { animation-range: entry 70% cover 45%; } .dc3 .dc__f { animation-range: entry 100% cover 50%; }
+    @keyframes tenn { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: none; } }
+  }
+
+  .eyebrow { font: 0.75rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); margin-bottom: 0.75rem; }
+  .chron__head h2 { font-size: clamp(2.5rem, 7vw, 4.5rem); letter-spacing: 0.04em; }
+
+  /* Siste essay: den nyeste varden, størst og varmest */
+  .feat { position: relative; display: grid; gap: 0.9rem; margin-bottom: 3rem; padding-top: 2.5rem; padding-bottom: 2.5rem; text-decoration: none; isolation: isolate; }
+  .feat::before { content: ''; position: absolute; z-index: -1; inset: 0 1.5rem; border: 1px solid rgba(240, 162, 75, 0.35); border-radius: 2px; background: radial-gradient(120% 140% at 85% 0%, rgba(240, 162, 75, 0.16), transparent 55%), linear-gradient(180deg, #111b2d, #0b1220); box-shadow: 0 30px 80px -30px rgba(240, 162, 75, 0.25), inset 0 1px 0 rgba(255, 210, 150, 0.12); }
+  .feat > * { padding-inline: 1.5rem; }
+  .feat__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.75rem/1 var(--mono); color: var(--ember); text-transform: uppercase; letter-spacing: 0.06em; }
+  .feat__title { font: 400 clamp(2rem, 5vw, 3.6rem)/1.05 var(--serif); letter-spacing: -0.02em; text-wrap: balance; max-width: 22ch; }
+  .feat__ex { max-width: 44rem; color: #b9c0cc; font-size: 1.125rem; }
+  .feat__go { font: 0.8125rem/1 var(--mono); color: var(--text); }
+  .feat__mark { display: none; }
+  .feat__go::after { content: ' →'; color: var(--ember); transition: margin 150ms; }
+  .feat:hover .feat__go::after { margin-left: 0.4rem; }
+  .feat:hover .feat__title { color: #ffe2b8; }
+
+  .entry__meta { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .entry a:hover { background: linear-gradient(90deg, rgba(240, 162, 75, 0.07), transparent 70%); }
+
   /* Lab: lysende punkter */
   /* Lab på stavkirkespon: svak tekstur, bare her */
   .lab { position: relative; padding-top: 3rem; padding-bottom: 5rem; }
   .lab::before { content: ''; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1; mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='26' fill='none' stroke='%23f0a24b' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M0 0Q0 10 11 13Q22 10 22 0M-11 13Q-11 23 0 26Q11 23 11 13M11 13Q11 23 22 26Q33 23 33 13'/%3E%3C/svg%3E") 0 0 / 22px 26px; }
   .beacons { border-top: 1px solid var(--line); }
-  .beacon { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.3rem 0.75rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
-  .beacon__dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--muted); align-self: center; }
-  .is-lit .beacon__dot { background: var(--ember); border-color: var(--ember); box-shadow: 0 0 0 4px rgba(240, 162, 75, 0.12), 0 0 18px 4px rgba(240, 162, 75, 0.45); }
+  .beacon { --ember: #3b4a66; display: grid; grid-template-columns: 1.75rem 1fr auto; gap: 0.3rem 0.75rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .beacon__cairn { color: #2c3850; align-self: center; }
+  .beacon.is-lit { --ember: #f0a24b; }
+  .is-lit .beacon__cairn { color: #8793aa; filter: drop-shadow(0 -3px 8px rgba(240, 162, 75, 0.7)); }
+  .beacon__name { color: var(--text); }
   .beacon__name { font: 400 1.375rem/1.2 var(--serif); text-decoration: underline; text-decoration-color: var(--ember); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
   .beacon__what { grid-column: 2 / -1; color: var(--muted); font-size: 1rem; }
   .beacon__status { grid-row: 1; grid-column: 3; font: 0.75rem/1 var(--mono); color: var(--muted); }
@@ -166,17 +229,24 @@ const links = [
     .mast__nav { gap: 2rem; }
     .mast__nav a { font-size: 0.8125rem; }
     .wrap, .hero__text { padding-inline: 2.5rem; }
-    .hero img { object-position: center; }
+    .chron__head > p { display: block; }
+    .hero { min-height: 100svh; padding-top: 0; }
+    .hero::after { height: 30%; background: linear-gradient(transparent, var(--bg)); }
+    .hero__scene { --sw: max(100vw, 160svh); height: auto; bottom: 0; }
     .hero__text { padding-bottom: 5rem; }
     .year { display: grid; grid-template-columns: 15rem 1fr; column-gap: 3rem; align-items: start; }
     .year__n { position: sticky; top: 2rem; font-size: 7.5rem; }
     .entries { display: grid; grid-template-columns: 1fr 1fr; column-gap: 3rem; border-top: 0; }
     .entry a { height: 100%; padding: 1.6rem 0; border-top: 1px solid var(--line); border-bottom: 0; }
     .entry__title { font-size: 1.75rem; }
-    .beacon { grid-template-columns: 1.5rem 14rem 1fr 7rem; }
+    .def { grid-template-columns: 22rem 1fr; column-gap: 4rem; align-items: start; padding-top: 5rem; }
+    .feat > * { padding-inline: 3rem; }
+    .feat__mark { display: block; position: absolute; z-index: -1; right: 6rem; bottom: 0; padding: 0; color: #1a2336; filter: drop-shadow(0 -30px 60px rgba(240, 162, 75, 0.45)); transition: filter 300ms; }
+    .feat:hover .feat__mark { filter: drop-shadow(0 -30px 70px rgba(240, 162, 75, 0.7)); }
+    .feat::before { inset: 0 2.5rem; }
+    .feat { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+    .beacon { grid-template-columns: 1.75rem 14rem 1fr 7rem; }
     .beacon__what { grid-column: 3; }
     .beacon__status { grid-column: 4; text-align: right; }
-    .lab .chron__head--lab { display: grid; grid-template-columns: 15rem 1fr; column-gap: 3rem; }
-    .lab .chron__head--lab p { text-align: left; }
   }
 </style>

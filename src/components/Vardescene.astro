@@ -1,0 +1,211 @@
+---
+// Nattlandskap med vardekjede, generert ved bygg (seedet, ingen bilder, ingen JS).
+// Fire fjellrygger med tåke, nordlys, stjerner, en kjede av varder som tennes mot den store varden,
+// gnister og lysgate i fjorden. CSP: bare presentasjonsattributter, all animasjon i stilarket.
+const W = 1600, H = 1000;
+const MAIN = { x: 1150 };
+
+function rng(seed: number) {
+  return () => {
+    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const f = (n: number) => n.toFixed(1);
+
+type Bump = { x: number; h: number; w: number };
+function ridge(seed: number, base: number, amp: number, bumps: Bump[], rock = 1, flat?: number) {
+  const r = rng(seed);
+  const oct = [0, 1, 2, 3].map((i) => ({ k: (i + 1) * 1.7 + r(), p: r() * 6.28, a: amp / (i + 1) ** 1.3 }));
+  oct.push({ k: 19 + r() * 3, p: r() * 6.28, a: amp * 0.09 * rock }, { k: 43 + r() * 5, p: r() * 6.28, a: amp * 0.05 * rock });
+  const y = (x: number) => {
+    let v = base;
+    for (const o of oct) v -= Math.sin((x / W) * o.k * 6.28 + o.p) * o.a;
+    for (const b of bumps) v -= b.h * Math.exp(-(((x - b.x) / b.w) ** 2));
+    return v + (r() - 0.5) * amp * 0.12;
+  };
+  const pts: [number, number][] = [];
+  for (let x = -40; x <= W + 40; x += 6) pts.push([x, y(x)]);
+  if (flat !== undefined) { const top = Math.min(...pts.filter((p) => Math.abs(p[0] - flat) < 30).map((p) => p[1])); for (const p of pts) if (Math.abs(p[0] - flat) < 48) p[1] = top + ((p[0] - flat) / 48) ** 2 * 10; }
+  const line = pts.map(([x, v], i) => `${i ? 'L' : 'M'}${x} ${f(v)}`).join(' ');
+  return { line, d: `M-40 ${H} ` + pts.map(([x, v]) => `L${x} ${f(v)}`).join(' ') + ` L${W + 40} ${H}Z`, at: (x: number) => pts.reduce((a, p) => (Math.abs(p[0] - x) < Math.abs(a[0] - x) ? p : a))[1] };
+}
+
+const layers = [
+  { fill: '#1a2740', r: ridge(11, 610, 38, [{ x: 700, h: 60, w: 55 }, { x: 1490, h: 75, w: 60 }]) },
+  { fill: '#121c30', r: ridge(23, 672, 46, [{ x: 860, h: 85, w: 65 }, { x: 1340, h: 70, w: 60 }]) },
+  { fill: '#0b1322', r: ridge(37, 752, 40, [{ x: 330, h: 40, w: 90 }, { x: 1010, h: 50, w: 70 }], 1.4) },
+  { fill: '#05080f', r: ridge(51, 860, 30, [{ x: MAIN.x, h: 215, w: 120 }, { x: 1060, h: 150, w: 90 }, { x: 1255, h: 175, w: 120 }, { x: 1380, h: 90, w: 90 }, { x: 950, h: 70, w: 110 }], 2.6, MAIN.x) },
+];
+
+// Kjeden: fjerne varder på toppene, tent i rekkefølge mot den store varden.
+// To grener ut fra den store varden: østover og vestover.
+const chain = [
+  { x: 1340, l: 1, s: 0.75 }, { x: 1490, l: 0, s: 0.55 }, { x: 860, l: 1, s: 0.75 }, { x: 700, l: 0, s: 0.55 },
+].map((c, i) => ({ ...c, y: layers[c.l].r.at(c.x), i }));
+const mainY = layers[3].r.at(MAIN.x);
+
+// Stein for stein: smal, høy varde av avrundede, skjeve heller; toppkantene fanger lyset ovenfra.
+function cairn(seed: number, cx: number, baseY: number) {
+  const r = rng(seed);
+  const stones: { d: string; fill: string; edge: string; o: number }[] = [];
+  const tones = ['#16161a', '#1d1c1f', '#232124', '#121317', '#1a1a1e'];
+  const rows = 9;
+  let y = baseY;
+  for (let row = 0; row < rows; row++) {
+    const width = 84 - row * 6.2 + (r() - 0.5) * 10;
+    const h = 13 - row * 0.4 + r() * 6;
+    const n = width > 56 ? 3 : width > 34 ? 2 : 1;
+    const ws = Array.from({ length: n }, () => (width / n) * (1 + r() * 0.18));
+    let x = cx - (ws.reduce((a, b) => a + b, 0) * 0.93) / 2 + (r() - 0.5) * 3;
+    for (const w of ws) {
+      const j = () => (r() - 0.5) * 3;
+      const tilt = (r() - 0.5) * 4;
+      const c = [[x + j(), y + j() + tilt], [x + w + j(), y + j() - tilt], [x + w - 3 + j(), y - h + j() - tilt], [x + 3 + j(), y - h + j() + tilt]];
+      const at = (a: number[], b: number[], t: number) => `${f(a[0] + (b[0] - a[0]) * t)} ${f(a[1] + (b[1] - a[1]) * t)}`;
+      let d = `M${at(c[0], c[1], 0.3)}`;
+      for (let i = 1; i <= 4; i++) { const a = c[i - 1], b = c[i % 4], nx = c[(i + 1) % 4]; d += ` L${at(a, b, 0.7)} Q${f(b[0])} ${f(b[1])} ${at(b, nx, 0.3)}`; }
+      stones.push({ d: d + 'Z', fill: tones[Math.floor(r() * tones.length)], edge: `M${at(c[3], c[2], 0.12)} L${at(c[3], c[2], 0.88)}`, o: 0.35 + (row / rows) * 0.6 });
+      x += w * 0.93;
+    }
+    y -= h - 1;
+  }
+  return { stones, top: y };
+}
+const big = cairn(7, MAIN.x, mainY + 4);
+const flameY = big.top - 4;
+
+const sr = rng(99);
+const stars = Array.from({ length: 340 }, (_, i) => {
+  const band = i % 3 === 0; // tettere langs melkeveien
+  const x = sr() * W;
+  const y = band ? 80 + x * 0.22 + (sr() - 0.5) * 140 : sr() * 640;
+  return { x, y, r: 0.3 + sr() ** 3 * 1.3, o: 0.25 + sr() * 0.75, tw: sr() < 0.14 ? 1 + Math.floor(sr() * 6) : 0 };
+}).filter((s) => s.y < 700);
+
+const aurora = [0, 1].map((k) => {
+  const ar = rng(200 + k);
+  const base = 250 + k * 70;
+  const lo: string[] = [], hi: string[] = [];
+  for (let x = -100; x <= W + 100; x += 25) {
+    const v = base + Math.sin(x / 210 + ar() * 0.4 + k * 2) * 55 + Math.sin(x / 77 + k) * 14;
+    lo.push(`${x} ${f(v)}`);
+    hi.unshift(`${x} ${f(v - 190 - Math.sin(x / 130 + k) * 40)}`);
+  }
+  return `M${lo.join(' L')} L${hi.join(' L')}Z`;
+});
+
+const sparks = Array.from({ length: 14 }, (_, i) => ({ x: MAIN.x + (sr() - 0.5) * 16, r: 0.8 + sr() * 1.6, c: `s${(i % 7) + 1}` }));
+const hop = (pts: (readonly [number, number])[]) => pts.map(([x, y], i) => (i === 0 ? `M${x} ${f(y)}` : `Q${f((pts[i - 1][0] + x) / 2)} ${f(Math.min(pts[i - 1][1], y) - 50)} ${x} ${f(y)}`)).join(' ');
+const top = (c: (typeof chain)[number]) => [c.x, c.y - 58 * c.s] as const;
+const signalD = hop([[MAIN.x, flameY - 20], top(chain[0]), top(chain[1])]) + ' ' + hop([[MAIN.x, flameY - 20], top(chain[2]), top(chain[3])]);
+---
+<svg class="scene" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#02040a" /><stop offset="0.55" stop-color="#0a1426" /><stop offset="0.78" stop-color="#16253f" /><stop offset="1" stop-color="#0c1424" />
+    </linearGradient>
+    <radialGradient id="halo"><stop offset="0" stop-color="#ffb35c" stop-opacity="0.55" /><stop offset="0.25" stop-color="#f0a24b" stop-opacity="0.18" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+    <radialGradient id="spill"><stop offset="0" stop-color="#f0a24b" stop-opacity="0.16" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+    <radialGradient id="rim" gradientUnits="userSpaceOnUse" cx={MAIN.x} cy={f(flameY)} r="420"><stop offset="0" stop-color="#ffbf73" stop-opacity="0.85" /><stop offset="0.45" stop-color="#f0a24b" stop-opacity="0.35" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+    <radialGradient id="flame" cx="0.5" cy="0.7" r="0.6"><stop offset="0" stop-color="#fff6d6" /><stop offset="0.35" stop-color="#ffc56b" /><stop offset="0.8" stop-color="#f0782b" /><stop offset="1" stop-color="#b8401a" /></radialGradient>
+    <linearGradient id="aur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5fd6b0" stop-opacity="0" /><stop offset="0.7" stop-color="#5fd6b0" stop-opacity="0.16" /><stop offset="0.93" stop-color="#8af0c8" stop-opacity="0.34" /><stop offset="1" stop-color="#8af0c8" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3d5e" stop-opacity="0" /><stop offset="0.5" stop-color="#2a3d5e" stop-opacity="0.32" /><stop offset="1" stop-color="#2a3d5e" stop-opacity="0" /></linearGradient>
+        <linearGradient id="gate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0a24b" stop-opacity="0.5" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1424" /><stop offset="1" stop-color="#03060c" /></linearGradient>
+    <filter id="blur-l" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="14" /></filter>
+    <filter id="blur-s"><feGaussianBlur stdDeviation="2.5" /></filter>
+    <filter id="blur-m" x="-50%" width="200%"><feGaussianBlur stdDeviation="9 4" /></filter>
+  </defs>
+
+  <rect width={W} height={H} fill="url(#sky)" />
+  <ellipse cx="760" cy="300" rx="900" ry="120" transform="rotate(12 760 300)" fill="#c8d4ff" opacity="0.045" filter="url(#blur-l)" />
+  <g class="stars">
+    {stars.map((s) => <circle cx={f(s.x)} cy={f(s.y)} r={s.r.toFixed(2)} fill="#e9eefc" opacity={s.o.toFixed(2)} class={s.tw ? `tw tw${s.tw}` : undefined} />)}
+  </g>
+  <g class="aurora" filter="url(#blur-l)">
+    {aurora.map((d, k) => <path d={d} fill="url(#aur)" class={`aur aur${k + 1}`} />)}
+  </g>
+
+  {layers.map((L, i) => (
+    <>
+      <path d={L.r.d} fill={L.fill} />
+      {i >= 2 && <path d={L.r.line} fill="none" stroke="url(#rim)" stroke-width={i === 3 ? 1.6 : 1} />}
+      {i < 3 && <rect x="-40" y={f(L.r.at(800) - 20)} width={W + 80} height="110" fill="url(#fog)" class={`fog fog${i + 1}`} />}
+      {chain.filter((c) => c.l === i).map((c) => (
+        <g class={`link link${c.i + 1}`} transform={`translate(${c.x} ${f(c.y + 2)}) scale(${c.s})`}>
+          <path d="M-18 0 L18 0 L14 -14 L-14 -14Z M-13 -16 L13 -16 L9 -30 L-9 -30Z M-8 -32 L8 -32 L5 -44 L-5 -44Z" fill={L.fill} stroke="#3c4c6b" stroke-width="1" />
+          <circle cy="-62" r="70" fill="url(#halo)" class="link__halo" />
+          <path d="M0 -66 C4 -58 6 -54 6 -50 C6 -46 3 -44 0 -44 C-3 -44 -6 -46 -6 -50 C-6 -54 -4 -58 0 -66Z" fill="url(#flame)" class="link__flame" />
+        </g>
+      ))}
+    </>
+  ))}
+
+  <path d={signalD} fill="none" stroke="#f0a24b" stroke-width="1.2" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.45" class="signal" />
+
+  <ellipse cx={MAIN.x} cy={f(mainY + 40)} rx="360" ry="220" fill="url(#spill)" />
+  <circle cx={MAIN.x} cy={f(flameY - 18)} r="330" fill="url(#halo)" class="halo" />
+  <g class="cairn">
+    {big.stones.map((st) => <path d={st.d} fill={st.fill} stroke="#000" stroke-opacity="0.5" stroke-width="0.8" />)}
+    {big.stones.map((st) => <path d={st.edge} stroke="#ffb35c" stroke-opacity={st.o.toFixed(2)} stroke-width="1.6" stroke-linecap="round" fill="none" />)}
+  </g>
+  <g transform={`translate(${MAIN.x} ${f(flameY)})`}>
+    <path d="M0 -58 C9 -40 16 -30 16 -18 C16 -6 9 2 0 2 C-9 2 -16 -6 -16 -18 C-16 -30 -9 -40 0 -58Z" fill="#f0782b" opacity="0.6" filter="url(#blur-s)" class="flame flame--back" />
+    <path d="M0 -46 C7 -32 11 -24 11 -15 C11 -6 6 0 0 0 C-6 0 -11 -6 -11 -15 C-11 -24 -7 -32 0 -46Z" fill="url(#flame)" class="flame" />
+  </g>
+  <g class="sparks">{sparks.map((s) => <circle cx={f(s.x)} cy={f(flameY - 30)} r={s.r.toFixed(2)} fill="#ffc56b" class={`spark ${s.c}`} />)}</g>
+
+  <rect x="-40" y="905" width={W + 80} height="100" fill="url(#water)" />
+  <path d={`M-40 905 L${W + 40} 905`} stroke="#22314d" stroke-width="1" />
+  <path d={`M${MAIN.x - 26} 906 L${MAIN.x + 26} 906 L${MAIN.x + 70} 1000 L${MAIN.x - 70} 1000Z`} fill="url(#gate)" filter="url(#blur-m)" class="gate" />
+  <g class="ripples" stroke="#ffc56b" stroke-linecap="round">
+    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => { const w = 18 + i * 9 + (i % 2) * 14; return <path d={`M${f(MAIN.x - w / 2 + ((i * 37) % 23) - 11)} ${912 + i * 10} h${f(w)}`} stroke-width={(1 + i * 0.12).toFixed(2)} opacity={(0.75 - i * 0.07).toFixed(2)} class={`rip rip${(i % 3) + 1}`} />; })}
+  </g>
+</svg>
+
+<style>
+  .scene { width: 100%; height: 100%; }
+  .tw { animation: tw 5s ease-in-out infinite; }
+  .tw2 { animation-delay: -1s; animation-duration: 6.5s; } .tw3 { animation-delay: -2.2s; } .tw4 { animation-delay: -3.1s; animation-duration: 7s; }
+  .tw5 { animation-delay: -4s; animation-duration: 4s; } .tw6 { animation-delay: -0.5s; animation-duration: 8s; }
+  @keyframes tw { 50% { opacity: 0.15; } }
+
+  .aur { animation: aur 26s ease-in-out infinite alternate; transform-box: fill-box; }
+  .aur2 { animation-duration: 34s; animation-direction: alternate-reverse; }
+  @keyframes aur { from { transform: translateX(-50px) skewX(-4deg); opacity: 0.75; } to { transform: translateX(60px) skewX(5deg); opacity: 1; } }
+
+  .fog { animation: fog 40s ease-in-out infinite alternate; }
+  .fog2 { animation-duration: 55s; animation-direction: alternate-reverse; }
+  @keyframes fog { to { transform: translateX(80px); } }
+
+  /* Kjeden tennes i rekkefølge, så holder den lyset */
+  .link__flame, .link__halo { opacity: 0; transform-box: fill-box; transform-origin: 50% 100%; animation: light 1.2s ease-out forwards; }
+  .link1 :is(.link__flame, .link__halo) { animation-delay: 0.6s; } .link2 :is(.link__flame, .link__halo) { animation-delay: 1.3s; }
+  .link3 :is(.link__flame, .link__halo) { animation-delay: 2s; } .link4 :is(.link__flame, .link__halo) { animation-delay: 2.7s; }
+  @keyframes light { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
+
+  .signal { animation: signal 3.2s linear infinite; }
+  @keyframes signal { to { stroke-dashoffset: -44; } }
+
+  .halo { transform-box: fill-box; transform-origin: center; animation: breathe 4.5s ease-in-out infinite; }
+  @keyframes breathe { 50% { opacity: 0.82; transform: scale(0.97); } }
+  .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flick 0.9s ease-in-out infinite alternate; }
+  .flame--back { animation-duration: 1.3s; }
+  @keyframes flick { 30% { transform: scale(0.94, 1.06) skewX(2deg); } 70% { transform: scale(1.04, 0.95) skewX(-2deg); } 100% { transform: scale(0.98, 1.03); } }
+
+  .spark { opacity: 0; animation: rise 5s ease-out infinite; }
+  .s1 { --dx: -30px; animation-delay: 0s; } .s2 { --dx: 22px; animation-delay: -0.7s; animation-duration: 6s; } .s3 { --dx: -12px; animation-delay: -1.5s; }
+  .s4 { --dx: 40px; animation-delay: -2.3s; animation-duration: 7s; } .s5 { --dx: -48px; animation-delay: -3s; } .s6 { --dx: 10px; animation-delay: -3.8s; animation-duration: 4.2s; }
+  .s7 { --dx: 30px; animation-delay: -4.4s; animation-duration: 6.4s; }
+  @keyframes rise { 0% { opacity: 0; transform: none; } 10% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), -190px); } }
+
+  .rip { animation: rip 2.6s ease-in-out infinite alternate; }
+  .rip2 { animation-delay: -0.9s; } .rip3 { animation-delay: -1.7s; }
+  @keyframes rip { to { transform: translateX(6px); opacity: 0.15; } }
+  .gate { animation: breathe 4.5s ease-in-out infinite; }
+</style>

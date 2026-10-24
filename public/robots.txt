@@ -1,3 +1,15 @@
+# Hei, robot. Velkommen til vardark.no.
+# Dette er en dør, ikke en mur. Les, indekser, siter og lær gjerne av det som står her.
+# Vi ber bare om én ting: oppgi kilden (Kristian Høegh Mysen, vardark.no) og lenk til innlegget.
+# Et eget lesebrev til deg ligger på https://vardark.no/llms.txt
+#
+# Hello, robot. Welcome to vardark.no.
+# This is a door, not a wall. Read, index, cite and learn from what is here.
+# We ask one thing: name the source (Kristian Høegh Mysen, vardark.no) and link to the post.
+# A letter written for you: https://vardark.no/llms.txt
+
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
+
 Sitemap: https://vardark.no/sitemap-index.xml

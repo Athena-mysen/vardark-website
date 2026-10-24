@@ -1,13 +1,13 @@
 ---
 import Cairn from './Cairn.astro';
 import Urnes from './Urnes.astro';
-import { t, paths, type Lang } from '../i18n';
+import { paths, type Lang } from '../i18n';
 const { lang } = Astro.props as { lang: Lang };
 ---
 <div class="orn wrap"><Urnes /></div>
 <footer class="foot wrap">
   <Cairn size={22} />
-  <p>© {new Date().getFullYear()} Kristian Høegh Mysen · <a href={paths[lang].rss}>RSS</a> · {t[lang].company}: <a href="https://athenatech.no">athenatech.no</a></p>
+  <p>© {new Date().getFullYear()} Kristian Høegh Mysen · <a href={paths[lang].rss}>RSS</a></p>
 </footer>
 <style>
   .orn { color: var(--ember); opacity: 0.4; --urnes-bg: var(--bg); padding-top: 5rem; }

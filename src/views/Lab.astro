@@ -13,7 +13,7 @@ const nb = lang === 'nb';
       {projects.map((p) => (
         <li class:list={['beacon', { 'is-lit': p.live }]}>
           <span class="beacon__cairn" aria-hidden="true"><Cairn size={26} /></span>
-          <a href={p.href} class="beacon__name">{p.name}</a>
+          {p.href ? <a href={p.href} class="beacon__name">{p.name}</a> : <span class="beacon__name beacon__name--plain">{p.name}</span>}
           <span class="beacon__status">{p[lang].status}</span>
           <p class="beacon__what">{p[lang].what}</p>
         </li>
@@ -31,6 +31,7 @@ const nb = lang === 'nb';
   .beacon__cairn { color: #2c3850; }
   .is-lit .beacon__cairn { color: #8793aa; filter: drop-shadow(0 -3px 8px rgba(240, 162, 75, 0.7)); }
   .beacon__name { font: 400 1.75rem/1.2 var(--serif); text-decoration: underline; text-decoration-color: #f0a24b; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  .beacon__name--plain { text-decoration: none; }
   .beacon__status { font: 0.875rem/1 var(--mono); color: #b3bccb; }
   .beacon__what { grid-column: 2 / -1; color: #c3cad6; max-width: 38rem; line-height: 1.55; }
 </style>

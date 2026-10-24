@@ -1,32 +1,86 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Cairn from '../components/Cairn.astro';
 import { paths, other, type Lang } from '../i18n';
 const { lang } = Astro.props as { lang: Lang };
 const nb = lang === 'nb';
 const site = Astro.site!.href;
+
+// Fakta fra Kristians egen profil (tidligere vardark.no, Vardark Technologies). Ingen selskapslenker før selskapet finnes.
+const stats = nb
+  ? [['15+', 'år med teknologi og digital transformasjon'], ['15→150+', 'personer i leveranseorganisasjonen jeg bygde'], ['10+', 'år i Forsvarsmateriell'], ['12', 'år i Heimevernet']]
+  : [['15+', 'years in technology and digital transformation'], ['15→150+', 'people in the delivery organisation I built'], ['10+', 'years at the Norwegian Defence Materiel Agency'], ['12', 'years in the Home Guard']];
+const creds = [
+  [nb ? 'Sivilingeniør, datateknikk (MSc Computer Science)' : 'MSc Computer Science', 'NTNU'],
+  ['SAFe Agilist', 'Scaled Agile'],
+  ['TOGAF', nb ? 'virksomhetsarkitektur' : 'enterprise architecture'],
+  ['Certified Ethical Hacker (CEH)', 'EC-Council'],
+  ['MoP Foundation', nb ? 'porteføljestyring' : 'portfolio management'],
+];
+const fields = nb
+  ? ['KI-agenter og frontier-modeller', 'Lokale modeller og åpne vekter', 'Forsvarsteknologi', 'Informasjonssikkerhet', 'Virksomhetsarkitektur', 'Smidig transformasjon i stor skala', 'Teknologi og geopolitikk']
+  : ['AI agents and frontier models', 'Local models and open weights', 'Defence technology', 'Information security', 'Enterprise architecture', 'Agile transformation at scale', 'Technology and geopolitics'];
+
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
   inLanguage: nb ? 'nb-NO' : 'en',
-  mainEntity: { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', alumniOf: 'NTNU', sameAs: ['https://www.linkedin.com/in/kristianmysen'], worksFor: { '@type': 'Organization', name: 'AthenaTech AS', url: 'https://athenatech.no' } },
+  mainEntity: {
+    '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen',
+    jobTitle: nb ? 'Sivilingeniør og teknologileder' : 'Engineer and technology leader',
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'NTNU' },
+    hasCredential: creds.slice(1).map(([name]) => ({ '@type': 'EducationalOccupationalCredential', name })),
+    knowsAbout: fields,
+    sameAs: ['https://www.linkedin.com/in/kristianmysen'],
+  },
 };
 ---
-<Layout lang={lang} title={nb ? 'Om · Vardark' : 'About · Vardark'} description={nb ? 'Om Kristian Høegh Mysen, vardark.no og navnet Vardark.' : 'About Kristian Høegh Mysen, vardark.no and the name Vardark.'} alt={paths[other(lang)].about} jsonld={jsonld}>
+<Layout lang={lang} title={nb ? 'Om Kristian Høegh Mysen · Vardark' : 'About Kristian Høegh Mysen · Vardark'} description={nb ? 'Kristian Høegh Mysen: sivilingeniør og teknologileder med 15 år fra forsvarsteknologi og digital transformasjon. Skriver om KI, sikkerhet og geopolitikk.' : 'Kristian Høegh Mysen: engineer and technology leader with 15 years in defence technology and digital transformation. Writes on AI, security and geopolitics.'} alt={paths[other(lang)].about} jsonld={jsonld}>
   <div class="about wrap">
     <h1>{nb ? 'Om' : 'About'}</h1>
-    {nb ? (
-      <div class="prose">
-        <p class="lead">Jeg er Kristian Høegh Mysen. Her skriver jeg om frontier-modeller, åpne vekter, sikkerhet og geopolitikk: lange tekster, skrevet for å leses ferdig.</p>
-        <p>Jeg er sivilingeniør fra NTNU med over femten år fra forsvarsteknologi og digital transformasjon. Mer enn ti år i Forsvarsmateriell, tolv år i Heimevernet, og de siste årene tilbake ved tastaturet med egne agenter og lokale modeller.</p>
-        <p>Innleggene ble først skrevet for LinkedIn. Her ligger de samlet, uten algoritme, i den rekkefølgen de ble skrevet. Alle finnes også på engelsk.</p>
-      </div>
-    ) : (
-      <div class="prose">
-        <p class="lead">I am Kristian Høegh Mysen. I write about frontier AI models, open weights, security and geopolitics: long pieces, written to be read to the end.</p>
-        <p>I hold an MSc in engineering from NTNU and have spent more than fifteen years in defence technology and digital transformation: over ten years at the Norwegian Defence Materiel Agency, twelve in the Home Guard, and lately back at the keyboard with my own agents and local models.</p>
-        <p>The posts were first written in Norwegian for LinkedIn. Here they are collected, without an algorithm, in the order they were written, and translated into English.</p>
-      </div>
-    )}
+    <p class="lead">{nb
+      ? 'Jeg er Kristian Høegh Mysen, sivilingeniør og teknologileder. I femten år har jeg jobbet der teknologi møter forsvar og store omstillinger. Her skriver jeg om hva som skjer når intelligens blir billig: fremskrittene, mulighetene og risikoen.'
+      : 'I am Kristian Høegh Mysen, an engineer and technology leader. For fifteen years I have worked where technology meets defence and large-scale change. Here I write about what happens when intelligence gets cheap: the progress, the opportunities and the risks.'}</p>
+
+    <blockquote class="quote"><p>{nb ? 'Sjelden kombinasjon: dyp teknologi, strategisk ledelse og militær bakgrunn.' : 'A rare combination: deep technology, strategic leadership and a military background.'}</p></blockquote>
+
+    <dl class="stats">
+      {stats.map(([n, l]) => <div><dt>{n}</dt><dd>{l}</dd></div>)}
+    </dl>
+
+    <section class="block">
+      <h2>{nb ? 'Bakgrunn' : 'Background'}</h2>
+      {nb ? (
+        <>
+          <p>Over ti år i Forsvarsmateriell som prosessleder, programsjef og senior løsningsarkitekt. Jeg har bygget en leveranseorganisasjon fra 15 til over 150 personer, og var prosessleder i virksomhetsprogrammet Mime da det tok steget til skalert smidig, i tett samarbeid med Forsvaret, forsvarssektoren og næringslivet.</p>
+          <p>Tolv år i Heimevernet. Jeg kombinerer militær beslutningskraft med moderne teknologiledelse.</p>
+        </>
+      ) : (
+        <>
+          <p>More than ten years at the Norwegian Defence Materiel Agency as process lead, programme manager and senior solution architect. I built a delivery organisation from 15 to more than 150 people, and was process lead in programme Mime as it moved to scaled agile, working closely with the Armed Forces, the defence sector and industry.</p>
+          <p>Twelve years in the Home Guard. I combine military decision-making with modern technology leadership.</p>
+        </>
+      )}
+    </section>
+
+    <section class="block">
+      <h2>{nb ? 'Hva jeg gjør nå' : 'What I do now'}</h2>
+      <p>{nb
+        ? 'Jeg bygger selv. Hjemme kjører jeg en egen KI-plattform med agenter og lokale modeller, og prototypene i laben følger tempoet i KI-utviklingen, geopolitikken og hvordan mennesker kan styre agenter. Jeg tester frontier-modellene i praksis før jeg skriver om dem.'
+        : 'I build things myself. At home I run my own AI platform with agents and local models, and the prototypes in the lab track the pace of AI, geopolitics and how people can stay in charge of agents. I test the frontier models hands-on before I write about them.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
+    </section>
+
+    <section class="block">
+      <h2>{nb ? 'Fagfelt' : 'Areas'}</h2>
+      <ul class="chips">{fields.map((x) => <li>{x}</li>)}</ul>
+    </section>
+
+    <section class="block">
+      <h2>{nb ? 'Utdanning og sertifiseringer' : 'Education and certifications'}</h2>
+      <ul class="creds">
+        {creds.map(([n, d]) => <li><span class="creds__mark" aria-hidden="true"><Cairn size={16} /></span><b>{n}</b><span>{d}</span></li>)}
+      </ul>
+    </section>
 
     <section class="def" aria-labelledby="varde">
       <h2 id="varde" class="def__hw">varde</h2>
@@ -37,28 +91,50 @@ const jsonld = {
       <p class="def__note">{nb ? 'Vardark: varden i mørket. Innleggene her er ment som varsellys.' : 'Vardark: the beacon in the dark. The posts here are meant as warning lights.'}</p>
     </section>
 
-    <div class="prose">
-      <h2>Lab</h2>
-      <p>{nb ? 'Prototyper. De ser ut som prototyper. Det som blir produkt, flytter til AthenaTech.' : 'Prototypes. They look like prototypes. What becomes a product moves to AthenaTech.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
-      <h2>{nb ? 'Selskapet' : 'The company'}</h2>
-      <p>{nb ? <><a href="https://athenatech.no">AthenaTech AS</a> er selskapet der KI-agentene gjør arbeidet og menneskene bestemmer retningen. Vardark var prototypen.</> : <><a href="https://athenatech.no">AthenaTech AS</a> is the company where AI agents do the work and people set the direction. Vardark was the prototype.</>}</p>
+    <section class="block">
       <h2>{nb ? 'Kontakt' : 'Contact'}</h2>
       <p><a href="https://www.linkedin.com/in/kristianmysen" rel="me">LinkedIn</a> · <a href={paths[lang].rss}>RSS</a></p>
-    </div>
+    </section>
   </div>
 </Layout>
 
 <style>
   .about { max-width: 52rem; padding-top: 3rem; }
-  h1 { font: clamp(2.5rem, 7vw, 4.5rem)/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2.5rem; }
-  .prose { max-width: 37rem; font-size: 1.25rem; line-height: 1.7; color: #e7e3db; }
-  .prose > * + * { margin-top: 1.1em; }
-  .prose h2 { margin-top: 2.5rem; font: 1.5rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
-  .prose a { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; }
-  .lead { font-size: 1.5rem; line-height: 1.45; color: var(--text); }
-  .def { margin: 4rem 0; padding: 2.5rem 0; border-block: 1px solid var(--line); }
+  h1 { font: clamp(2.5rem, 7vw, 4.5rem)/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2rem; }
+  .lead { max-width: 40rem; font: 420 clamp(1.3rem, 2.4vw, 1.6rem)/1.45 var(--serif); color: var(--text); }
+  .about p { max-width: 37rem; }
+  .about a { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; }
+
+  .quote { position: relative; margin: 3rem 0; padding: 1.5rem 0 1.5rem 1.75rem; border-left: 2px solid var(--ember); }
+  .quote p { font: italic 400 clamp(1.5rem, 3.2vw, 2.1rem)/1.3 var(--serif); color: #ffe2b8; max-width: 34rem; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1.25rem; margin: 2.5rem 0 1rem; padding: 2rem 0; border-block: 1px solid var(--line); }
+  .stats dt { font: clamp(2.4rem, 6vw, 3.4rem)/1 var(--display); color: transparent; background: linear-gradient(180deg, #ffd9a0, var(--ember) 60%, #a8581f); -webkit-background-clip: text; background-clip: text; }
+  .stats dd { margin-top: 0.5rem; font: 0.9375rem/1.4 var(--mono); color: #c3cad6; }
+
+  .block { margin-top: 3rem; }
+  .block h2 { font: 1.5rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1rem; }
+  .block p { font-size: 1.1875rem; line-height: 1.7; color: #e7e3db; }
+  .block p + p { margin-top: 1em; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .chips li { padding: 0.5rem 0.85rem; border: 1px solid #2a3a58; border-radius: 999px; font: 0.9375rem/1.2 var(--mono); color: #d6dbe4; background: rgba(17, 26, 42, 0.6); }
+
+  .creds { display: grid; gap: 0.25rem; border-top: 1px solid var(--line); }
+  .creds li { display: grid; grid-template-columns: 1.5rem 1fr; column-gap: 0.75rem; align-items: baseline; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+  .creds__mark { grid-row: span 2; color: #8793aa; --ember: #f0a24b; align-self: center; }
+  .creds b { font: 450 1.1875rem/1.3 var(--serif); }
+  .creds li > span:last-child { font: 0.875rem/1.3 var(--mono); color: #b3bccb; }
+
+  .def { margin: 4rem 0 1rem; padding: 2.5rem 0; border-block: 1px solid var(--line); }
   .def__hw { font: italic 300 clamp(4.5rem, 16vw, 8rem)/0.85 var(--serif); letter-spacing: -0.04em; color: transparent; background: linear-gradient(180deg, #ffd9a0 0%, var(--ember) 45%, #8a4a1c 100%); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 28px rgba(240, 162, 75, 0.25)); padding-bottom: 0.1em; }
   .def__pos { margin-top: 0.5rem; font: italic 0.95rem/1 var(--serif); color: var(--muted); }
-  .def__body { margin-top: 1.5rem; max-width: 38rem; font-size: 1.3rem; line-height: 1.55; color: #cfd3db; }
+  .def__body { margin-top: 1.5rem; font-size: 1.3rem; line-height: 1.55; color: #cfd3db; }
   .def__note { margin-top: 1rem; font: 0.9375rem/1.5 var(--mono); color: #f5b36a; }
+
+  @media (min-width: 768px) {
+    .stats { grid-template-columns: 1fr 1.45fr 1fr 1fr; column-gap: 2rem; }
+    .creds li { grid-template-columns: 1.5rem 1fr auto; }
+    .creds__mark { grid-row: auto; }
+  }
 </style>

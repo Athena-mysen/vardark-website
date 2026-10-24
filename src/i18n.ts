@@ -17,7 +17,7 @@ export const t = {
     description: 'Innlegg av Kristian Høegh Mysen om teknologi og fremskritt, mulighetene og utfordringene: frontier-KI, åpne vekter, sikkerhet og geopolitikk.',
     essays: 'Innlegg', lab: 'Lab',
     linkedin: 'Først publisert på', all: 'Alle innlegg', prev: 'Eldre', next: 'Nyere',
-    company: 'Selskapet', switchTo: 'Read in English',
+    switchTo: 'Read in English',
   },
   en: {
     locale: 'en-GB', og: 'en_GB', name: 'English', short: 'EN',
@@ -28,7 +28,7 @@ export const t = {
     description: 'Posts by Kristian Høegh Mysen on technology and progress, its opportunities and challenges: frontier AI, open weights, security and geopolitics.',
     essays: 'Posts', lab: 'Lab',
     linkedin: 'First published in Norwegian on', all: 'All posts', prev: 'Older', next: 'Newer',
-    company: 'Company', switchTo: 'Les på norsk',
+    switchTo: 'Les på norsk',
   },
 };
 

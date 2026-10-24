@@ -52,7 +52,7 @@ const jsonld = {
       {projects.map((p) => (
         <li class:list={['beacon', { 'is-lit': p.live }]}>
           <span class="beacon__cairn" aria-hidden="true"><Cairn size={22} /></span>
-          <a href={p.href} class="beacon__name">{p.name}</a>
+          {p.href ? <a href={p.href} class="beacon__name">{p.name}</a> : <span class="beacon__name beacon__name--plain">{p.name}</span>}
           <span class="beacon__status">{p[lang].status}</span>
         </li>
       ))}
@@ -97,6 +97,7 @@ const jsonld = {
   .beacon__cairn { color: #2c3850; }
   .is-lit .beacon__cairn { color: #8793aa; filter: drop-shadow(0 -3px 8px rgba(240, 162, 75, 0.7)); }
   .beacon__name { font: 400 1.375rem/1.2 var(--serif); text-decoration: underline; text-decoration-color: #f0a24b; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  .beacon__name--plain { text-decoration: none; }
   .beacon__status { font: 0.875rem/1 var(--mono); color: #b3bccb; }
 
   @media (min-width: 768px) {

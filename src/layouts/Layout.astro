@@ -37,7 +37,7 @@ const og = new URL(image ?? '/og.jpg', site).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Kristian Høegh Mysen" />
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={noindex ? 'noindex' : 'max-image-preview:large, max-snippet:-1'} />
     <link rel="canonical" href={canonical} />
     {nbHref && <link rel="alternate" hreflang="nb" href={nbHref} />}
     {enHref && <link rel="alternate" hreflang="en" href={enHref} />}

@@ -9,6 +9,8 @@ import type { Essay } from '../lib/essays';
 interface Props { lang: Lang; e: Essay; prev?: Essay; next?: Essay }
 const { lang, e, prev, next } = Astro.props;
 const s = t[lang];
+// Søketittel: korte titler får navnet med, lange står alene så de ikke kuttes midt i
+const pageTitle = e.title.length <= 34 ? `${e.title} – Kristian Høegh Mysen · Vardark` : e.title.length <= 58 ? `${e.title} · Vardark` : e.title;
 const nb = lang === 'nb';
 const commentKey = nb ? e.url : (e.alt ?? e.url); // norsk og engelsk deler kommentarer
 const { Content } = await render(e.entry);
@@ -31,7 +33,7 @@ const jsonld = {
   ...(e.alt && { [lang === 'nb' ? 'workTranslation' : 'translationOfWork']: { '@type': 'BlogPosting', url: new URL(e.alt, site).href, inLanguage: lang === 'nb' ? 'en' : 'nb-NO' } }),
 };
 ---
-<Layout lang={lang} title={`${e.title} · Vardark`} description={e.description} type="article" alt={e.alt} jsonld={jsonld} published={e.date} image={shareImg}>
+<Layout lang={lang} title={pageTitle} description={e.description} type="article" alt={e.alt} jsonld={jsonld} published={e.date} image={shareImg}>
   <article class="essay">
     <header class="essay__head wrap">
       <Varde id="essay" class="essay__varde" />

@@ -39,7 +39,7 @@ const jsonld = {
   },
 };
 ---
-<Layout lang={lang} title={nb ? 'Om Kristian Høegh Mysen · Vardark' : 'About Kristian Høegh Mysen · Vardark'} description={nb ? 'Kristian Høegh Mysen: sivilingeniør i datateknikk med tolv år i forsvarsteknologi, ledelse av strategiske prosjekter og styring. Skriver om KI, sikkerhet og geopolitikk.' : 'Kristian Høegh Mysen: MSc in computer science with twelve years in defence technology, leading strategic projects and governance. Writes on AI, security and geopolitics.'} alt={paths[other(lang)].about} jsonld={jsonld}>
+<Layout lang={lang} title={nb ? 'Om Kristian Høegh Mysen · Vardark' : 'About Kristian Høegh Mysen · Vardark'} description={nb ? 'Kristian Høegh Mysen er sivilingeniør med tolv år i forsvarsteknologi, strategiske prosjekter og styring. Skriver om KI, sikkerhet og geopolitikk.' : 'Kristian Høegh Mysen: MSc in computer science, twelve years in defence technology, strategic projects and governance. Writes on AI, security and geopolitics.'} alt={paths[other(lang)].about} jsonld={jsonld}>
   <div class="about wrap">
     <h1>{nb ? 'Om' : 'About'}</h1>
     <p class="lead">{nb
@@ -103,8 +103,8 @@ const jsonld = {
   .stand h2 { font: 0.875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #f5b36a; margin-bottom: 0.9rem; }
   .stand p { font: 420 clamp(1.3rem, 2.6vw, 1.7rem)/1.4 var(--serif); color: #f3e9da; max-width: 36rem; }
 
-  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1.25rem; margin: 2.5rem 0 1rem; padding: 2rem 0; border-block: 1px solid var(--line); }
-  .stats dt { font: clamp(2.4rem, 6vw, 3.4rem)/1 var(--display); color: transparent; background: linear-gradient(180deg, #ffd9a0, var(--ember) 60%, #a8581f); -webkit-background-clip: text; background-clip: text; }
+  .stats { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem 1.25rem; margin: 2.5rem 0 1rem; padding: 2rem 0; border-block: 1px solid var(--line); }
+  .stats dt { font: clamp(2rem, 6vw, 3.4rem)/1 var(--display); white-space: nowrap; color: transparent; background: linear-gradient(180deg, #ffd9a0, var(--ember) 60%, #a8581f); -webkit-background-clip: text; background-clip: text; }
   .stats dd { margin-top: 0.5rem; font: 0.9375rem/1.4 var(--mono); color: #c3cad6; }
 
   .block { margin-top: 3rem; }

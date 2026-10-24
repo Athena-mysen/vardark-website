@@ -47,3 +47,8 @@ src/
 
 ## Learnings
 Les `LEARNINGS.md`; oppdater etter hver økt.
+
+## Publisering fra LinkedIn (fra 2026-10-25)
+- Hvert nytt LinkedIn-innlegg Kristian publiserer, blir et innlegg her på norsk og engelsk. Athena eier rutinen (skill `vardark-blogg` i Athenas workspace).
+- `node scripts/publiser-innlegg.mjs <kvittering.json>` lager `src/content/essays/<id>.md`, `src/content/essays-en/<id>.md` og bilder i `public/innlegg/<id>/`. Kvitteringsformatet står øverst i skriptet. Samme LinkedIn-URL to ganger gjør ingenting.
+- Deretter `npm run build`, commit og push til `main` (deploy skjer automatisk). Ingen `linkedin-to-md.mjs` for nye innlegg; den var for engangsimporten.

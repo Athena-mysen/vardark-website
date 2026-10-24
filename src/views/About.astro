@@ -85,8 +85,9 @@ const jsonld = {
     </section>
 
     <section class="block">
-      <h2>{nb ? 'Kontakt' : 'Contact'}</h2>
-      <p><a href="https://www.linkedin.com/in/kristianmysen" rel="me">LinkedIn</a> · <a href={paths[lang].rss}>RSS</a></p>
+      <h2 id="kontakt">{nb ? 'Kontakt meg' : 'Contact me'}</h2>
+      <p>{nb ? 'Vil du diskutere noe jeg har skrevet, eller samarbeide? Skriv til meg, så svarer jeg.' : 'Want to discuss something I have written, or work together? Write to me and I will reply.'}</p>
+      <p class="contact"><a class="contact__btn" href="mailto:kontakt@vardark.no">{nb ? 'Kontakt meg' : 'Contact me'}</a><span>kontakt@vardark.no · <a href="https://www.linkedin.com/in/kristianmysen" rel="me">LinkedIn</a> · <a href={paths[lang].rss}>RSS</a></span></p>
     </section>
   </div>
 </Layout>
@@ -111,6 +112,9 @@ const jsonld = {
   .block p { font-size: 1.1875rem; line-height: 1.7; color: #e7e3db; }
   .block p + p { margin-top: 1em; }
 
+  .contact { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.25rem; font: 0.9375rem/1.4 var(--mono); color: #b3bccb; }
+  .about .contact__btn { padding: 0.75rem 1.3rem; font: 0.9375rem/1 var(--mono); color: #0a101c; background: var(--ember); border-radius: 3px; text-decoration: none; }
+  .about .contact__btn:hover { background: #f5b36a; }
   .block .disclaimer { margin-top: 1.25rem; font: italic 1rem/1.5 var(--serif); color: #aab3c2; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
   .chips li { padding: 0.5rem 0.85rem; border: 1px solid #2a3a58; border-radius: 999px; font: 0.9375rem/1.2 var(--mono); color: #d6dbe4; background: rgba(17, 26, 42, 0.6); }

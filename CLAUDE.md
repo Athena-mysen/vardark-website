@@ -52,3 +52,8 @@ Les `LEARNINGS.md`; oppdater etter hver økt.
 - Hvert nytt LinkedIn-innlegg Kristian publiserer, blir et innlegg her på norsk og engelsk. Athena eier rutinen (skill `vardark-blogg` i Athenas workspace).
 - `node scripts/publiser-innlegg.mjs <kvittering.json>` lager `src/content/essays/<id>.md`, `src/content/essays-en/<id>.md` og bilder i `public/innlegg/<id>/`. Kvitteringsformatet står øverst i skriptet. Samme LinkedIn-URL to ganger gjør ingenting.
 - Deretter `npm run build`, commit og push til `main` (deploy skjer automatisk). Ingen `linkedin-to-md.mjs` for nye innlegg; den var for engangsimporten.
+
+## Roboter og kommentarer (fra 2026-10-25)
+- Roboter og KI-agenter er velkomne (Kristian: «Vi ønsker dem inn!»). `public/robots.txt` hilser og ber pent om sitering; `/llms.txt` og `/llms-full.txt` (src/lib/llms.ts) er lesebrevet. Cloudflare: Bot Fight Mode og KI-blokkering er av, og Cloudflare styrer ikke robots.txt.
+- Kommentarer: `functions/api/kommentarer.ts` (Pages Function) + D1 `vardark-kommentarer` (binding `DB`). POST lagres som `pending`; bare `approved` vises. Nøkkelen er alltid den norske adressen (`/kommentar-nokler.json`), så nb og en deler kommentarer. Klienten er `public/scripts/kommentarer.js`. Athena modererer daglig (skill `vardark-blogg`, punkt 6).
+- Lokal test: kopier `dist` og `functions` til en tom mappe med en midlertidig `wrangler.toml` (D1-binding, compatibility_date ≤ wranglers støtte) og kjør `npx wrangler@4.112.0 pages dev`. Ikke commit `wrangler.toml`; bindingene ligger i Pages-prosjektet.

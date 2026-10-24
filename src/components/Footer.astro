@@ -7,7 +7,7 @@ const { lang } = Astro.props as { lang: Lang };
 <div class="orn wrap"><Urnes /></div>
 <footer class="foot wrap">
   <Cairn size={22} />
-  <p>© {new Date().getFullYear()} Kristian Høegh Mysen · <a href="mailto:kontakt@vardark.no">{lang === 'nb' ? 'Kontakt meg' : 'Contact me'}</a> · <a href={paths[lang].rss}>RSS</a> · <a href="/llms.txt">{lang === 'nb' ? 'For maskiner' : 'For machines'}</a></p>
+  <p>© {new Date().getFullYear()} Kristian Høegh Mysen · <a href="mailto:kontakt@vardark.no">{lang === 'nb' ? 'Kontakt meg' : 'Contact me'}</a> · <a href="https://www.linkedin.com/in/kristian-h%C3%B8egh-mysen-22ba49a/" rel="me">LinkedIn</a> · <a href={paths[lang].rss}>RSS</a> · <a href="/llms.txt">{lang === 'nb' ? 'For maskiner' : 'For machines'}</a></p>
 </footer>
 <style>
   .orn { color: var(--ember); opacity: 0.4; --urnes-bg: var(--bg); padding-top: 5rem; }

@@ -20,7 +20,7 @@ const jsonld = {
   ],
 };
 ---
-<Layout lang={lang} title={`Vardark · Kristian Høegh Mysen`} alt={paths[other(lang)].home} jsonld={jsonld} overlay>
+<Layout lang={lang} title={lang === 'nb' ? 'Vardark – Kristian Høegh Mysen om KI, sikkerhet og geopolitikk' : 'Vardark – Kristian Høegh Mysen on AI, security and geopolitics'} alt={paths[other(lang)].home} jsonld={jsonld} overlay>
   <section class="hero">
     <div class="hero__scene"><Vardescene /></div>
     <div class="hero__text">

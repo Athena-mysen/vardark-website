@@ -7,6 +7,13 @@ const excerpt = (body = '') => {
   return text.length > 200 ? cut.slice(0, cut.lastIndexOf(' ')) + ' …' : text;
 };
 
+const meta = (body = '') => {
+  const x = excerpt(body).replace(/ …$/, '');
+  if (x.length <= 155) return x;
+  const cut = x.slice(0, 152);
+  return cut.slice(0, cut.lastIndexOf(' ')) + ' …';
+};
+
 // Essays på ett språk, nyest først, med adressen til samme essay på det andre språket.
 export async function essays(lang: Lang) {
   const nb = await getCollection('essays');
@@ -21,6 +28,7 @@ export async function essays(lang: Lang) {
       return {
         entry: e, id: e.id, title: e.data.title, date: e.data.date, linkedin: e.data.linkedin, images: e.data.images ?? [], link: e.data.link,
         excerpt: e.data.summary ?? excerpt(e.body),
+        description: e.data.summary ?? meta(e.body),
         url: paths[lang].essay(e.id),
         alt: lang === 'nb' ? (enEntry ? paths.en.essay(enEntry.id) : undefined) : paths.nb.essay(nbId),
       };

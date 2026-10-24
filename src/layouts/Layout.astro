@@ -17,8 +17,9 @@ interface Props {
   overlay?: boolean; // menyen ligger oppå et forsidebilde
   published?: Date;
   image?: string; // eget delingsbilde, ellers landskapet
+  noindex?: boolean;
 }
-const { lang, title = 'Vardark · Kristian Høegh Mysen', description = t[lang].description, type = 'website', alt, jsonld, overlay = false, published, image } = Astro.props;
+const { lang, title = 'Vardark · Kristian Høegh Mysen', description = t[lang].description, type = 'website', alt, jsonld, overlay = false, published, image, noindex = false } = Astro.props;
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
 const altHref = alt ? new URL(alt, site).href : undefined;
@@ -36,6 +37,7 @@ const og = new URL(image ?? '/og.jpg', site).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Kristian Høegh Mysen" />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     {nbHref && <link rel="alternate" hreflang="nb" href={nbHref} />}
     {enHref && <link rel="alternate" hreflang="en" href={enHref} />}

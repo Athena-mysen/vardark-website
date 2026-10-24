@@ -6,7 +6,7 @@ import { paths, other, type Lang } from '../i18n';
 const { lang } = Astro.props as { lang: Lang };
 const nb = lang === 'nb';
 ---
-<Layout lang={lang} title="Lab · Vardark" description={nb ? 'Prototyper og eksperimenter av Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitikk og Athena.' : 'Prototypes and experiments by Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitics and Athena.'} alt={paths[other(lang)].lab}>
+<Layout lang={lang} title={nb ? 'Lab · Vardark' : 'The lab · Vardark'} description={nb ? 'Prototyper og eksperimenter av Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitikk og Athena.' : 'Prototypes and experiments by Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitics and Athena.'} alt={paths[other(lang)].lab}>
   <div class="wrap">
     <h1>Lab</h1>
     <ul class="beacons">

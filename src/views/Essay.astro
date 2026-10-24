@@ -18,7 +18,7 @@ const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: e.title,
-  description: e.excerpt,
+  description: e.description,
   datePublished: iso(e.date),
   inLanguage: lang === 'nb' ? 'nb-NO' : 'en',
   url,
@@ -29,7 +29,7 @@ const jsonld = {
   ...(e.alt && { [lang === 'nb' ? 'workTranslation' : 'translationOfWork']: { '@type': 'BlogPosting', url: new URL(e.alt, site).href, inLanguage: lang === 'nb' ? 'en' : 'nb-NO' } }),
 };
 ---
-<Layout lang={lang} title={`${e.title} · Vardark`} description={e.excerpt} type="article" alt={e.alt} jsonld={jsonld} published={e.date} image={shareImg}>
+<Layout lang={lang} title={`${e.title} · Vardark`} description={e.description} type="article" alt={e.alt} jsonld={jsonld} published={e.date} image={shareImg}>
   <article class="essay">
     <header class="essay__head wrap">
       <Varde id="essay" class="essay__varde" />

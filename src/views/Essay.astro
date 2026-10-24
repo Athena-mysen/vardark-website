@@ -47,24 +47,25 @@ const jsonld = {
 </Layout>
 
 <style>
-  .essay__head, .prose, .essay__foot { max-width: 50rem; margin-inline: auto; }
+  .essay__head, .prose, .essay__foot { max-width: 48rem; margin-inline: auto; }
+  .prose > :global(*) { max-width: 37rem; }
   .essay__head { position: relative; padding-top: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
   .essay__head :global(.essay__varde) { display: none; }
-  @media (min-width: 1024px) { .essay__head { padding-right: 12rem; } .essay__head :global(.essay__varde) { display: block; position: absolute; right: 2.5rem; bottom: -1px; height: 11rem; width: auto; } }
-  .essay__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.8125rem/1 var(--mono); color: var(--ember); }
-  .essay h1 { margin-top: 1.25rem; font: 400 clamp(2.4rem, 6vw, 4.5rem)/1.02 var(--serif); letter-spacing: -0.025em; text-wrap: balance; }
+  @media (min-width: 1024px) { .essay__head { padding-right: 9rem; } .essay__head :global(.essay__varde) { display: block; position: absolute; right: 2.5rem; bottom: -1px; height: 11rem; width: auto; } }
+  .essay__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.9375rem/1 var(--mono); color: #f5b36a; }
+  .essay h1 { margin-top: 1.25rem; font: 450 clamp(2.3rem, 5vw, 3.75rem)/1.05 var(--serif); letter-spacing: -0.025em; text-wrap: balance; }
 
-  .prose { padding-top: 2.5rem; font-size: 1.25rem; line-height: 1.7; color: #d9d6cf; }
+  .prose { padding-top: 2.5rem; font-size: 1.25rem; line-height: 1.7; color: #e7e3db; font-weight: 420; }
   .prose :global(> * + *) { margin-top: 1.1em; }
   .prose :global(a) { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; word-break: break-word; }
   .prose :global(ul), .prose :global(ol) { padding-left: 1.25rem; list-style: disc; }
   .prose :global(blockquote) { border-left: 2px solid var(--ember); padding-left: 1rem; color: var(--muted); }
 
-  .essay__foot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: grid; gap: 1.5rem; font: 0.8125rem/1.5 var(--mono); color: var(--muted); }
+  .essay__foot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: grid; gap: 1.5rem; font: 0.9375rem/1.5 var(--mono); color: var(--muted); }
   .essay__foot a { color: var(--text); text-decoration-color: var(--ember); }
   .pn { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .pn__a { display: grid; gap: 0.4rem; text-decoration: none; font: 400 1.125rem/1.3 var(--serif); color: var(--text); }
-  .pn__a span { font: 0.75rem/1 var(--mono); color: var(--ember); }
+  .pn__a span { font: 0.875rem/1 var(--mono); color: #f5b36a; }
   .pn__a--next { text-align: right; }
   .pn__a:hover { color: #ffe2b8; }
 </style>

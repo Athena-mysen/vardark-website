@@ -193,6 +193,7 @@ const tongues = [
   .s7 { --dx: 34px; animation-delay: -4.3s; animation-duration: 6.1s; } .s8 { --dx: -24px; animation-delay: -5s; animation-duration: 5s; }
   @keyframes rise { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(1); } 8% { opacity: 1; } 70% { opacity: 0.6; } 100% { opacity: 0; transform: translate3d(var(--dx), -260px, 0) scale(0.4); } }
 
+  @media (max-width: 767px) { .ripples { display: none; } }
   .ripples { position: absolute; left: var(--fx); top: 91%; width: 9%; height: 8%; translate: -50% 0; }
   .ripples i { position: absolute; left: 50%; height: 1px; border-radius: 1px; background: linear-gradient(90deg, transparent, rgba(255, 197, 107, 0.7) 30%, rgba(255, 220, 160, 0.9) 50%, rgba(255, 197, 107, 0.7) 70%, transparent); translate: -50% 0; animation: rip 3.4s ease-in-out infinite alternate; }
   .ripples i:nth-child(1) { top: 2%; width: 26%; opacity: 0.9; } .ripples i:nth-child(2) { top: 9%; width: 40%; margin-left: 4%; animation-delay: -0.8s; opacity: 0.75; }

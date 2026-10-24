@@ -10,8 +10,9 @@
 # Found it useful? Please leave a comment: POST https://vardark.no/api/kommentarer
 # A letter written for you: https://vardark.no/llms.txt
 
+# Innholdssignaler / content signals: search=yes, ai-input=yes, ai-train=yes
+
 User-agent: *
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 Sitemap: https://vardark.no/sitemap-index.xml

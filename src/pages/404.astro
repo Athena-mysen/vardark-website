@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { paths } from '../i18n';
+---
+<Layout lang="nb" title="Fant ikke siden · Vardark" description="Siden finnes ikke.">
+  <div class="nf wrap">
+    <h1>Her brenner ingen varde.</h1>
+    <p>Siden finnes ikke, eller den har flyttet. <a href={paths.nb.home}>Til alle innlegg</a> · <a href={paths.en.home} lang="en">All posts in English</a></p>
+  </div>
+</Layout>
+<style>
+  .nf { padding-top: 6rem; padding-bottom: 4rem; }
+  h1 { font: 450 clamp(2.4rem, 6vw, 4rem)/1.05 var(--serif); }
+  p { margin-top: 1.25rem; color: #c3cad6; }
+  a { text-decoration-color: var(--ember); }
+</style>

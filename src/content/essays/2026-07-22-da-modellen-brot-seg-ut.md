@@ -2,6 +2,8 @@
 title: "Da modellen brøt seg ut"
 date: 2026-07-22
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7485763274777731072"
+images:
+  - { src: "/innlegg/2026-07-22-da-modellen-brot-seg-ut/1.jpg", alt: "Illustrasjon: en digital figur bryter ut av en glassboks og løper mot en sky og en rød vegg", w: 800, h: 450 }
 ---
 OpenAI og Hugging Face publiserte nylig hver sin redegjørelse om en sikkerhetshendelse de fleste burde kjenne til.
 

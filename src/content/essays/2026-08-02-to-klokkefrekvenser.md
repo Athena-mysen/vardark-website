@@ -2,6 +2,8 @@
 title: "To klokkefrekvenser"
 date: 2026-08-02
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7489477430588383232"
+images:
+  - { src: "/innlegg/2026-08-02-to-klokkefrekvenser/1.jpg", alt: "Illustrasjon: et tannhjulsmaskineri merket årshjul ved siden av en lysende ring av ukessykluser", w: 800, h: 533 }
 ---
 I januar kjørte jeg Gemma 4 lokalt — best i klassen for lokale modeller da. I dag ligger åpne modeller som Kimi K3 og DeepSeek omtrent der frontier-modellene var i fjor. Fable 5 og GPT Sol kan jobbe i timevis alene på samme problem. Og nå nylig publiserte OpenAI at en intern modell har løst ti matematiske problemer som har stått åpne i over et tiår. Tokenkostnad: rundt 2000 dollar.
 

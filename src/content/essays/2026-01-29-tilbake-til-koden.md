@@ -3,6 +3,11 @@ title: "Tilbake til koden"
 date: 2026-01-29
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7422568976779472896"
 titleBy: claude
+link:
+  url: "https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/"
+  title: "The Five Levels: from Spicy Autocomplete to the Dark Factory"
+  site: "danshapiro.com"
+  image: { src: "/innlegg/2026-01-29-tilbake-til-koden/lenke.jpg", alt: "Illustrasjon av fem nivåer av KI-assistert programvareutvikling", w: 768, h: 429 }
 ---
 For rundt 8 år siden sluttet jeg mer eller mindre å kode selv. Jeg gikk over i andre stillinger med mer ledelse, strategi og arkitektur, og lot andre stå for det daglige utviklingsarbeidet. Det var både nødvendig og riktig der og da.
 
@@ -11,8 +16,6 @@ De siste månedene har jeg likevel begynt å kode igjen – denne gangen tett sa
 Hva betyr det egentlig å “kode” når AI både foreslår, skriver, tester og etter hvert tar ansvar for stadig større deler av jobben? Når går man fra å være utvikler til å bli mer en orkestrator eller produkteier? Og hvor lenge er det jeg kan, fortsatt verdifullt? 
 
 Jeg leste nylig et veldig godt innlegg av Dan Shapiro (CEO i Glowforge) som traff dette ganske presist:
-
-https://lnkd.in/eATe9bKi
 
 Han beskriver fem nivåer for hvordan AI tas i bruk i softwareutvikling – fra ren “spicy autocomplete” til det han kaller en helautomatisert “software factory”. For meg fungerte det som et godt rammeverk for å forstå mine egne tanker og progresjon.
 

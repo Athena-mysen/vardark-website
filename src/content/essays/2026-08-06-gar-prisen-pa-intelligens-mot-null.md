@@ -2,6 +2,8 @@
 title: "Går prisen på intelligens mot null?"
 date: 2026-08-06
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7491084710362779650"
+images:
+  - { src: "/innlegg/2026-08-06-gar-prisen-pa-intelligens-mot-null/1.jpg", alt: "Illustrasjon: veien deler seg i rutineintelligens som går mot null og frontier-intelligens som holder prisen", w: 800, h: 450 }
 ---
 Det kommer stadig nye åpne modeller som er mer og mer kapable. DeepSeek V4 satte nettopp rekord for åpne vekter på SWE-bench — den ligger omtrent der frontier-modellene var i fjor. Og prisene faller fort: OpenAI kuttet Luna med 80 prosent tre uker etter lansering. Ifølge dem selv får du nå fjorårets frontier-nivå til rundt 6 cent på dollaren per oppgave. Åpne modeller kan du kjøre selv på egen (kraftig) maskinvare og er foreløpig gratis å laste ned og bruke. 
 

@@ -16,14 +16,15 @@ interface Props {
   jsonld?: object;
   overlay?: boolean; // menyen ligger oppå et forsidebilde
   published?: Date;
+  image?: string; // eget delingsbilde, ellers landskapet
 }
-const { lang, title = 'Vardark · Kristian Høegh Mysen', description = t[lang].description, type = 'website', alt, jsonld, overlay = false, published } = Astro.props;
+const { lang, title = 'Vardark · Kristian Høegh Mysen', description = t[lang].description, type = 'website', alt, jsonld, overlay = false, published, image } = Astro.props;
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
 const altHref = alt ? new URL(alt, site).href : undefined;
 const nbHref = lang === 'nb' ? canonical : altHref;
 const enHref = lang === 'en' ? canonical : altHref;
-const og = new URL('/og.jpg', site).href;
+const og = new URL(image ?? '/og.jpg', site).href;
 ---
 <!doctype html>
 <html lang={lang === 'nb' ? 'nb' : 'en'}>
@@ -45,8 +46,8 @@ const og = new URL('/og.jpg', site).href;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={og} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {!image && <meta property="og:image:width" content="1200" />}
+    {!image && <meta property="og:image:height" content="630" />}
     <meta property="og:locale" content={t[lang].og} />
     {alt && <meta property="og:locale:alternate" content={t[other(lang)].og} />}
     <meta property="og:site_name" content="Vardark" />

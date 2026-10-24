@@ -19,7 +19,7 @@ export async function essays(lang: Lang) {
       const nbId = 'nb' in e.data ? e.data.nb : e.id;
       const enEntry = enByNb.get(nbId);
       return {
-        entry: e, id: e.id, title: e.data.title, date: e.data.date, linkedin: e.data.linkedin,
+        entry: e, id: e.id, title: e.data.title, date: e.data.date, linkedin: e.data.linkedin, images: e.data.images ?? [], link: e.data.link,
         excerpt: e.data.summary ?? excerpt(e.body),
         url: paths[lang].essay(e.id),
         alt: lang === 'nb' ? (enEntry ? paths.en.essay(enEntry.id) : undefined) : paths.nb.essay(nbId),

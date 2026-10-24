@@ -3,6 +3,8 @@ title: "Two clock speeds"
 date: 2026-08-02
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7489477430588383232"
 nb: "2026-08-02-to-klokkefrekvenser"
+images:
+  - { src: "/innlegg/2026-08-02-to-klokkefrekvenser/1.jpg", alt: "Illustration: clockwork labelled annual cycle beside a glowing ring of weekly cycles", w: 800, h: 533 }
 ---
 In January I was running Gemma 4 locally, best in class for local models at the time. Today open models such as Kimi K3 and DeepSeek sit roughly where the frontier models were last year. Fable 5 and GPT Sol can work for hours on their own on the same problem. And just recently OpenAI published that an internal model has solved ten mathematical problems that had stood open for more than a decade. Token cost: around 2,000 dollars.
 

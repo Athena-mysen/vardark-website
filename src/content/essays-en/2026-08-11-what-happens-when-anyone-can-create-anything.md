@@ -3,6 +3,8 @@ title: "What happens when anyone can create anything?"
 date: 2026-08-11
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7493055683425202176"
 nb: "2026-08-11-hva-skjer-nar-man-kan-skape-alt"
+images:
+  - { src: "/innlegg/2026-08-11-hva-skjer-nar-man-kan-skape-alt/1.jpg", alt: "Illustration: a wall of endless generated content beside a small room where people share an experience", w: 800, h: 533 }
 ---
 A little over three years ago, AI video looked like a moving Escher painting. Today an ordinary gaming PC can make video clips of anything under the sun: 2K, with sound, generated locally on a graphics card costing under a thousand dollars. Text is already more or less solved. Video and audio are nearly there. The direction is clear: we are heading toward a world where anyone can create anything.
 

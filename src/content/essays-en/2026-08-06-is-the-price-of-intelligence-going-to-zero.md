@@ -3,6 +3,8 @@ title: "Is the price of intelligence going to zero?"
 date: 2026-08-06
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7491084710362779650"
 nb: "2026-08-06-gar-prisen-pa-intelligens-mot-null"
+images:
+  - { src: "/innlegg/2026-08-06-gar-prisen-pa-intelligens-mot-null/1.jpg", alt: "Illustration: the road splits into routine intelligence heading to zero and frontier intelligence that holds its price", w: 800, h: 450 }
 ---
 New open models keep arriving, each more capable than the last. DeepSeek V4 just set a record for open weights on SWE-bench; it sits roughly where the frontier models were last year. And prices are falling fast: OpenAI cut Luna by 80 percent three weeks after launch. By their own account you now get last year's frontier level for around 6 cents on the dollar per task. Open models you can run yourself on your own (powerful) hardware, and for now they are free to download and use.
 

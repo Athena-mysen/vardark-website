@@ -3,6 +3,11 @@ title: "Back to the code"
 date: 2026-01-29
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7422568976779472896"
 nb: "2026-01-29-tilbake-til-koden"
+link:
+  url: "https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/"
+  title: "The Five Levels: from Spicy Autocomplete to the Dark Factory"
+  site: "danshapiro.com"
+  image: { src: "/innlegg/2026-01-29-tilbake-til-koden/lenke.jpg", alt: "Illustration of the five levels of AI-assisted software development", w: 768, h: 429 }
 ---
 About eight years ago I more or less stopped writing code myself. I moved into roles with more leadership, strategy and architecture, and left the day-to-day development to others. That was both necessary and right at the time.
 
@@ -11,8 +16,6 @@ Over the past few months, though, I have started coding again, this time working
 What does it actually mean to "code" when AI suggests, writes, tests and gradually takes responsibility for ever larger parts of the job? When do you go from being a developer to being more of an orchestrator or product owner? And for how long will what I know still be valuable?
 
 I recently read a very good post by Dan Shapiro (CEO of Glowforge) that captured this quite precisely:
-
-https://lnkd.in/eATe9bKi
 
 He describes five levels of how AI is adopted in software development, from plain "spicy autocomplete" to what he calls a fully automated "software factory". For me it worked as a good framework for understanding my own thoughts and progress.
 

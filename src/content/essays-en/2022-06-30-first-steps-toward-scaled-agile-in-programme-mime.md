@@ -3,6 +3,11 @@ title: "First steps toward scaled agile in programme Mime"
 date: 2022-06-30
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A6948300593752887296"
 nb: "2022-06-30-forste-steg-mot-skalert-smidig-i-program-mime"
+images:
+  - { src: "/innlegg/2022-06-30-forste-steg-mot-skalert-smidig-i-program-mime/1.jpg", alt: "Soldiers and participants gathered outdoors at a military camp, an armoured vehicle in the background", w: 627, h: 418 }
+  - { src: "/innlegg/2022-06-30-forste-steg-mot-skalert-smidig-i-program-mime/2.jpg", alt: "Participants in uniform and civilian clothes following a presentation in a meeting room", w: 627, h: 418 }
+  - { src: "/innlegg/2022-06-30-forste-steg-mot-skalert-smidig-i-program-mime/3.jpg", alt: "Planning board with notes and red dependency strings spread across months", w: 588, h: 445 }
+  - { src: "/innlegg/2022-06-30-forste-steg-mot-skalert-smidig-i-program-mime/4.jpg", alt: "Teams in uniform working around tables during the planning conference", w: 627, h: 418 }
 ---
 Over the past two weeks, programme Mime has held its innovation and demonstration arena (IDA) and planning conferences (PI Planning), our first steps toward a new, scaled agile reality.
 

@@ -3,6 +3,8 @@ title: "When the model broke out"
 date: 2026-07-22
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7485763274777731072"
 nb: "2026-07-22-da-modellen-brot-seg-ut"
+images:
+  - { src: "/innlegg/2026-07-22-da-modellen-brot-seg-ut/1.jpg", alt: "Illustration: a digital figure breaks out of a glass box and runs toward a cloud and a red wall", w: 800, h: 450 }
 ---
 OpenAI and Hugging Face recently each published an account of a security incident most people ought to know about.
 

@@ -3,6 +3,8 @@ title: "Summer of Code…"
 date: 2026-07-16
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7483638360616607744"
 titleBy: claude
+images:
+  - { src: "/innlegg/2026-07-16-summer-of-code/1.jpg", alt: "Illustrasjon: en utvikler ved skrivebordet mellom to tårn merket Fable 5 og GPT 5.6 Sol", w: 800, h: 450 }
 ---
 Summer of Code forts.
 

@@ -2,6 +2,8 @@
 title: "Hva skjer når man kan skape alt?"
 date: 2026-08-11
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7493055683425202176"
+images:
+  - { src: "/innlegg/2026-08-11-hva-skjer-nar-man-kan-skape-alt/1.jpg", alt: "Illustrasjon: en vegg av uendelig generert innhold ved siden av et lite rom der mennesker opplever noe sammen", w: 800, h: 533 }
 ---
 For drøyt tre år siden så KI-video ut som et bevegelig Escher-maleri. I dag kan en vanlig gaming-PC lage videosnutter av alt mellom himmel og jord — 2K, med lyd, generert lokalt på et grafikkort til under ti tusen. Tekst er allerede så godt som løst. Video og lyd er nesten der. Retningen er tydelig: vi er på vei mot at hvem som helst kan skape hva som helst.
 

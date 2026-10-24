@@ -3,6 +3,11 @@ title: "Palantir's message"
 date: 2026-04-20
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3AugcPost%3A7451981423562874880"
 nb: "2026-04-20-palantirs-budskap"
+link:
+  url: "https://www.linkedin.com/pulse/technological-republic-brief-palantir-technologies-ktdde"
+  title: "The Technological Republic, in brief."
+  site: "Palantir Technologies on LinkedIn"
+  image: { src: "/innlegg/2026-04-20-palantirs-budskap/lenke.jpg", alt: "Cover of The Technological Republic by Alexander C. Karp and Nicholas W. Zamiska", w: 969, h: 545 }
 ---
 This post from Palantir is already widely discussed on social media and will become even better known when it reaches the larger media outlets. There is nothing new here as such; CEO Alex Karp wrote this in his book a while ago, but it is strong stuff for a company of this size to put the 22 points directly on its public channels.
 

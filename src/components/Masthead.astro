@@ -6,7 +6,7 @@ const { lang, alt, overlay = false } = Astro.props;
 const p = paths[lang];
 const path = Astro.url.pathname;
 const links = [
-  { href: p.home, label: t[lang].nav.essays, on: path === p.home || path.includes('/essays/') },
+  { href: p.home, label: t[lang].nav.essays, on: path === p.home || path.includes('/innlegg/') || path.includes('/posts/') },
   { href: p.lab, label: t[lang].nav.lab, on: path === p.lab },
   { href: p.about, label: t[lang].nav.about, on: path === p.about },
 ];

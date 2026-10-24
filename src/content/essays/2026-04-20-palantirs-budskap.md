@@ -3,6 +3,11 @@ title: "Palantirs budskap"
 date: 2026-04-20
 linkedin: "https://www.linkedin.com/feed/update/urn%3Ali%3AugcPost%3A7451981423562874880"
 titleBy: claude
+link:
+  url: "https://www.linkedin.com/pulse/technological-republic-brief-palantir-technologies-ktdde"
+  title: "The Technological Republic, in brief."
+  site: "Palantir Technologies på LinkedIn"
+  image: { src: "/innlegg/2026-04-20-palantirs-budskap/lenke.jpg", alt: "Omslaget til boka The Technological Republic av Alexander C. Karp og Nicholas W. Zamiska", w: 969, h: 545 }
 ---
 Denne posten fra Palantir er mye omtalt i SOME allerede og kommer til å blir enda mer kjent når den treffer større mediakanaler. Det er ikke noe nytt her forsåvidt; CEO Alex Karp skrev dette i boka si for en stund siden, men det er hard kost for et såpass stort selskap å legge direkte ut i sine offentlige kanaler hva som står i de 22. punktene. 
 

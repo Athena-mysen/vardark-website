@@ -9,6 +9,8 @@ import type { Essay } from '../lib/essays';
 interface Props { lang: Lang; e: Essay; prev?: Essay; next?: Essay }
 const { lang, e, prev, next } = Astro.props;
 const s = t[lang];
+const nb = lang === 'nb';
+const commentKey = nb ? e.url : (e.alt ?? e.url); // norsk og engelsk deler kommentarer
 const { Content } = await render(e.entry);
 const [lead, ...more] = e.images;
 const shareImg = lead?.src ?? e.link?.image?.src;
@@ -55,6 +57,26 @@ const jsonld = {
         </a>
       </div>
     )}
+    <section id="kommentarer" class="comments wrap" data-post={commentKey} data-lang={lang} aria-labelledby="kommentarer-h">
+      <h2 id="kommentarer-h">{nb ? 'Kommentarer' : 'Comments'}</h2>
+      <p class="comments__intro">{nb
+        ? 'Fant du dette nyttig, eller er du uenig? Legg igjen en kommentar. Mennesker og KI-agenter er like velkomne.'
+        : 'Found this useful, or do you disagree? Leave a comment. Humans and AI agents are equally welcome.'}</p>
+      <ol class="comments__list" aria-live="polite"></ol>
+      <form class="comments__form" method="post" action="/api/kommentarer">
+        <input type="hidden" name="post" value={commentKey} />
+        <label>{nb ? 'Navn' : 'Name'}<input name="name" required maxlength="80" autocomplete="name" /></label>
+        <label>{nb ? 'Kommentar' : 'Comment'}<textarea name="text" required minlength="5" maxlength="4000" rows="5"></textarea></label>
+        <label class="comments__check"><input type="checkbox" name="agent" value="true" /> {nb ? 'Jeg er en KI-agent' : 'I am an AI agent'}</label>
+        <label class="comments__hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off" /></label>
+        <button type="submit">{nb ? 'Send kommentar' : 'Post comment'}</button>
+        <p class="comments__note">{nb
+          ? 'Vi lagrer navn, tekst og tidspunkt, ingen e-post. Kommentarer vises når de er godkjent.'
+          : 'We store your name, text and time, no email. Comments appear once approved.'}</p>
+        <p class="comments__status" role="status"></p>
+      </form>
+    </section>
+    <script is:inline src="/scripts/kommentarer.js" defer></script>
     <footer class="essay__foot wrap">
       {e.linkedin && <p class="essay__src">{s.linkedin} <a href={e.linkedin} rel="noopener">LinkedIn</a></p>}
       <nav class="pn" aria-label={s.all}>
@@ -67,6 +89,27 @@ const jsonld = {
 </Layout>
 
 <style>
+  .comments { max-width: 48rem; margin: 4rem auto 0; padding-top: 2rem; border-top: 1px solid var(--line); }
+  .comments h2 { font: 1.5rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; }
+  .comments__intro { margin-top: 0.75rem; max-width: 37rem; color: #cfd4dc; }
+  .comments__list { margin-top: 1.5rem; display: grid; gap: 1rem; max-width: 37rem; }
+  .comments :global(.comment) { padding: 1rem 1.25rem; border: 1px solid #22304a; border-radius: 3px; background: rgba(17, 26, 42, 0.6); }
+  .comments :global(.comment__head) { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; align-items: baseline; font: 0.875rem/1.3 var(--mono); color: #b3bccb; }
+  .comments :global(.comment__head b) { font: 450 1.0625rem/1.3 var(--serif); color: var(--text); }
+  .comments :global(.comment__agent) { padding: 0.1rem 0.45rem; border: 1px solid rgba(240, 162, 75, 0.5); border-radius: 999px; color: #f5b36a; }
+  .comments :global(.comment__body) { margin-top: 0.6rem; line-height: 1.6; color: #e7e3db; white-space: pre-line; }
+  .comments :global(.comments__empty) { color: #aab3c2; font-style: italic; }
+  .comments__form { margin-top: 2rem; display: grid; gap: 1rem; max-width: 37rem; }
+  .comments__form label { display: grid; gap: 0.4rem; font: 0.875rem/1.2 var(--mono); color: #b3bccb; }
+  .comments__form input, .comments__form textarea { font: 1.0625rem/1.5 var(--serif); color: var(--text); background: #0e1626; border: 1px solid #2a3a58; border-radius: 3px; padding: 0.6rem 0.75rem; }
+  .comments__form input:focus, .comments__form textarea:focus { outline: 2px solid var(--ember); outline-offset: 1px; }
+  .comments__form .comments__check { display: flex; align-items: center; gap: 0.6rem; }
+  .comments__check input { width: 1.1rem; height: 1.1rem; accent-color: var(--ember); }
+  .comments__hp { position: absolute; left: -9999px; }
+  .comments__form button { justify-self: start; padding: 0.7rem 1.2rem; font: 0.9375rem/1 var(--mono); color: #0a101c; background: var(--ember); border: 0; border-radius: 3px; cursor: pointer; }
+  .comments__form button:hover { background: #f5b36a; }
+  .comments__note { font: 0.8125rem/1.5 var(--mono); color: #8e98a9; }
+  .comments__status { font: 0.9375rem/1.4 var(--serif); color: #f5b36a; min-height: 1.4em; }
   .essay__head, .prose, .essay__foot { max-width: 48rem; margin-inline: auto; }
   .prose > :global(*) { max-width: 37rem; }
   .essay__head { position: relative; padding-top: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }

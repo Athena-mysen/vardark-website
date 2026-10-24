@@ -1,0 +1,10 @@
+---
+import EssayView from '../../../views/Essay.astro';
+import { essays } from '../../../lib/essays';
+
+export async function getStaticPaths() {
+  const list = await essays('en');
+  return list.map((e, i) => ({ params: { id: e.id }, props: { e, next: list[i - 1], prev: list[i + 1] } }));
+}
+---
+<EssayView lang="en" {...Astro.props} />

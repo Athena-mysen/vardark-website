@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Cairn from '../components/Cairn.astro';
+import { projects } from '../data/lab';
+import { paths, other, type Lang } from '../i18n';
+const { lang } = Astro.props as { lang: Lang };
+const nb = lang === 'nb';
+---
+<Layout lang={lang} title={nb ? 'Lab · Vardark' : 'The lab · Vardark'} description={nb ? 'Prototyper og eksperimenter av Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitikk og Athena.' : 'Prototypes and experiments by Kristian Høegh Mysen: Singularity Tracker, Council, Geopolitics and Athena.'} alt={paths[other(lang)].lab}>
+  <div class="wrap">
+    <h1>Lab</h1>
+    <ul class="beacons">
+      {projects.map((p) => (
+        <li class:list={['beacon', { 'is-lit': p.live }]}>
+          <span class="beacon__cairn" aria-hidden="true"><Cairn size={26} /></span>
+          {p.href ? <a href={p.href} class="beacon__name">{p.name}</a> : <span class="beacon__name beacon__name--plain">{p.name}</span>}
+          <span class="beacon__status">{p[lang].status}</span>
+          <p class="beacon__what">{p[lang].what}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .wrap { padding-top: 3rem; }
+  h1 { font: clamp(2.5rem, 7vw, 4.5rem)/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2.5rem; }
+  .beacons { border-top: 1px solid var(--line); }
+  .beacon { --ember: #3b4a66; display: grid; grid-template-columns: 2rem 1fr auto; gap: 0.4rem 0.9rem; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .beacon.is-lit { --ember: #f0a24b; }
+  .beacon__cairn { color: #2c3850; }
+  .is-lit .beacon__cairn { color: #8793aa; filter: drop-shadow(0 -3px 8px rgba(240, 162, 75, 0.7)); }
+  .beacon__name { font: 400 1.75rem/1.2 var(--serif); text-decoration: underline; text-decoration-color: #f0a24b; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  .beacon__name--plain { text-decoration: none; }
+  .beacon__status { font: 0.875rem/1 var(--mono); color: #b3bccb; }
+  .beacon__what { grid-column: 2 / -1; color: #c3cad6; max-width: 38rem; line-height: 1.55; }
+</style>

@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Cairn from '../components/Cairn.astro';
+import Varde from '../components/Varde.astro';
+import { render } from 'astro:content';
+import { t, paths, fmtDate, iso, type Lang } from '../i18n';
+import type { Essay } from '../lib/essays';
+
+interface Props { lang: Lang; e: Essay; prev?: Essay; next?: Essay }
+const { lang, e, prev, next } = Astro.props;
+const s = t[lang];
+const { Content } = await render(e.entry);
+const [lead, ...more] = e.images;
+const shareImg = lead?.src ?? e.link?.image?.src;
+const site = Astro.site!.href;
+const url = new URL(e.url, site).href;
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: e.title,
+  description: e.description,
+  datePublished: iso(e.date),
+  inLanguage: lang === 'nb' ? 'nb-NO' : 'en',
+  url,
+  mainEntityOfPage: url,
+  image: new URL(shareImg ?? '/og.jpg', site).href,
+  author: { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', url: site },
+  isPartOf: { '@type': 'Blog', name: 'Vardark', url: new URL(paths[lang].home, site).href },
+  ...(e.alt && { [lang === 'nb' ? 'workTranslation' : 'translationOfWork']: { '@type': 'BlogPosting', url: new URL(e.alt, site).href, inLanguage: lang === 'nb' ? 'en' : 'nb-NO' } }),
+};
+---
+<Layout lang={lang} title={`${e.title} · Vardark`} description={e.description} type="article" alt={e.alt} jsonld={jsonld} published={e.date} image={shareImg}>
+  <article class="essay">
+    <header class="essay__head wrap">
+      <Varde id="essay" class="essay__varde" />
+      <p class="essay__meta"><Cairn size={16} /><time datetime={iso(e.date)}>{fmtDate(e.date, lang, { day: 'numeric', month: 'long', year: 'numeric' })}</time></p>
+      <h1>{e.title}</h1>
+    </header>
+    {lead && (
+      <figure class="lead wrap">
+        <img src={lead.src} alt={lead.alt} width={lead.w} height={lead.h} decoding="async" />
+      </figure>
+    )}
+    <div class="prose wrap"><Content /></div>
+    {more.length > 0 && (
+      <div class:list={['gallery wrap', { 'gallery--odd': more.length % 2 }]}>
+        {more.map((im) => <img src={im.src} alt={im.alt} width={im.w} height={im.h} loading="lazy" decoding="async" />)}
+      </div>
+    )}
+    {e.link && (
+      <div class="wrap card-wrap">
+        <a class="card" href={e.link.url} rel="noopener">
+          {e.link.image && <img src={e.link.image.src} alt={e.link.image.alt} width={e.link.image.w} height={e.link.image.h} loading="lazy" decoding="async" />}
+          <span class="card__text"><span class="card__site">{e.link.site}</span><span class="card__title">{e.link.title}</span></span>
+        </a>
+      </div>
+    )}
+    <footer class="essay__foot wrap">
+      {e.linkedin && <p class="essay__src">{s.linkedin} <a href={e.linkedin} rel="noopener">LinkedIn</a></p>}
+      <nav class="pn" aria-label={s.all}>
+        {prev ? <a href={prev.url} class="pn__a" rel="prev"><span>← {s.prev}</span>{prev.title}</a> : <span />}
+        {next ? <a href={next.url} class="pn__a pn__a--next" rel="next"><span>{s.next} →</span>{next.title}</a> : <span />}
+      </nav>
+      <p><a href={paths[lang].home} class="essay__all">{s.all}</a></p>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .essay__head, .prose, .essay__foot { max-width: 48rem; margin-inline: auto; }
+  .prose > :global(*) { max-width: 37rem; }
+  .essay__head { position: relative; padding-top: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+  .essay__head :global(.essay__varde) { display: none; }
+  @media (min-width: 1024px) { .essay__head { padding-right: 9rem; } .essay__head :global(.essay__varde) { display: block; position: absolute; right: 2.5rem; bottom: -1px; height: 11rem; width: auto; } }
+  .essay__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.9375rem/1 var(--mono); color: #f5b36a; }
+  .essay h1 { margin-top: 1.25rem; font: 450 clamp(2.3rem, 5vw, 3.75rem)/1.05 var(--serif); letter-spacing: -0.025em; text-wrap: balance; }
+
+  .prose { padding-top: 2.5rem; font-size: 1.25rem; line-height: 1.7; color: #e7e3db; font-weight: 420; }
+  .prose :global(> * + *) { margin-top: 1.1em; }
+  .prose :global(a) { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; word-break: break-word; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.25rem; list-style: disc; }
+  .prose :global(blockquote) { border-left: 2px solid var(--ember); padding-left: 1rem; color: var(--muted); }
+
+  .lead, .gallery, .card-wrap { max-width: 48rem; margin-inline: auto; }
+  .lead { padding-top: 2rem; }
+  .lead img, .gallery img { width: 100%; height: auto; border-radius: 3px; border: 1px solid #1d2a42; box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9); }
+  .lead img { max-height: 34rem; object-fit: contain; background: #070b14; }
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; padding-top: 2.5rem; }
+  .gallery--odd img:first-child { grid-column: 1 / -1; }
+  .gallery img { aspect-ratio: 3 / 2; object-fit: cover; }
+  .card-wrap { padding-top: 2.5rem; }
+  .card { display: grid; max-width: 37rem; text-decoration: none; border: 1px solid #263552; border-radius: 3px; overflow: hidden; background: #0e1626; transition: border-color 200ms; }
+  .card:hover { border-color: var(--ember); }
+  .card img { width: 100%; height: auto; max-height: 20rem; object-fit: cover; }
+  .card__text { display: grid; gap: 0.35rem; padding: 1rem 1.25rem 1.15rem; }
+  .card__site { font: 0.875rem/1.2 var(--mono); color: #f5b36a; }
+  .card__title { font: 450 1.25rem/1.3 var(--serif); color: var(--text); }
+  .essay__foot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: grid; gap: 1.5rem; font: 0.9375rem/1.5 var(--mono); color: var(--muted); }
+  .essay__foot a { color: var(--text); text-decoration-color: var(--ember); }
+  .pn { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .pn__a { display: grid; gap: 0.4rem; text-decoration: none; font: 400 1.125rem/1.3 var(--serif); color: var(--text); }
+  .pn__a span { font: 0.875rem/1 var(--mono); color: #f5b36a; }
+  .pn__a--next { text-align: right; }
+  .pn__a:hover { color: #ffe2b8; }
+</style>

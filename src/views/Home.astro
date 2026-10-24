@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Vardescene from '../components/Vardescene.astro';
+import Cairn from '../components/Cairn.astro';
+import Urnes from '../components/Urnes.astro';
+import { essays } from '../lib/essays';
+import { projects } from '../data/lab';
+import { t, paths, other, fmtDate, iso, type Lang } from '../i18n';
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t[lang];
+const list = await essays(lang);
+const years = [...new Set(list.map((e) => e.date.getFullYear()))];
+const site = Astro.site!.href;
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${site}#site`, name: 'Vardark', url: new URL(paths[lang].home, site).href, inLanguage: lang === 'nb' ? 'nb-NO' : 'en', author: { '@id': `${site}#kristian` } },
+    { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', url: site, sameAs: ['https://www.linkedin.com/in/kristianmysen'] },
+  ],
+};
+---
+<Layout lang={lang} title={lang === 'nb' ? 'Vardark – Kristian Høegh Mysen om KI, sikkerhet og geopolitikk' : 'Vardark – Kristian Høegh Mysen on AI, security and geopolitics'} alt={paths[other(lang)].home} jsonld={jsonld} overlay>
+  <section class="hero">
+    <div class="hero__scene"><Vardescene /></div>
+    <div class="hero__text">
+      <h1 class="hero__title">{s.tagline}</h1>
+      <p class="hero__lede">{s.lede}</p>
+      <p class="hero__by">Kristian Høegh Mysen</p>
+    </div>
+  </section>
+
+  <section class="chron wrap" aria-labelledby="essays">
+    <h2 id="essays" class="h2">{s.essays}</h2>
+    {years.map((y) => (
+      <div class="year">
+        <h3 class="year__n">{y}</h3>
+        <ol class="entries">
+          {list.filter((e) => e.date.getFullYear() === y).map((e) => (
+            <li><a href={e.url}><time datetime={iso(e.date)}>{fmtDate(e.date, lang)}</time><span>{e.title}</span></a></li>
+          ))}
+        </ol>
+      </div>
+    ))}
+  </section>
+
+  <div class="orn wrap"><Urnes /></div>
+
+  <section class="lab wrap" aria-labelledby="lab">
+    <h2 id="lab" class="h2"><a href={paths[lang].lab}>{s.lab}</a></h2>
+    <ul class="beacons">
+      {projects.map((p) => (
+        <li class:list={['beacon', { 'is-lit': p.live }]}>
+          <span class="beacon__cairn" aria-hidden="true"><Cairn size={22} /></span>
+          {p.href ? <a href={p.href} class="beacon__name">{p.name}</a> : <span class="beacon__name beacon__name--plain">{p.name}</span>}
+          <span class="beacon__status">{p[lang].status}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>
+
+<style>
+  /* Forsiden: landskapet bærer siden. Scenen er 16:10 og skyves så varden står godt på smale skjermer. */
+  .hero { position: relative; display: flex; align-items: flex-end; overflow: hidden; background: #03060c; padding-top: 64svh; }
+  .hero__scene :global(.scene) { --sw: max(100vw, 120svh); top: 0; width: var(--sw); left: clamp(calc(100vw - var(--sw)), calc(60vw - 0.72 * var(--sw)), 0px); }
+  .hero::after { content: ''; position: absolute; inset: auto 0 0; height: 45%; background: linear-gradient(transparent, rgba(3, 6, 12, 0.9) 45%, var(--bg)); pointer-events: none; }
+  .hero__text { position: relative; z-index: 1; width: 100%; max-width: 76rem; margin: 0 auto; padding: 0 1.5rem 3rem; }
+  .hero__text::before { content: ''; position: absolute; z-index: -1; inset: -30% -10% -10% -20%; background: radial-gradient(50% 55% at 35% 60%, rgba(3, 6, 12, 0.72), rgba(3, 6, 12, 0.35) 60%, transparent); pointer-events: none; }
+  .hero__title { max-width: 12ch; font: 450 clamp(2.8rem, 7.6vw, 6.5rem)/0.98 var(--serif); letter-spacing: -0.025em; text-wrap: balance; text-shadow: 0 2px 30px rgba(2, 4, 10, 0.8); }
+  .hero__lede { margin-top: 1.25rem; max-width: 30rem; font: 400 clamp(1.2rem, 2vw, 1.5rem)/1.4 var(--serif); color: #ece8e0; text-shadow: 0 1px 16px rgba(2, 4, 10, 0.9); }
+  .hero__by { margin-top: 1.5rem; font: 0.875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #f5b36a; }
+
+  .h2 { font: clamp(2.5rem, 7vw, 4.5rem)/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2rem; }
+  .h2 a { text-decoration: none; }
+  .h2 a:hover { color: var(--ember); }
+
+  .chron { padding-top: 4rem; }
+    border: 1px solid rgba(240, 162, 75, 0.35); border-radius: 2px;
+    background: radial-gradient(120% 140% at 85% 0%, rgba(240, 162, 75, 0.16), transparent 55%), linear-gradient(180deg, #111b2d, #0b1220);
+    box-shadow: 0 30px 80px -30px rgba(240, 162, 75, 0.25), inset 0 1px 0 rgba(255, 210, 150, 0.12); }
+
+  .year { padding: 1.5rem 0 1rem; }
+  .year__n { font: clamp(4.5rem, 20vw, 9rem)/0.85 var(--display); color: transparent; background: linear-gradient(180deg, rgba(240, 162, 75, 0.35), transparent 70%), url(/material/basalt.webp) center / 380px; -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 1px 0 rgba(255, 220, 170, 0.18)) drop-shadow(0 -1px 0 #000); margin-bottom: 1rem; }
+  .entries { border-top: 1px solid var(--line); }
+  .entries a { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background 200ms; }
+  .entries time { font: 0.875rem/1.3 var(--mono); color: #f5b36a; }
+  .entries span { font: 400 1.375rem/1.25 var(--serif); text-wrap: balance; transition: color 200ms; }
+  .entries a:hover { background: linear-gradient(90deg, rgba(240, 162, 75, 0.07), transparent 70%); }
+  .entries a:hover span { color: #ffe2b8; }
+
+  .orn { color: var(--ember); opacity: 0.6; --urnes-bg: var(--bg); padding-top: 4rem; }
+  .lab { padding-top: 3rem; }
+  .beacons { border-top: 1px solid var(--line); }
+  .beacon { --ember: #3b4a66; display: grid; grid-template-columns: 1.75rem 1fr auto; gap: 0.75rem; align-items: center; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+  .beacon.is-lit { --ember: #f0a24b; }
+  .beacon__cairn { color: #2c3850; }
+  .is-lit .beacon__cairn { color: #8793aa; filter: drop-shadow(0 -3px 8px rgba(240, 162, 75, 0.7)); }
+  .beacon__name { font: 400 1.375rem/1.2 var(--serif); text-decoration: underline; text-decoration-color: #f0a24b; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+  .beacon__name--plain { text-decoration: none; }
+  .beacon__status { font: 0.875rem/1 var(--mono); color: #b3bccb; }
+
+  @media (min-width: 768px) {
+    .hero { min-height: 100svh; padding-top: 0; }
+    .hero__scene :global(.scene) { --sw: max(100vw, 160svh); top: auto; bottom: 0; }
+    .hero::after { height: 30%; background: linear-gradient(transparent, var(--bg)); }
+    .hero__text { padding: 0 2.5rem 6rem; }
+    .chron { padding-top: 6rem; }
+    .year { display: grid; grid-template-columns: 15rem 1fr; column-gap: 3rem; align-items: start; padding: 2rem 0; }
+    .year__n { position: sticky; top: 2rem; font-size: 7.5rem; }
+    .entries { display: grid; grid-template-columns: 1fr 1fr; column-gap: 3rem; border-top: 0; }
+    .entries a { height: 100%; border-top: 1px solid var(--line); border-bottom: 0; padding: 1.25rem 0; }
+    .beacon { grid-template-columns: 1.75rem 1fr auto; }
+  }
+</style>

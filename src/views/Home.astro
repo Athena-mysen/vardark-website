@@ -3,15 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import Vardescene from '../components/Vardescene.astro';
 import Cairn from '../components/Cairn.astro';
 import Urnes from '../components/Urnes.astro';
-import Varde from '../components/Varde.astro';
 import { essays } from '../lib/essays';
 import { projects } from '../data/lab';
 import { t, paths, other, fmtDate, iso, type Lang } from '../i18n';
 
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
-const [latest, ...rest] = await essays(lang);
-const years = [...new Set(rest.map((e) => e.date.getFullYear()))];
+const list = await essays(lang);
+const years = [...new Set(list.map((e) => e.date.getFullYear()))];
 const site = Astro.site!.href;
 const jsonld = {
   '@context': 'https://schema.org',
@@ -33,18 +32,11 @@ const jsonld = {
 
   <section class="chron wrap" aria-labelledby="essays">
     <h2 id="essays" class="h2">{s.essays}</h2>
-    <a class="feat" href={latest.url}>
-      <span class="feat__meta"><Cairn size={18} /> {s.latest} · <time datetime={iso(latest.date)}>{fmtDate(latest.date, lang, { day: 'numeric', month: 'long', year: 'numeric' })}</time></span>
-      <span class="feat__title">{latest.title}</span>
-      <span class="feat__ex">{latest.excerpt}</span>
-      <span class="feat__go">{s.read}</span>
-      <Varde id="feat" class="feat__mark" />
-    </a>
     {years.map((y) => (
       <div class="year">
         <h3 class="year__n">{y}</h3>
         <ol class="entries">
-          {rest.filter((e) => e.date.getFullYear() === y).map((e) => (
+          {list.filter((e) => e.date.getFullYear() === y).map((e) => (
             <li><a href={e.url}><time datetime={iso(e.date)}>{fmtDate(e.date, lang)}</time><span>{e.title}</span></a></li>
           ))}
         </ol>
@@ -75,7 +67,7 @@ const jsonld = {
   .hero::after { content: ''; position: absolute; inset: auto 0 0; height: 45%; background: linear-gradient(transparent, rgba(3, 6, 12, 0.9) 45%, var(--bg)); pointer-events: none; }
   .hero__text { position: relative; z-index: 1; width: 100%; max-width: 76rem; margin: 0 auto; padding: 0 1.5rem 3rem; }
   .hero__text::before { content: ''; position: absolute; z-index: -1; inset: -30% -10% -10% -20%; background: radial-gradient(50% 55% at 35% 60%, rgba(3, 6, 12, 0.72), rgba(3, 6, 12, 0.35) 60%, transparent); pointer-events: none; }
-  .hero__title { max-width: 15ch; font: 450 clamp(2.8rem, 7.6vw, 6.5rem)/0.98 var(--serif); letter-spacing: -0.025em; text-wrap: balance; text-shadow: 0 2px 30px rgba(2, 4, 10, 0.8); }
+  .hero__title { max-width: 12ch; font: 450 clamp(2.8rem, 7.6vw, 6.5rem)/0.98 var(--serif); letter-spacing: -0.025em; text-wrap: balance; text-shadow: 0 2px 30px rgba(2, 4, 10, 0.8); }
   .hero__lede { margin-top: 1.25rem; max-width: 30rem; font: 400 clamp(1.2rem, 2vw, 1.5rem)/1.4 var(--serif); color: #ece8e0; text-shadow: 0 1px 16px rgba(2, 4, 10, 0.9); }
   .hero__by { margin-top: 1.5rem; font: 0.875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #f5b36a; }
 
@@ -84,17 +76,9 @@ const jsonld = {
   .h2 a:hover { color: var(--ember); }
 
   .chron { padding-top: 4rem; }
-  .feat { position: relative; display: grid; gap: 0.9rem; margin-bottom: 3rem; padding: 2.5rem 1.5rem; text-decoration: none; isolation: isolate; overflow: hidden;
     border: 1px solid rgba(240, 162, 75, 0.35); border-radius: 2px;
     background: radial-gradient(120% 140% at 85% 0%, rgba(240, 162, 75, 0.16), transparent 55%), linear-gradient(180deg, #111b2d, #0b1220);
     box-shadow: 0 30px 80px -30px rgba(240, 162, 75, 0.25), inset 0 1px 0 rgba(255, 210, 150, 0.12); }
-  .feat__meta { display: flex; align-items: center; gap: 0.6rem; font: 0.875rem/1.2 var(--mono); color: #f5b36a; }
-  .feat__title { font: 400 clamp(2rem, 5vw, 3.6rem)/1.05 var(--serif); letter-spacing: -0.02em; text-wrap: balance; max-width: 22ch; transition: color 200ms; }
-  .feat__ex { max-width: 38rem; color: #cfd4dc; font-size: 1.1875rem; line-height: 1.55; }
-  .feat__go { font: 0.9375rem/1 var(--mono); }
-  .feat__go::after { content: ' →'; color: var(--ember); }
-  .feat:hover .feat__title { color: #ffe2b8; }
-  .feat :global(.feat__mark) { display: none; }
 
   .year { padding: 1.5rem 0 1rem; }
   .year__n { font: clamp(4.5rem, 20vw, 9rem)/0.85 var(--display); color: transparent; background: linear-gradient(180deg, rgba(240, 162, 75, 0.35), transparent 70%), url(/material/basalt.webp) center / 380px; -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 1px 0 rgba(255, 220, 170, 0.18)) drop-shadow(0 -1px 0 #000); margin-bottom: 1rem; }
@@ -121,8 +105,6 @@ const jsonld = {
     .hero::after { height: 30%; background: linear-gradient(transparent, var(--bg)); }
     .hero__text { padding: 0 2.5rem 6rem; }
     .chron { padding-top: 6rem; }
-    .feat { padding: 3.5rem 3rem; }
-    .feat :global(.feat__mark) { display: block; position: absolute; z-index: -1; right: 5rem; bottom: -2px; height: 92%; width: auto; }
     .year { display: grid; grid-template-columns: 15rem 1fr; column-gap: 3rem; align-items: start; padding: 2rem 0; }
     .year__n { position: sticky; top: 2rem; font-size: 7.5rem; }
     .entries { display: grid; grid-template-columns: 1fr 1fr; column-gap: 3rem; border-top: 0; }

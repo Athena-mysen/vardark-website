@@ -2,7 +2,8 @@
 // Nattlandskapet med vardekjeden. Ett statisk SVG-lag (himmel, fjell, varder) som aldri tegnes på nytt,
 // og lette lag over for alt som beveger seg (nordlys, tåke, glød, flammer, gnister, signal, krusninger).
 // Animasjon bare med transform/opacity, så nettleseren kan gjøre det på GPU-en. Posisjoner: /scene.css.
-import { W, H, f, layers, big, flame, chain, stars, twinkles, signal } from '../lib/scene';
+import { W, H, f, layers, big, flame, chain, stars, twinkles, signal, crags } from '../lib/scene';
+const haze = [0.55, 0.36];
 
 const clip = big.stones.map((s) => s.d).join(' ');
 const tongues = [
@@ -20,7 +21,7 @@ const tongues = [
         <stop offset="0" stop-color="#02040a" /><stop offset="0.55" stop-color="#0a1426" /><stop offset="0.78" stop-color="#16253f" /><stop offset="1" stop-color="#0c1424" />
       </linearGradient>
       <radialGradient id="spill"><stop offset="0" stop-color="#f0a24b" stop-opacity="0.18" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
-      <radialGradient id="rim" gradientUnits="userSpaceOnUse" cx={flame.x} cy={f(flame.y)} r="430"><stop offset="0" stop-color="#ffc47a" stop-opacity="0.9" /><stop offset="0.45" stop-color="#f0a24b" stop-opacity="0.35" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+      <radialGradient id="rim" gradientUnits="userSpaceOnUse" cx={flame.x} cy={f(flame.y)} r="430"><stop offset="0" stop-color="#ffc47a" stop-opacity="0.7" /><stop offset="0.45" stop-color="#f0a24b" stop-opacity="0.25" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
       <linearGradient id="g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3029" /><stop offset="0.3" stop-color="#1c1a1c" /><stop offset="1" stop-color="#09090c" /></linearGradient>
       <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f2c2c" /><stop offset="0.35" stop-color="#16171b" /><stop offset="1" stop-color="#08090c" /></linearGradient>
       <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#443428" /><stop offset="0.28" stop-color="#211d1c" /><stop offset="1" stop-color="#0b0b0e" /></linearGradient>
@@ -33,6 +34,11 @@ const tongues = [
       <filter id="blur-l" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="40" /></filter>
       <filter id="blur-m" x="-50%" width="200%"><feGaussianBlur stdDeviation="9 4" /></filter>
       <clipPath id="cairn-clip"><path d={clip} /></clipPath>
+      <clipPath id="water-clip"><rect x="-40" y="905" width={W + 80} height="100" /></clipPath>
+      <radialGradient id="near" gradientUnits="userSpaceOnUse" cx={flame.x} cy={f(layers[3].r.at(flame.x))} r="380" gradientTransform={`translate(${flame.x} ${f(layers[3].r.at(flame.x))}) scale(1.25 1) translate(${-flame.x} ${f(-layers[3].r.at(flame.x))})`}><stop offset="0" stop-color="#3b2818" /><stop offset="0.18" stop-color="#24180f" /><stop offset="0.5" stop-color="#0c0c10" /><stop offset="1" stop-color="#05080f" /></radialGradient>
+      <radialGradient id="ground"><stop offset="0" stop-color="#ff9d42" stop-opacity="0.3" /><stop offset="1" stop-color="#ff9d42" stop-opacity="0" /></radialGradient>
+      <linearGradient id="ao" x1="0" y1="0" x2="0" y2="1"><stop offset="0.72" stop-color="#000" stop-opacity="0" /><stop offset="1" stop-color="#000" stop-opacity="0.6" /></linearGradient>
+      <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2c46" stop-opacity="0" /><stop offset="0.55" stop-color="#1e2c46" stop-opacity="0.45" /><stop offset="1" stop-color="#1e2c46" stop-opacity="0" /></linearGradient>
     </defs>
 
     <rect width={W} height={H} fill="url(#sky)" />
@@ -41,32 +47,44 @@ const tongues = [
 
     {layers.map((L, i) => (
       <>
-        <path d={L.r.d} fill={L.fill} />
-        {i >= 2 && <path d={L.r.line} fill="none" stroke="url(#rim)" stroke-width={i === 3 ? 1.6 : 1} />}
+        {i === 3 && <ellipse cx={flame.x} cy={f(flame.y + 120)} rx="420" ry="260" fill="url(#spill)" />}
+        <path d={L.r.d} fill={i === 3 ? 'url(#near)' : L.fill} />
+        {i >= 2 && <path d={L.r.line} fill="none" stroke="url(#rim)" stroke-width={i === 3 ? 1.1 : 0.9} />}
+        {i === 3 && crags.map((d) => <path d={d} fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />)}
         {i < 3 && <rect x="-40" y={f(L.r.at(800) - 20)} width={W + 80} height="110" fill="url(#fogg)" />}
         {chain.filter((c) => c.l === i).map((c) => (
           <g>
             {c.cairn.stones.map((st) => <path d={st.d} fill={`url(#g${st.g})`} stroke="#05060a" stroke-width="0.5" />)}
-            {c.cairn.stones.map((st) => <path d={st.edge} stroke="#ffb35c" stroke-opacity={(st.o * 0.8).toFixed(2)} stroke-width="0.7" stroke-linecap="round" fill="none" />)}
+            {c.cairn.stones.map((st) => <path d={st.edge} stroke="#ffb35c" stroke-opacity={(st.o * 0.55).toFixed(2)} stroke-width="0.6" stroke-linecap="round" fill="none" />)}
             {c.cairn.logs.map((l) => <rect x={f(l.x)} y={f(l.y)} width={f(l.w)} height={f(l.h)} rx={f(l.h / 2)} fill="url(#log)" transform={`rotate(${l.a} ${f(l.x)} ${f(l.y + l.h / 2)})`} />)}
+            <path d={c.cairn.lip} fill={L.fill} />
+            {c.cairn.rubble.map((st) => <path d={st.d} fill={`url(#g${st.g})`} />)}
+            <g fill={L.fill} opacity={haze[i]}>{[...c.cairn.stones, ...c.cairn.rubble].map((st) => <path d={st.d} />)}</g>
+            <ellipse cx={c.x} cy={f(c.y)} rx={f(60 * c.s)} ry={f(14 * c.s)} fill="url(#ground)" />
           </g>
         ))}
       </>
     ))}
 
-    <ellipse cx={flame.x} cy={f(flame.y + 150)} rx="380" ry="230" fill="url(#spill)" />
     <g>
       {big.stones.map((st) => <path d={st.d} fill={`url(#g${st.g})`} stroke="#050608" stroke-width="0.9" />)}
       <g clip-path="url(#cairn-clip)">
         <rect x={flame.x - 60} y={f(flame.y - 10)} width="120" height="220" fill="url(#moon)" />
         <rect x={flame.x - 160} y={f(flame.y - 40)} width="320" height="260" fill="url(#warm)" />
+        <rect x={flame.x - 60} y={f(flame.y)} width="120" height={f(layers[3].r.at(flame.x) - flame.y + 6)} fill="url(#ao)" />
       </g>
-      {big.stones.map((st) => <path d={st.edge} stroke="#ffbb6b" stroke-opacity={st.o.toFixed(2)} stroke-width="1.5" stroke-linecap="round" fill="none" />)}
+      {big.stones.map((st) => <path d={st.edge} stroke="#ffbb6b" stroke-opacity={(st.o * 0.6).toFixed(2)} stroke-width="1.1" stroke-linecap="round" fill="none" />)}
       {big.logs.map((l) => <rect x={f(l.x)} y={f(l.y)} width={f(l.w)} height={f(l.h)} rx={f(l.h / 2)} fill="url(#log)" stroke="#060302" stroke-width="0.6" transform={`rotate(${l.a} ${f(l.x)} ${f(l.y + l.h / 2)})`} />)}
+      <path d={big.lip} fill="url(#near)" />
+      {big.rubble.map((st) => <><path d={st.d} fill="url(#g2)" stroke="#050608" stroke-width="0.7" /><path d={st.edge} stroke="#ffbb6b" stroke-opacity="0.5" stroke-width="1" stroke-linecap="round" fill="none" /></>)}
     </g>
 
     <rect x="-40" y="905" width={W + 80} height="100" fill="url(#water)" />
-    <path d={`M-40 905.5 L${W + 40} 905.5`} stroke="#1c2a44" stroke-width="1" />
+    <g clip-path="url(#water-clip)" opacity="0.85">
+      <path d={layers[2].r.d} transform="matrix(1 0 0 -1 0 1810)" fill="#0a1222" />
+      <path d={layers[3].r.d} transform="matrix(1 0 0 -1 0 1810)" fill="#04070d" />
+    </g>
+    <rect x="-40" y="878" width={W + 80} height="54" fill="url(#mist)" />
     <path d={`M${flame.x - 24} 906 L${flame.x + 24} 906 L${flame.x + 72} 1000 L${flame.x - 72} 1000Z`} fill="url(#gate)" filter="url(#blur-m)" />
   </svg>
 
@@ -149,10 +167,10 @@ const tongues = [
   .fire { position: absolute; translate: -50% -100%; }
   .fire svg { display: block; width: 100%; overflow: visible; }
   .fire--main { left: var(--fx); top: calc(var(--fy) + 0.3%); width: 6%; }
-  .fire--small { width: 2.4%; }
+  .fire--small { width: 1.8%; }
   .fire--small::before { content: ''; position: absolute; inset: -160% -160% -60%; border-radius: 50%; background: radial-gradient(circle at 50% 62%, rgba(255, 180, 100, 0.4), rgba(240, 162, 75, 0.1) 30%, transparent 60%); }
-  .b1 { left: var(--c1x); top: var(--c1y); } .b2 { left: var(--c2x); top: var(--c2y); width: 1.8%; }
-  .b3 { left: var(--c3x); top: var(--c3y); } .b4 { left: var(--c4x); top: var(--c4y); width: 1.8%; }
+  .b1 { left: var(--c1x); top: var(--c1y); } .b2 { left: var(--c2x); top: var(--c2y); width: 1.35%; opacity: 0.85; }
+  .b3 { left: var(--c3x); top: var(--c3y); } .b4 { left: var(--c4x); top: var(--c4y); width: 1.35%; opacity: 0.85; }
   /* Kjeden tennes én etter én, fra den store varden og utover */
   .fire--small { animation: tenn 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
   .b1 { animation-delay: 1s; } .b2 { animation-delay: 2.2s; } .b3 { animation-delay: 1.5s; } .b4 { animation-delay: 2.8s; }
@@ -176,9 +194,9 @@ const tongues = [
   @keyframes rise { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(1); } 8% { opacity: 1; } 70% { opacity: 0.6; } 100% { opacity: 0; transform: translate3d(var(--dx), -260px, 0) scale(0.4); } }
 
   .ripples { position: absolute; left: var(--fx); top: 91%; width: 9%; height: 8%; translate: -50% 0; }
-  .ripples i { position: absolute; left: 50%; height: 1.5px; border-radius: 1px; background: linear-gradient(90deg, transparent, rgba(255, 197, 107, 0.75), transparent); translate: -50% 0; animation: rip 3.4s ease-in-out infinite alternate; }
-  .ripples i:nth-child(1) { top: 4%; width: 30%; } .ripples i:nth-child(2) { top: 20%; width: 46%; animation-delay: -0.8s; }
-  .ripples i:nth-child(3) { top: 37%; width: 38%; animation-delay: -1.6s; opacity: 0.8; } .ripples i:nth-child(4) { top: 54%; width: 64%; animation-delay: -2.2s; opacity: 0.6; }
-  .ripples i:nth-child(5) { top: 71%; width: 52%; animation-delay: -0.4s; opacity: 0.45; } .ripples i:nth-child(6) { top: 88%; width: 80%; animation-delay: -2.9s; opacity: 0.3; }
+  .ripples i { position: absolute; left: 50%; height: 1px; border-radius: 1px; background: linear-gradient(90deg, transparent, rgba(255, 197, 107, 0.7) 30%, rgba(255, 220, 160, 0.9) 50%, rgba(255, 197, 107, 0.7) 70%, transparent); translate: -50% 0; animation: rip 3.4s ease-in-out infinite alternate; }
+  .ripples i:nth-child(1) { top: 2%; width: 26%; opacity: 0.9; } .ripples i:nth-child(2) { top: 9%; width: 40%; margin-left: 4%; animation-delay: -0.8s; opacity: 0.75; }
+  .ripples i:nth-child(3) { top: 19%; width: 22%; margin-left: -9%; animation-delay: -1.6s; opacity: 0.6; } .ripples i:nth-child(4) { top: 33%; width: 58%; margin-left: 3%; animation-delay: -2.2s; opacity: 0.45; }
+  .ripples i:nth-child(5) { top: 52%; width: 34%; margin-left: -12%; animation-delay: -0.4s; opacity: 0.32; } .ripples i:nth-child(6) { top: 76%; width: 70%; margin-left: 6%; animation-delay: -2.9s; opacity: 0.2; }
   @keyframes rip { from { transform: translate3d(-8%, 0, 0) scaleX(0.9); } to { transform: translate3d(8%, 0, 0) scaleX(1.1); } }
 </style>

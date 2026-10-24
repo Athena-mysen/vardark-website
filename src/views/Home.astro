@@ -16,7 +16,7 @@ const jsonld = {
   '@context': 'https://schema.org',
   '@graph': [
     { '@type': 'WebSite', '@id': `${site}#site`, name: 'Vardark', url: new URL(paths[lang].home, site).href, inLanguage: lang === 'nb' ? 'nb-NO' : 'en', author: { '@id': `${site}#kristian` } },
-    { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', url: site, sameAs: ['https://www.linkedin.com/in/kristianmysen'] },
+    { '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen', url: site, sameAs: ['https://www.linkedin.com/in/kristian-h%C3%B8egh-mysen-22ba49a/'] },
   ],
 };
 ---

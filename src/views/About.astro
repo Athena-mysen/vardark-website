@@ -7,19 +7,19 @@ const site = Astro.site!.href;
 
 // Fakta fra Kristians CV (2026). Ingen kontaktinfo, adresse eller fødselsdato. Ingen selskapslenker før selskapet finnes.
 const stats = nb
-  ? [['15+', 'år med programvare, arkitektur og ledelse'], ['15→150+', 'personer og 18 team i leveranseorganisasjonen jeg bygde'], ['12', 'år med forsvarsteknologi'], ['15', 'år kombinert i Forsvarets og Heimevernets innsatsstyrker']]
-  : [['15+', 'years in software, architecture and leadership'], ['15→150+', 'people and 18 teams in the delivery organisation I built'], ['12', 'years in defence technology'], ['15', 'years combined in the rapid response forces of the Armed Forces and the Home Guard']];
+  ? [['15+', 'år med programvare, arkitektur og ledelse'], ['15→150+', 'personer og 18 team i leveranseorganisasjonen jeg bygde'], ['12', 'år med forsvarsteknologi'], ['15', 'år som befal i Forsvaret og Heimevernet']]
+  : [['15+', 'years in software, architecture and leadership'], ['15→150+', 'people and 18 teams in the delivery organisation I built'], ['12', 'years in defence technology'], ['15', 'years as an NCO in the Armed Forces and the Home Guard']];
 const background = nb
   ? [
       'I forsvarssektoren arbeider jeg med strategiske prosjekter og styring, og med å omsette strategi til virksomhetsarkitektur.',
-      'Jeg har bygget en Lean/Agile-leveranseorganisasjon fra rundt 15 til over 150 personer og 18 team, og hatt ansvar for virkemåter, porteføljestyring og kontinuerlig forbedring i store programmer. Før det ledet jeg innføringen av smidige arbeidsformer og DevSecOps, med arkitektansvar for militær IT-infrastruktur, IT-sikkerhet og sikker kommunikasjon.',
-      'I forsvarsindustrien var jeg utvikler og arkitekt i Teleplan Globe på FACNAV/norBMS, digital støtte for luftstøtte, ildstøtte og battlespace management, og prosjektleder og arkitekt for Baseforsvarsdemonstratoren sammen med FFI, som ble vist for over 60 nasjonale og internasjonale beslutningstakere. Før det bygde jeg store statlige systemer i Computas, blant annet Norvis for visum og innreise, og programvare for rørledningsintegritet i DNV.',
-      'Militært: Befalsskolen for Kavaleriet, sersjant og vognkommandør på CV90 i Panserbataljonen, og 13 år som lagfører og senior NCO i Heimevernets innsatsstyrke Derby.',
+      'Jeg har bygget en Lean/Agile-leveranseorganisasjon fra rundt 15 til over 150 personer og 18 team, og hatt ansvar for virkemåter, porteføljestyring og kontinuerlig forbedring i et av Norges største IKT-programmer. Før det ledet jeg innføringen av smidige arbeidsformer og DevSecOps, med arkitektansvar i flere prosjekter innen militær IT-infrastruktur, IT-sikkerhet og sikker kommunikasjon.',
+      'I forsvarsindustrien var jeg utvikler og arkitekt i Teleplan Globe på FACNAV/norBMS, digital støtte for luftstøtte, ildstøtte og battlespace management, og ledet Teleplan Globes del av Baseforsvarsdemonstratoren, et FFI-prosjekt med flere forsvarsleverandører, som ble vist for over 60 nasjonale og internasjonale beslutningstakere. Før det bygde jeg store statlige systemer i Computas, blant annet Norvis for visum og innreise, og programvare for rørledningsintegritet i DNV.',
+      'Militært: Befalsskolen for Kavaleriet, sersjant og vognkommandør på CV90 i Panserbataljonen, og 13 år som lagfører og seniorbefal i Heimevernets innsatsstyrke Derby.',
     ]
   : [
       'In the defence sector I work on strategic projects and governance, and on turning strategy into enterprise architecture.',
-      'I built a Lean/Agile delivery organisation from around 15 to more than 150 people and 18 teams, and have been responsible for ways of working, portfolio management and continuous improvement in large programmes. Before that I led the introduction of agile ways of working and DevSecOps, as architect for military IT infrastructure, IT security and secure communications.',
-      'In the defence industry I was a developer and architect at Teleplan Globe on FACNAV/norBMS, digital support for close air support, fire support and battlespace management, and project lead and architect for the Base Defence Demonstrator with the Norwegian Defence Research Establishment (FFI), shown to more than 60 national and international decision-makers. Earlier I built large government systems at Computas, including Norvis for visas and entry to Norway, and pipeline integrity software at DNV.',
+      'I built a Lean/Agile delivery organisation from around 15 to more than 150 people and 18 teams, and have been responsible for ways of working, portfolio management and continuous improvement in one of Norway\'s largest ICT programmes. Before that I led the introduction of agile ways of working and DevSecOps, as architect on several projects in military IT infrastructure, IT security and secure communications.',
+      'In the defence industry I was a developer and architect at Teleplan Globe on FACNAV/norBMS, digital support for close air support, fire support and battlespace management, and led Teleplan Globe\'s part of the Base Defence Demonstrator, a project initiated by the Norwegian Defence Research Establishment (FFI) with several defence suppliers, shown to more than 60 national and international decision-makers. Earlier I built large government systems at Computas, including Norvis for visas and entry to Norway, and pipeline integrity software at DNV.',
       'Military: the Cavalry NCO School, sergeant and vehicle commander on CV90 in the Armoured Battalion, and 13 years as section leader and senior NCO in the Home Guard rapid response force Derby.',
     ];
 const fields = nb
@@ -46,7 +46,12 @@ const jsonld = {
       ? 'Jeg er Kristian Høegh Mysen, sivilingeniør i datateknikk. I tolv år har jeg jobbet med teknologi i forsvarssektoren, først som utvikler og arkitekt i forsvarsindustrien og de siste årene med ledelse av strategiske prosjekter, styring og arkitektur. Her skriver jeg om hva som skjer når utviklingen av intelligens går stadig raskere: fremskrittene, mulighetene og risikoen.'
       : 'I am Kristian Høegh Mysen, an MSc in computer science. For twelve years I have worked with technology in the defence sector, first as a developer and architect in the defence industry and in recent years leading strategic projects, governance and architecture. Here I write about what happens as the development of intelligence keeps accelerating: the progress, the opportunities and the risks.'}</p>
 
-    <blockquote class="quote"><p>{nb ? 'Effektiv kombinasjon: dyp teknologi, strategisk ledelse og militær bakgrunn.' : 'An effective combination: deep technology, strategic leadership and a military background.'}</p></blockquote>
+    <section class="stand" aria-labelledby="stand">
+      <h2 id="stand">{nb ? 'Det jeg står for' : 'What I stand for'}</h2>
+      <p>{nb
+        ? 'Jeg tror på teknologi som gjør oss raskere og klokere, med mennesker som tar beslutningene og bærer ansvaret. Det krever at vi tar i bruk det nye tidlig, ser risikoen tydelig og bygger evnen til å tilpasse oss.'
+        : 'I believe in technology that makes us faster and wiser, with people making the decisions and carrying the responsibility. That means adopting the new early, seeing the risks clearly and building the ability to adapt.'}</p>
+    </section>
 
     <dl class="stats">
       {stats.map(([n, l]) => <div><dt>{n}</dt><dd>{l}</dd></div>)}
@@ -60,8 +65,8 @@ const jsonld = {
     <section class="block">
       <h2>{nb ? 'Hva jeg gjør nå' : 'What I do now'}</h2>
       <p>{nb
-        ? 'Ved siden av jobben bygger jeg selv. Hjemme kjører jeg en egen KI-plattform med agenter og lokale modeller, og prototypene i laben følger tempoet i KI-utviklingen, geopolitikken og hvordan mennesker kan styre agenter. Jeg tester frontier-modellene i praksis før jeg skriver om dem.'
-        : 'Alongside my job I build things myself. At home I run my own AI platform with agents and local models, and the prototypes in the lab track the pace of AI, geopolitics and how people can stay in charge of agents. I test the frontier models hands-on before I write about them.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
+        ? 'Ved siden av jobben bygger jeg selv. Hjemme kjører jeg en egen KI-plattform med agenter, frontier-modeller og lokale modeller, og prototypene i laben følger tempoet i KI-utviklingen, geopolitikken og hvordan mennesker kan styre agenter. Jeg tester frontier-modellene i praksis før jeg skriver om dem.'
+        : 'Alongside my job I build things myself. At home I run my own AI platform with agents, frontier models and local models, and the prototypes in the lab track the pace of AI, geopolitics and how people can stay in charge of agents. I test the frontier models hands-on before I write about them.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
       <p class="disclaimer">{nb ? 'Innleggene er mine egne vurderinger og representerer ikke min arbeidsgiver.' : 'The posts are my own views and do not represent my employer.'}</p>
     </section>
 
@@ -93,8 +98,9 @@ const jsonld = {
   .about p { max-width: 37rem; }
   .about a { color: var(--text); text-decoration-color: var(--ember); text-underline-offset: 0.18em; }
 
-  .quote { position: relative; margin: 3rem 0; padding: 1.5rem 0 1.5rem 1.75rem; border-left: 2px solid var(--ember); }
-  .quote p { font: italic 400 clamp(1.5rem, 3.2vw, 2.1rem)/1.3 var(--serif); color: #ffe2b8; max-width: 34rem; }
+  .stand { margin: 3rem 0; padding: 0.25rem 0 0.25rem 1.75rem; border-left: 2px solid var(--ember); }
+  .stand h2 { font: 0.875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #f5b36a; margin-bottom: 0.9rem; }
+  .stand p { font: 420 clamp(1.3rem, 2.6vw, 1.7rem)/1.4 var(--serif); color: #f3e9da; max-width: 36rem; }
 
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1.25rem; margin: 2.5rem 0 1rem; padding: 2rem 0; border-block: 1px solid var(--line); }
   .stats dt { font: clamp(2.4rem, 6vw, 3.4rem)/1 var(--display); color: transparent; background: linear-gradient(180deg, #ffd9a0, var(--ember) 60%, #a8581f); -webkit-background-clip: text; background-clip: text; }

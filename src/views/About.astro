@@ -6,20 +6,29 @@ const { lang } = Astro.props as { lang: Lang };
 const nb = lang === 'nb';
 const site = Astro.site!.href;
 
-// Fakta fra Kristians egen profil (tidligere vardark.no, Vardark Technologies). Ingen selskapslenker før selskapet finnes.
+// Fakta fra Kristians CV (2026). Ingen kontaktinfo, adresse eller fødselsdato. Ingen selskapslenker før selskapet finnes.
 const stats = nb
-  ? [['15+', 'år med teknologi og digital transformasjon'], ['15→150+', 'personer i leveranseorganisasjonen jeg bygde'], ['10+', 'år i Forsvarsmateriell'], ['12', 'år i Heimevernet']]
-  : [['15+', 'years in technology and digital transformation'], ['15→150+', 'people in the delivery organisation I built'], ['10+', 'years at the Norwegian Defence Materiel Agency'], ['12', 'years in the Home Guard']];
-const creds = [
-  [nb ? 'Sivilingeniør, datateknikk (MSc Computer Science)' : 'MSc Computer Science', 'NTNU'],
-  ['SAFe Agilist', 'Scaled Agile'],
-  ['TOGAF', nb ? 'virksomhetsarkitektur' : 'enterprise architecture'],
-  ['Certified Ethical Hacker (CEH)', 'EC-Council'],
-  ['MoP Foundation', nb ? 'porteføljestyring' : 'portfolio management'],
-];
+  ? [['15+', 'år med programvare, arkitektur og ledelse'], ['15→150+', 'personer og 18 team i leveranseorganisasjonen jeg bygde'], ['12', 'år med forsvarsteknologi'], ['13', 'år i Heimevernets innsatsstyrke']]
+  : [['15+', 'years in software, architecture and leadership'], ['15→150+', 'people and 18 teams in the delivery organisation I built'], ['12', 'years in defence technology'], ['13', 'years in the Home Guard rapid response force']];
+const background = nb
+  ? [
+      'I dag er jeg virksomhetsarkitekt i Forsvarsstaben, teknologi og IKT, utlånt fra Forsvarsmateriell. Jeg støtter Forsvarets sjefsarkitekt i å omsette strategi til IKT- og virksomhetsarkitektur.',
+      'I Forsvarsmateriell har jeg vært senior løsningsarkitekt, programsjef og prosessleder. Som programsjef leveranse i PRO Mime/MAST bygde jeg en Lean/Agile-leveranseorganisasjon fra rundt 15 til over 150 personer og 18 team, med SAFe som rammeverk. Som prosessleder har jeg ansvaret for virkemåtene i Norges største IKT-program. Før det ledet jeg innføringen av en smidig verdikjede med DevSecOps i FMA IKT-kapasiteter, med arkitektansvar for militær IT-infrastruktur, IT-sikkerhet og sikker kommunikasjon.',
+      'I forsvarsindustrien var jeg utvikler og arkitekt i Teleplan Globe på FACNAV/norBMS, digital støtte for luftstøtte, ildstøtte og battlespace management, og prosjektleder og arkitekt for Baseforsvarsdemonstratoren sammen med FFI, som ble vist for over 60 nasjonale og internasjonale beslutningstakere. Før det bygde jeg store statlige systemer i Computas, blant annet Norvis for visum og innreise, og programvare for rørledningsintegritet i DNV.',
+      'Militært: Befalsskolen for Kavaleriet, sersjant og vognkommandør på CV90 i Panserbataljonen, og 13 år som lagfører i Heimevernets innsatsstyrke Derby.',
+    ]
+  : [
+      'Today I am an enterprise architect at the Norwegian Defence Staff, Technology and ICT, on loan from the Defence Materiel Agency. I support the Armed Forces\' chief architect in turning strategy into ICT and enterprise architecture.',
+      'At the Defence Materiel Agency I have been senior solution architect, programme manager and process lead. As delivery programme manager in PRO Mime/MAST I built a Lean/Agile delivery organisation from around 15 to more than 150 people and 18 teams, using SAFe. As process lead I am responsible for the ways of working in Norway\'s largest ICT programme. Before that I led the introduction of an agile value chain with DevSecOps in the agency\'s ICT capabilities, as architect for military IT infrastructure, IT security and secure communications.',
+      'In the defence industry I was a developer and architect at Teleplan Globe on FACNAV/norBMS, digital support for close air support, fire support and battlespace management, and project lead and architect for the Base Defence Demonstrator with the Norwegian Defence Research Establishment (FFI), shown to more than 60 national and international decision-makers. Earlier I built large government systems at Computas, including Norvis for visas and entry to Norway, and pipeline integrity software at DNV.',
+      'Military: the Cavalry NCO School, sergeant and vehicle commander on CV90 in the Armoured Battalion, and 13 years as section leader in the Home Guard rapid response force Derby.',
+    ];
+const creds = nb
+  ? [['Sivilingeniør datateknikk (MSc Computer Science)', 'NTNU 2009 · masteroppgave A'], ['Kontinuerlig forbedring og Lean', 'Universitetet i Agder'], ['Topp500', 'Forsvarets digitale lederprogram'], ['SAFe Agilist, POPM og LPM', 'Scaled Agile'], ['MoP Foundation', 'porteføljestyring'], ['Certified Ethical Hacker (CEH)', 'EC-Council'], ['TOGAF', 'kurs, virksomhetsarkitektur'], ['Professional Scrum Master (PSM I)', 'Scrum.org'], ['Linjelederkurs', 'Forsvaret']]
+  : [['MSc Computer Science', 'NTNU 2009 · thesis graded A'], ['Continuous Improvement and Lean', 'University of Agder'], ['Topp500', 'Armed Forces digital leadership programme'], ['SAFe Agilist, POPM and LPM', 'Scaled Agile'], ['MoP Foundation', 'portfolio management'], ['Certified Ethical Hacker (CEH)', 'EC-Council'], ['TOGAF', 'course, enterprise architecture'], ['Professional Scrum Master (PSM I)', 'Scrum.org'], ['Line management course', 'Norwegian Armed Forces']];
 const fields = nb
-  ? ['KI-agenter og frontier-modeller', 'Lokale modeller og åpne vekter', 'Forsvarsteknologi', 'Informasjonssikkerhet', 'Virksomhetsarkitektur', 'Smidig transformasjon i stor skala', 'Teknologi og geopolitikk']
-  : ['AI agents and frontier models', 'Local models and open weights', 'Defence technology', 'Information security', 'Enterprise architecture', 'Agile transformation at scale', 'Technology and geopolitics'];
+  ? ['KI-agenter og frontier-modeller', 'Lokale modeller og åpne vekter', 'Forsvarsteknologi og militære IT-systemer', 'Informasjonssikkerhet', 'Virksomhetsarkitektur', 'Smidig transformasjon i stor skala', 'Teknologi og geopolitikk']
+  : ['AI agents and frontier models', 'Local models and open weights', 'Defence technology and military IT systems', 'Information security', 'Enterprise architecture', 'Agile transformation at scale', 'Technology and geopolitics'];
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -27,20 +36,20 @@ const jsonld = {
   inLanguage: nb ? 'nb-NO' : 'en',
   mainEntity: {
     '@type': 'Person', '@id': `${site}#kristian`, name: 'Kristian Høegh Mysen',
-    jobTitle: nb ? 'Sivilingeniør og teknologileder' : 'Engineer and technology leader',
+    jobTitle: nb ? 'Virksomhetsarkitekt' : 'Enterprise architect',
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'NTNU' },
-    hasCredential: creds.slice(1).map(([name]) => ({ '@type': 'EducationalOccupationalCredential', name })),
+    hasCredential: ['Certified SAFe Agilist', 'SAFe Product Owner/Product Manager', 'SAFe Lean Portfolio Management', 'MoP Foundation', 'Certified Ethical Hacker (CEH)', 'Professional Scrum Master I'].map((name) => ({ '@type': 'EducationalOccupationalCredential', name })),
     knowsAbout: fields,
     sameAs: ['https://www.linkedin.com/in/kristianmysen'],
   },
 };
 ---
-<Layout lang={lang} title={nb ? 'Om Kristian Høegh Mysen · Vardark' : 'About Kristian Høegh Mysen · Vardark'} description={nb ? 'Kristian Høegh Mysen: sivilingeniør og teknologileder med 15 år fra forsvarsteknologi og digital transformasjon. Skriver om KI, sikkerhet og geopolitikk.' : 'Kristian Høegh Mysen: engineer and technology leader with 15 years in defence technology and digital transformation. Writes on AI, security and geopolitics.'} alt={paths[other(lang)].about} jsonld={jsonld}>
+<Layout lang={lang} title={nb ? 'Om Kristian Høegh Mysen · Vardark' : 'About Kristian Høegh Mysen · Vardark'} description={nb ? 'Kristian Høegh Mysen: sivilingeniør i datateknikk og virksomhetsarkitekt med tolv år i forsvarsteknologi. Skriver om KI, sikkerhet og geopolitikk.' : 'Kristian Høegh Mysen: MSc in computer science and enterprise architect with twelve years in defence technology. Writes on AI, security and geopolitics.'} alt={paths[other(lang)].about} jsonld={jsonld}>
   <div class="about wrap">
     <h1>{nb ? 'Om' : 'About'}</h1>
     <p class="lead">{nb
-      ? 'Jeg er Kristian Høegh Mysen, sivilingeniør og teknologileder. I femten år har jeg jobbet der teknologi møter forsvar og store omstillinger. Her skriver jeg om hva som skjer når intelligens blir billig: fremskrittene, mulighetene og risikoen.'
-      : 'I am Kristian Høegh Mysen, an engineer and technology leader. For fifteen years I have worked where technology meets defence and large-scale change. Here I write about what happens when intelligence gets cheap: the progress, the opportunities and the risks.'}</p>
+      ? 'Jeg er Kristian Høegh Mysen, sivilingeniør i datateknikk og virksomhetsarkitekt i Forsvarsstaben. I tolv år har jeg jobbet med teknologi i forsvarssektoren: som utvikler og arkitekt i forsvarsindustrien, som arkitekt, programsjef og prosessleder i Forsvarsmateriell, og nå med strategisk IKT- og virksomhetsarkitektur. Her skriver jeg om hva som skjer når intelligens blir billig: fremskrittene, mulighetene og risikoen.'
+      : 'I am Kristian Høegh Mysen, an MSc in computer science and an enterprise architect at the Norwegian Defence Staff. For twelve years I have worked with technology in the defence sector: as a developer and architect in the defence industry, as an architect, programme manager and process lead at the Norwegian Defence Materiel Agency, and now with strategic ICT and enterprise architecture. Here I write about what happens when intelligence gets cheap: the progress, the opportunities and the risks.'}</p>
 
     <blockquote class="quote"><p>{nb ? 'Sjelden kombinasjon: dyp teknologi, strategisk ledelse og militær bakgrunn.' : 'A rare combination: deep technology, strategic leadership and a military background.'}</p></blockquote>
 
@@ -50,24 +59,15 @@ const jsonld = {
 
     <section class="block">
       <h2>{nb ? 'Bakgrunn' : 'Background'}</h2>
-      {nb ? (
-        <>
-          <p>Over ti år i Forsvarsmateriell som prosessleder, programsjef og senior løsningsarkitekt. Jeg har bygget en leveranseorganisasjon fra 15 til over 150 personer, og var prosessleder i virksomhetsprogrammet Mime da det tok steget til skalert smidig, i tett samarbeid med Forsvaret, forsvarssektoren og næringslivet.</p>
-          <p>Tolv år i Heimevernet. Jeg kombinerer militær beslutningskraft med moderne teknologiledelse.</p>
-        </>
-      ) : (
-        <>
-          <p>More than ten years at the Norwegian Defence Materiel Agency as process lead, programme manager and senior solution architect. I built a delivery organisation from 15 to more than 150 people, and was process lead in programme Mime as it moved to scaled agile, working closely with the Armed Forces, the defence sector and industry.</p>
-          <p>Twelve years in the Home Guard. I combine military decision-making with modern technology leadership.</p>
-        </>
-      )}
+      {background.map((p) => <p>{p}</p>)}
     </section>
 
     <section class="block">
       <h2>{nb ? 'Hva jeg gjør nå' : 'What I do now'}</h2>
       <p>{nb
-        ? 'Jeg bygger selv. Hjemme kjører jeg en egen KI-plattform med agenter og lokale modeller, og prototypene i laben følger tempoet i KI-utviklingen, geopolitikken og hvordan mennesker kan styre agenter. Jeg tester frontier-modellene i praksis før jeg skriver om dem.'
-        : 'I build things myself. At home I run my own AI platform with agents and local models, and the prototypes in the lab track the pace of AI, geopolitics and how people can stay in charge of agents. I test the frontier models hands-on before I write about them.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
+        ? 'Ved siden av jobben bygger jeg selv. Hjemme kjører jeg en egen KI-plattform med agenter og lokale modeller, og prototypene i laben følger tempoet i KI-utviklingen, geopolitikken og hvordan mennesker kan styre agenter. Jeg tester frontier-modellene i praksis før jeg skriver om dem.'
+        : 'Alongside my job I build things myself. At home I run my own AI platform with agents and local models, and the prototypes in the lab track the pace of AI, geopolitics and how people can stay in charge of agents. I test the frontier models hands-on before I write about them.'} <a href={paths[lang].lab}>{nb ? 'Se laben' : 'See the lab'}</a>.</p>
+      <p class="disclaimer">{nb ? 'Innleggene er mine egne vurderinger og representerer ikke Forsvaret eller Forsvarsmateriell.' : 'The posts are my own views and do not represent the Norwegian Armed Forces or the Defence Materiel Agency.'}</p>
     </section>
 
     <section class="block">
@@ -76,7 +76,7 @@ const jsonld = {
     </section>
 
     <section class="block">
-      <h2>{nb ? 'Utdanning og sertifiseringer' : 'Education and certifications'}</h2>
+      <h2>{nb ? 'Utdanning og kurs' : 'Education and training'}</h2>
       <ul class="creds">
         {creds.map(([n, d]) => <li><span class="creds__mark" aria-hidden="true"><Cairn size={16} /></span><b>{n}</b><span>{d}</span></li>)}
       </ul>
@@ -117,6 +117,7 @@ const jsonld = {
   .block p { font-size: 1.1875rem; line-height: 1.7; color: #e7e3db; }
   .block p + p { margin-top: 1em; }
 
+  .block .disclaimer { margin-top: 1.25rem; font: italic 1rem/1.5 var(--serif); color: #aab3c2; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
   .chips li { padding: 0.5rem 0.85rem; border: 1px solid #2a3a58; border-radius: 999px; font: 0.9375rem/1.2 var(--mono); color: #d6dbe4; background: rgba(17, 26, 42, 0.6); }
 

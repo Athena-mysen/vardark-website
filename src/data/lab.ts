@@ -7,10 +7,10 @@ export type Project = {
 };
 export const projects: Project[] = [
   { name: 'Lomma', live: true, href: 'https://lomma.vardark.no', img: '/lab/lomma.webp',
-    nb: { what: 'Flomvakt for Lomma i 3D: målt vannføring, prognose med sannsynligheter og hvor vannet når i Lommedalen. Oppdateres hvert kvarter.', status: 'i drift',
-      story: 'Bygget på én kveld, 25. oktober 2026, mens Lomma gikk over sine bredder. NVE-målingen, MET sitt værensemble og Kartverkets terreng møtes i nettleseren, så naboene kan se hvor vannet kommer før det kommer.' },
-    en: { what: 'A 3D flood watch for the river Lomma: measured flow, a probabilistic forecast and where the water reaches in Lommedalen. Updated every 15 minutes.', status: 'live',
-      story: 'Built in one evening, 25 October 2026, while the Lomma burst its banks. The NVE gauge, MET’s weather ensemble and the national terrain model meet in the browser, so neighbours can see where the water will go before it gets there.' } },
+    nb: { what: 'Eksempel på en app bygget på åpne data: 3D-flomkart for Lomma med målt vannføring, prognose og hvor vannet når i Lommedalen. Ikke en varslingstjeneste.', status: 'prototype',
+      story: 'Bygget på én kveld, 25. oktober 2026, mens Lomma gikk over sine bredder. NVE-målingen, MET sitt værensemble og Kartverkets terreng møtes i nettleseren, og hvert tall kan spores tilbake til kilden og beregningen på appens metodeside.' },
+    en: { what: 'An example of an app built on open data: a 3D flood map of the river Lomma with measured flow, a forecast and where the water reaches in Lommedalen. Not a warning service.', status: 'prototype',
+      story: 'Built in one evening, 25 October 2026, while the Lomma burst its banks. The NVE gauge, MET’s weather ensemble and the national terrain model meet in the browser, and every number can be traced to its source and calculation on the app’s method page.' } },
   { name: 'Singularity Tracker', live: true, href: 'https://singularity.vardark.no/tracker', img: '/lab/singularity.webp',
     nb: { what: 'Et observatorium for tempoet i KI-utviklingen: modeller, benchmarks og hendelser på én tidslinje.', status: 'i drift',
       story: 'Regnekraft, energi, agenter og brikkeforsyning som målte kurver med kilder og usikkerhet, ikke som meninger. Et sted å sjekke om det faktisk går så fort som det føles.' },

@@ -1,5 +1,8 @@
 // Lab-prosjektene, brukt av /lab/ og forsiden (begge språk).
 export const projects: { name: string; live: boolean; href?: string; nb: { what: string; status: string }; en: { what: string; status: string } }[] = [
+  { name: 'Lomma', live: true, href: 'https://lomma.vardark.no',
+    nb: { what: 'Flomvakt for Lomma i 3D: målt vannføring, prognose med sannsynligheter og hvor vannet når i Lommedalen. Oppdateres hvert kvarter.', status: 'i drift' },
+    en: { what: 'A 3D flood watch for the river Lomma: measured flow, a probabilistic forecast and where the water reaches in Lommedalen. Updated every 15 minutes.', status: 'live' } },
   { name: 'Singularity Tracker', live: true, href: 'https://singularity.vardark.no/tracker',
     nb: { what: 'Et observatorium for tempoet i KI-utviklingen: modeller, benchmarks og hendelser på én tidslinje.', status: 'i drift' },
     en: { what: 'An observatory for the pace of AI: models, benchmarks and events on one timeline.', status: 'live' } },

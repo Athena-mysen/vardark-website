@@ -1,0 +1,63 @@
+---
+// Retning 2: Utkikksposten. Hvert prosjekt er ett helskjermsvindu: skjermbildet bærer, navnet står i stein.
+import Layout from '../../../layouts/Layout.astro';
+import Varde from '../../../components/Varde.astro';
+import { projects } from '../../../data/lab';
+const lang = 'nb';
+const roman = ['I', 'II', 'III', 'IV', 'V'];
+---
+<Layout lang={lang} title="Lab · Utkikksposten (utkast)" noindex>
+  <header class="top wrap">
+    <h1>Lab</h1>
+    <p class="top__lede">Utsikten fra varden: fem prototyper, hver i sitt vindu. De som er i drift, lyser.</p>
+    <ol class="toc">
+      {projects.map((p, i) => <li><a href={`#p-${i}`} class:list={{ 'is-lit': p.live }}><span class="toc__n">{roman[i]}</span>{p.name}</a></li>)}
+    </ol>
+  </header>
+
+  {projects.map((p, i) => (
+    <section id={`p-${i}`} class:list={['panel', { 'panel--lit': p.live, 'panel--varde': !p.img }]}>
+      {p.img ? <img class="panel__img" src={p.img} width="1280" height="800" alt="" loading={i ? 'lazy' : 'eager'} decoding="async" /> : <div class="panel__varde"><Varde id={`v${i}`} seed={5 + i} /></div>}
+      <div class="panel__shade"></div>
+      <div class="panel__text wrap">
+        <p class="panel__n">{roman[i]}<span class="panel__status">{p[lang].status}</span></p>
+        <h2 class="panel__name">{p.name}</h2>
+        <p class="panel__what">{p[lang].what}</p>
+        <p class="panel__story">{p[lang].story}</p>
+        {p.href && <a class="panel__go" href={p.href}>Gå til {p.name} <span aria-hidden="true">→</span></a>}
+      </div>
+    </section>
+  ))}
+</Layout>
+
+<style>
+  .top { padding: 2rem 1.5rem 3rem; }
+  h1 { font: clamp(3.5rem, 10vw, 7rem)/0.95 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .top__lede { max-width: 32rem; margin-top: 0.75rem; font: 400 1.25rem/1.4 var(--serif); color: #ece8e0; }
+  .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.5rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .toc a { font: 0.875rem/1 var(--mono); color: #8d98ad; text-decoration: none; }
+  .toc a.is-lit { color: #f5b36a; }
+  .toc a:hover { color: #fff; }
+  .toc__n { display: inline-block; width: 2rem; color: #5b6578; }
+
+  .panel { position: relative; min-height: 88svh; display: grid; align-items: end; overflow: hidden; background: #03060c; border-top: 1px solid rgba(240, 162, 75, 0.2); scroll-margin-top: 0; }
+  .panel__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; opacity: 0.85; }
+  .panel--varde .panel__varde { position: absolute; inset: 0; display: grid; place-items: end center; padding-bottom: 28svh; background: radial-gradient(50% 45% at 50% 70%, #1a2740, #03060c 70%); }
+  .panel--varde :global(.varde) { height: 40svh; }
+  .panel__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(3, 6, 12, 0.2), rgba(3, 6, 12, 0.1) 40%, rgba(3, 6, 12, 0.92) 75%, #0a101c); pointer-events: none; }
+  .panel__text { position: relative; z-index: 1; padding-top: 30svh; padding-bottom: 3rem; }
+  .panel__n { font: 1rem/1 var(--mono); color: #8d98ad; letter-spacing: 0.1em; }
+  .panel__status { margin-left: 1rem; text-transform: uppercase; font-size: 0.8125rem; }
+  .panel--lit .panel__status { color: #f5b36a; }
+  .panel__name { margin-top: 0.5rem; font: clamp(3rem, 12vw, 9rem)/0.9 var(--display); letter-spacing: 0.02em; text-transform: uppercase; color: transparent; background: linear-gradient(180deg, rgba(240, 162, 75, 0.45), rgba(240, 162, 75, 0.05) 70%), url(/material/basalt.webp) center / 420px; -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 1px 0 rgba(255, 220, 170, 0.25)) drop-shadow(0 -1px 0 #000) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.8)); }
+  .panel:not(.panel--lit) .panel__name { background-image: linear-gradient(180deg, rgba(120, 130, 150, 0.45), rgba(120, 130, 150, 0.05) 70%), url(/material/basalt.webp); }
+  .panel__what { margin-top: 1rem; max-width: 36rem; font: 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--serif); color: #ece8e0; text-shadow: 0 1px 16px rgba(2, 4, 10, 0.9); }
+  .panel__story { margin-top: 0.75rem; max-width: 34rem; color: #b3bccb; text-shadow: 0 1px 16px rgba(2, 4, 10, 0.9); }
+  .panel__go { display: inline-block; margin-top: 1.5rem; font: 0.9375rem/1 var(--mono); color: #ffe2b8; text-decoration: none; border-bottom: 1px solid var(--ember); padding-bottom: 0.3rem; }
+  .panel__go:hover { color: #fff; }
+  @media (min-width: 768px) {
+    .top { padding-top: 3rem; }
+    .panel__img { opacity: 1; object-position: top center; }
+    .panel__text { padding-bottom: 5rem; }
+  }
+</style>

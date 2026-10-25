@@ -1,0 +1,120 @@
+---
+// Retning 3: Kartet. Et nattkart med koter og fem varder avmerket, så prosjektene som steinkort i rutenett.
+import Layout from '../../../layouts/Layout.astro';
+import Varde from '../../../components/Varde.astro';
+import { projects } from '../../../data/lab';
+import { f } from '../../../lib/scene';
+const lang = 'nb';
+const W = 1200, H = 520;
+// Koter: tre fjell med sløyfer rundt, seedet og deterministisk
+let seed = 17;
+const r = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+const peaks = [{ x: 300, y: 300, n: 9, R: 230 }, { x: 760, y: 240, n: 11, R: 300 }, { x: 1040, y: 420, n: 6, R: 170 }];
+const contours = peaks.flatMap(({ x, y, n, R }) => {
+  const ph = [r() * 6.3, r() * 6.3, r() * 6.3];
+  return Array.from({ length: n }, (_, k) => {
+    const base = (R * (k + 1)) / n;
+    const pts: string[] = [];
+    for (let a = 0; a < 6.283; a += 0.13) {
+      const rr = base * (1 + 0.16 * Math.sin(3 * a + ph[0]) + 0.08 * Math.sin(7 * a + ph[1]) + 0.05 * Math.sin(11 * a + ph[2]));
+      pts.push(`${f(x + rr * Math.cos(a) * 1.35)} ${f(y + rr * Math.sin(a) * 0.8)}`);
+    }
+    return { d: `M${pts.join(' L')}Z`, o: 0.35 - (k / n) * 0.22 };
+  });
+});
+const marks = [{ x: 330, y: 250 }, { x: 700, y: 180 }, { x: 900, y: 330 }, { x: 1040, y: 420 }, { x: 520, y: 400 }];
+const lit = projects.map((p, i) => ({ p, ...marks[i], i })).filter((m) => m.p.live);
+const signal = lit.map((m, k) => (k ? `M${lit[k - 1].x} ${lit[k - 1].y} Q${(lit[k - 1].x + m.x) / 2} ${Math.min(lit[k - 1].y, m.y) - 60} ${m.x} ${m.y}` : '')).filter(Boolean);
+---
+<Layout lang={lang} title="Lab · Kartet (utkast)" noindex>
+  <div class="wrap">
+    <header class="top">
+      <h1>Lab</h1>
+      <p class="top__lede">Kartet over det jeg bygger. Hver varde er en prototype; de tente er i drift, og signalet går mellom dem.</p>
+    </header>
+
+    <figure class="map">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Nattkart med koter og fem varder">
+        <defs>
+          <radialGradient id="mglow"><stop offset="0" stop-color="#f0a24b" stop-opacity="0.35" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+          <linearGradient id="mfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.6" stop-color="#0a101c" stop-opacity="0" /><stop offset="1" stop-color="#0a101c" /></linearGradient>
+          <pattern id="mgrid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#1f2b42" stroke-width="0.6" /></pattern>
+        </defs>
+        <rect width={W} height={H} fill="#070c17" />
+        <rect width={W} height={H} fill="url(#mgrid)" />
+        {contours.map((c) => <path d={c.d} fill="none" stroke="#6f86b5" stroke-opacity={c.o.toFixed(2)} stroke-width="0.9" />)}
+        {signal.map((d) => <path d={d} fill="none" stroke="#f0a24b" stroke-opacity="0.5" stroke-width="1" stroke-dasharray="2 7" stroke-linecap="round" />)}
+        {projects.map((p, i) => (
+          <a href={`#p-${i}`} class:list={['mk', { 'mk--lit': p.live }]} aria-label={`${p.name}, ${p[lang].status}`}>
+            {p.live && <circle cx={marks[i].x} cy={marks[i].y} r="70" fill="url(#mglow)" class="mk__halo" />}
+            <circle cx={marks[i].x} cy={marks[i].y} r="18" fill="#070c17" stroke={p.live ? '#f0a24b' : '#3b4a66'} stroke-width="1.2" />
+            <g transform={`translate(${marks[i].x - 10} ${marks[i].y - 10}) scale(0.62)`} fill={p.live ? '#e6e3dc' : '#5b6578'}>
+              <rect x="8.5" y="25" width="15" height="3.5" rx="0.6" /><rect x="9.6" y="21" width="7" height="3.4" rx="0.6" /><rect x="17.2" y="21" width="5.4" height="3.4" rx="0.6" /><rect x="10.6" y="17.2" width="11" height="3.2" rx="0.6" /><rect x="11.6" y="13.6" width="4.4" height="3" rx="0.6" /><rect x="16.6" y="13.6" width="4.2" height="3" rx="0.6" /><rect x="12.8" y="10.4" width="6.6" height="2.6" rx="0.6" />
+              {p.live && <path d="M16 2.2 C 17.6 4.4 18.4 5.8 18.4 7 C 18.4 8.4 17.3 9.3 16 9.3 C 14.7 9.3 13.6 8.4 13.6 7 C 13.6 5.8 14.4 4.4 16 2.2 Z" fill="#f0a24b" />}
+            </g>
+            <line x1={marks[i].x + 22} y1={marks[i].y} x2={marks[i].x + 44} y2={marks[i].y} stroke={p.live ? '#f0a24b' : '#3b4a66'} stroke-width="0.8" />
+            <text x={marks[i].x + 50} y={marks[i].y - 2} class="mk__name">{p.name}</text>
+            <text x={marks[i].x + 50} y={marks[i].y + 14} class="mk__status">{p[lang].status}</text>
+          </a>
+        ))}
+        <rect width={W} height={H} fill="url(#mfade)" pointer-events="none" />
+        <text x="24" y={H - 24} class="mk__legend">▲ tent = i drift · ○ = prototype eller arkiv · · · signal mellom varder</text>
+      </svg>
+    </figure>
+
+    <ul class="cards">
+      {projects.map((p, i) => (
+        <li id={`p-${i}`} class:list={['card', { 'card--lit': p.live }]}>
+          <div class="card__img">
+            {p.img ? <img src={p.img} width="1280" height="800" alt={`Skjermbilde av ${p.name}`} loading="lazy" decoding="async" /> : <div class="card__varde"><Varde id={`v${i}`} seed={5 + i} /></div>}
+          </div>
+          <div class="card__body">
+            <p class="card__status">{p[lang].status}</p>
+            <h2 class="card__name">{p.href ? <a href={p.href}>{p.name}</a> : p.name}</h2>
+            <p class="card__what">{p[lang].what}</p>
+            <p class="card__story">{p[lang].story}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .top { padding: 2rem 0 2rem; }
+  h1 { font: clamp(3.5rem, 10vw, 7rem)/0.95 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .top__lede { max-width: 32rem; margin-top: 0.75rem; font: 400 1.25rem/1.4 var(--serif); color: #ece8e0; }
+  .map { border: 1px solid var(--line); background: #070c17; box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9); }
+  .map svg { display: block; width: 100%; height: auto; }
+  .mk { cursor: pointer; }
+  .mk__name { font: 400 20px var(--serif); fill: #e6e3dc; }
+  .mk:not(.mk--lit) .mk__name { fill: #8d98ad; }
+  .mk__status { font: 10.5px var(--mono); fill: #8d98ad; letter-spacing: 0.08em; text-transform: uppercase; }
+  .mk--lit .mk__status { fill: #f5b36a; }
+  .mk:hover .mk__name { fill: #ffe2b8; }
+  .mk__legend { font: 11px var(--mono); fill: #5b6578; letter-spacing: 0.06em; }
+  .mk__halo { transform-box: fill-box; transform-origin: center; animation: mh 5s ease-in-out infinite; }
+  @keyframes mh { 50% { opacity: 0.6; transform: scale(0.9); } }
+
+  .cards { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+  .card { --ember: #3b4a66; border: 1px solid var(--line); background: linear-gradient(180deg, #111b2d, #0b1220); scroll-margin-top: 2rem; }
+  .card--lit { --ember: #f0a24b; border-color: rgba(240, 162, 75, 0.35); box-shadow: 0 30px 80px -30px rgba(240, 162, 75, 0.25); }
+  .card__img { border-bottom: 1px solid var(--line); background: #05080f; }
+  .card__img img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
+  .card__varde { aspect-ratio: 16 / 9; display: grid; place-items: end center; padding-bottom: 6%; background: radial-gradient(60% 50% at 50% 80%, #1a2740, #05080f 70%); }
+  .card__varde :global(.varde) { height: 70%; }
+  .card__body { padding: 1.25rem 1.5rem 1.75rem; }
+  .card__status { font: 0.8125rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #8d98ad; }
+  .card--lit .card__status { color: #f5b36a; }
+  .card__name { margin-top: 0.5rem; font: clamp(1.75rem, 3vw, 2.5rem)/1.05 var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
+  .card__name a { text-decoration: underline; text-decoration-color: var(--ember); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  .card__what { margin-top: 0.75rem; font: 400 1.125rem/1.4 var(--serif); color: #ece8e0; }
+  .card__story { margin-top: 0.5rem; color: #b3bccb; font-size: 1rem; }
+  @media (min-width: 768px) {
+    .top { padding-top: 3rem; }
+    .cards { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .card:first-child { grid-column: 1 / -1; display: grid; grid-template-columns: 3fr 2fr; }
+    .card:first-child .card__img { border-bottom: 0; border-right: 1px solid var(--line); }
+    .card:first-child .card__body { align-self: center; padding: 2rem; }
+  }
+</style>

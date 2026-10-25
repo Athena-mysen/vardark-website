@@ -1,0 +1,67 @@
+---
+// Retning 1: Vardekjeden. Landskapet øverst med fem varder, så hvert prosjekt som et vindu i natten.
+import Layout from '../../../layouts/Layout.astro';
+import Labscene from '../../../components/Labscene.astro';
+import Varde from '../../../components/Varde.astro';
+import { projects } from '../../../data/lab';
+const lang = 'nb';
+---
+<Layout lang={lang} title="Lab · Vardekjeden (utkast)" noindex>
+  <section class="hero">
+    <div class="hero__scene"><Labscene lang={lang} /></div>
+    <div class="hero__text wrap">
+      <h1>Lab</h1>
+      <p class="hero__lede">Fem varder. De som brenner, er i drift. Prototyper jeg bygger for å forstå, ikke for å selge.</p>
+    </div>
+  </section>
+
+  <div class="rows wrap">
+    {projects.map((p, i) => (
+      <article id={`p-${i}`} class:list={['row', { 'row--lit': p.live, 'row--flip': i % 2 }]}>
+        <figure class="row__fig">
+          <div class="frame">
+            {p.img ? <img src={p.img} width="1280" height="800" alt={`Skjermbilde av ${p.name}`} loading={i ? 'lazy' : 'eager'} decoding="async" /> : <div class="frame__varde"><Varde id={`v${i}`} seed={5 + i} /></div>}
+          </div>
+        </figure>
+        <div class="row__text">
+          <p class="row__status"><span class="dot" aria-hidden="true"></span>{p[lang].status}</p>
+          <h2 class="row__name">{p.name}</h2>
+          <p class="row__what">{p[lang].what}</p>
+          <p class="row__story">{p[lang].story}</p>
+          {p.href && <a class="row__go" href={p.href}>Gå til {p.name} <span aria-hidden="true">→</span></a>}
+        </div>
+      </article>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .hero { position: relative; height: clamp(26rem, 62svh, 40rem); overflow: hidden; background: #03060c; }
+  .hero__scene { position: absolute; inset: 0; }
+  .hero__text { position: absolute; inset: auto 0 0; padding-bottom: 1.5rem; z-index: 1; }
+  h1 { font: clamp(3.5rem, 10vw, 7rem)/0.95 var(--display); letter-spacing: 0.04em; text-transform: uppercase; text-shadow: 0 2px 30px rgba(2, 4, 10, 0.9); }
+  .hero__lede { max-width: 30rem; margin-top: 0.75rem; font: 400 clamp(1.1rem, 1.6vw, 1.35rem)/1.4 var(--serif); color: #ece8e0; text-shadow: 0 1px 16px rgba(2, 4, 10, 0.9); }
+
+  .rows { padding-top: 3rem; }
+  .row { --ember: #3b4a66; display: grid; gap: 1.5rem; padding: 3rem 0; border-top: 1px solid var(--line); scroll-margin-top: 2rem; }
+  .row--lit { --ember: #f0a24b; }
+  .frame { position: relative; border: 1px solid rgba(240, 162, 75, 0.25); background: #05080f; box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 210, 150, 0.08); }
+  .row--lit .frame { border-color: rgba(240, 162, 75, 0.45); box-shadow: 0 0 0 1px rgba(240, 162, 75, 0.08), 0 30px 80px -30px rgba(240, 162, 75, 0.35), inset 0 1px 0 rgba(255, 210, 150, 0.12); }
+  .frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(240, 162, 75, 0.08), transparent 30%); pointer-events: none; }
+  .frame img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
+  .frame__varde { aspect-ratio: 16 / 10; display: grid; place-items: end center; padding-bottom: 8%; background: radial-gradient(60% 50% at 50% 80%, #1a2740, #05080f 70%); }
+  .frame__varde :global(.varde) { height: 70%; }
+  .row__status { display: flex; align-items: center; gap: 0.5rem; font: 0.8125rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #8d98ad; }
+  .row--lit .row__status { color: #f5b36a; }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--ember); box-shadow: 0 0 10px var(--ember); }
+  .row__name { margin-top: 0.75rem; font: clamp(2.25rem, 5vw, 3.75rem)/1 var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
+  .row__what { margin-top: 1rem; font: 400 1.25rem/1.4 var(--serif); color: #ece8e0; }
+  .row__story { margin-top: 0.75rem; color: #b3bccb; max-width: 34rem; }
+  .row__go { display: inline-block; margin-top: 1.5rem; font: 0.9375rem/1 var(--mono); color: #ffe2b8; text-decoration: none; border-bottom: 1px solid var(--ember); padding-bottom: 0.3rem; }
+  .row__go:hover { color: #fff; }
+  @media (min-width: 768px) {
+    .hero__text { padding-bottom: 2.5rem; }
+    .row { grid-template-columns: 7fr 5fr; gap: 3rem; align-items: center; padding: 4rem 0; }
+    .row--flip .row__fig { order: 2; }
+  }
+</style>

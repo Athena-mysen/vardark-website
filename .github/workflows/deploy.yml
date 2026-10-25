@@ -7,7 +7,6 @@ on:
       - blogg
       - design-2
       - nattsiden
-      - lab-side
 
 permissions:
   contents: read

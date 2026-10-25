@@ -1,0 +1,98 @@
+---
+// Vardekjeden for laben: fem varder på fjellryggen, tent for det som er i drift. Hver varde er en lenke ned til prosjektet.
+// To komposisjoner av samme generator: bred (desktop) og stående (telefon); CSS viser én av dem.
+import { ridge, cairn, f, stars } from '../lib/scene';
+import { projects } from '../data/lab';
+interface Props { lang: 'nb' | 'en' }
+const { lang } = Astro.props;
+const tongues = [
+  ['fo', 'M0 -84 C12 -62 24 -46 24 -28 C24 -10 13 0 0 0 C-13 0 -24 -10 -24 -28 C-24 -44 -14 -56 -8 -64 C-7 -54 -3 -50 0 -48 C3 -58 -1 -72 0 -84Z'],
+  ['fm', 'M-6 -70 C3 -54 15 -40 15 -24 C15 -9 8 0 -2 0 C-12 0 -17 -9 -17 -22 C-17 -36 -10 -48 -6 -70Z'],
+  ['fi', 'M0 -52 C7 -38 12 -28 12 -18 C12 -7 7 0 0 0 C-7 0 -12 -7 -12 -18 C-12 -28 -7 -38 0 -52Z'],
+];
+// Bred: én rygg, fem varder på rad. Stående: tre rygger i dybden, vardene klatrer oppover.
+const wide = (() => {
+  const W = 1600, H = 560, xs = [540, 760, 980, 1200, 1420];
+  const far = ridge(61, 330, 34, [...xs, 150, 330].map((x) => ({ x, h: 40, w: 70 })), 1.2);
+  const near = ridge(73, 430, 26, xs.map((x, i) => ({ x, h: 100 + (i % 2) * 40, w: 95 })), 2, xs.map((x) => ({ x, w: 34 })));
+  const seats = xs.map((x) => ({ x, y: near.at(x), g: near.at, s: 0.78, rows: 8, lbl: 1, a: 'middle' }));
+  return { W, H, ridges: [{ d: far.d, fill: '#121c30', fog: true, y: 300 }, { d: near.d, fill: '#05080f', line: near.line }], seats, label: 22 };
+})();
+const tall = (() => {
+  const W = 600, H = 1000;
+  const pos = [{ x: 300, l: 2, a: 'middle' }, { x: 110, l: 1, a: 'start' }, { x: 490, l: 1, a: 'end' }, { x: 200, l: 0, a: 'middle' }, { x: 410, l: 0, a: 'middle' }]; // Lomma fremst, så to og to bakover
+  const far = ridge(81, 470, 26, pos.filter((p) => p.l === 0).map((p) => ({ x: p.x, h: 70, w: 60 })), 1.2, pos.filter((p) => p.l === 0).map((p) => ({ x: p.x, w: 24 })));
+  const mid = ridge(91, 640, 28, pos.filter((p) => p.l === 1).map((p) => ({ x: p.x, h: 90, w: 70 })), 1.5, pos.filter((p) => p.l === 1).map((p) => ({ x: p.x, w: 30 })));
+  const near = ridge(101, 820, 26, [{ x: 300, h: 130, w: 100 }], 2, [{ x: 300, w: 40 }]);
+  const rs = [far, mid, near];
+  const seats = pos.map((p) => ({ x: p.x, y: rs[p.l].at(p.x), g: rs[p.l].at, s: [0.6, 0.72, 0.95][p.l], rows: [7, 7, 8][p.l], lbl: [0.9, 1, 1.1][p.l], a: p.a }));
+  return { W, H, ridges: [{ d: far.d, fill: '#121c30', fog: true, y: 430 }, { d: mid.d, fill: '#0b1322', fog: true, y: 610 }, { d: near.d, fill: '#05080f', line: near.line }], seats, label: 30 };
+})();
+const scenes = [{ k: 'wide', ...wide }, { k: 'tall', ...tall }];
+---
+{scenes.map((sc) => (
+  <svg class={`labscene labscene--${sc.k}`} viewBox={`0 0 ${sc.W} ${sc.H}`} preserveAspectRatio={sc.k === 'wide' ? 'xMidYMax meet' : 'xMidYMax slice'} role="img" aria-label={lang === 'nb' ? 'Fem varder på fjellet, tent for prosjektene som er i drift' : 'Five cairns on the mountain, lit for the projects that are live'}>
+    <defs>
+      <linearGradient id={`${sc.k}-sky`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#02040a" /><stop offset="0.6" stop-color="#0a1426" /><stop offset="1" stop-color="#16253f" /></linearGradient>
+      <linearGradient id={`${sc.k}-g0`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2d" /><stop offset="0.3" stop-color="#1e1b1c" /><stop offset="1" stop-color="#0a0a0d" /></linearGradient>
+      <linearGradient id={`${sc.k}-g1`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3532" /><stop offset="0.35" stop-color="#17181c" /><stop offset="1" stop-color="#08090c" /></linearGradient>
+      <linearGradient id={`${sc.k}-g2`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55412f" /><stop offset="0.28" stop-color="#231e1c" /><stop offset="1" stop-color="#0b0b0e" /></linearGradient>
+      <linearGradient id={`${sc.k}-fo`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e5541c" /><stop offset="0.6" stop-color="#c8401a" stop-opacity="0.85" /><stop offset="1" stop-color="#8f2a12" stop-opacity="0" /></linearGradient>
+      <linearGradient id={`${sc.k}-fm`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffb04a" /><stop offset="0.7" stop-color="#f27a2a" /><stop offset="1" stop-color="#e5541c" stop-opacity="0.2" /></linearGradient>
+      <linearGradient id={`${sc.k}-fi`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff0c2" /><stop offset="0.5" stop-color="#ffd06e" /><stop offset="1" stop-color="#ffa53c" stop-opacity="0.4" /></linearGradient>
+      <linearGradient id={`${sc.k}-log`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3520" /><stop offset="1" stop-color="#140a05" /></linearGradient>
+      <radialGradient id={`${sc.k}-halo`}><stop offset="0" stop-color="#ffbf73" stop-opacity="0.4" /><stop offset="0.4" stop-color="#f0a24b" stop-opacity="0.12" /><stop offset="1" stop-color="#f0a24b" stop-opacity="0" /></radialGradient>
+      <linearGradient id={`${sc.k}-fog`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3d5e" stop-opacity="0" /><stop offset="0.5" stop-color="#2a3d5e" stop-opacity="0.35" /><stop offset="1" stop-color="#2a3d5e" stop-opacity="0" /></linearGradient>
+      <linearGradient id={`${sc.k}-fade`} x1="0" y1="0" x2="0" y2="1"><stop offset="0.55" stop-color="#0a101c" stop-opacity="0" /><stop offset="1" stop-color="#0a101c" /></linearGradient>
+    </defs>
+    <rect width={sc.W} height={sc.H} fill={`url(#${sc.k}-sky)`} />
+    <g fill="#e9eefc">{stars.filter((s) => s.x < sc.W && s.y < sc.H * 0.55).map((s) => <circle cx={f(s.x)} cy={f(s.y)} r={s.r.toFixed(2)} opacity={s.o.toFixed(2)} />)}</g>
+    {sc.ridges.map((R, ri) => (
+      <>
+        <path d={R.d} fill={R.fill} />
+        {R.fog && <rect x="0" y={R.y} width={sc.W} height="140" fill={`url(#${sc.k}-fog)`} />}
+        {R.line && <path d={R.line} fill="none" stroke="#f0a24b" stroke-opacity="0.18" stroke-width="1" />}
+        {sc.seats.map((st, i) => {
+          const onThis = sc.k === 'wide' ? ri === 1 : [2, 1, 1, 0, 0][i] === ri;
+          if (!onThis) return null;
+          const p = projects[i];
+          const c = cairn(40 + i, st.x, st.y + 2, st.s, st.rows, st.g);
+          const G = (n: number) => `url(#${sc.k}-g${n})`;
+          return (
+            <a href={`#p-${i}`} class:list={['lb', { 'lb--lit': p.live }]} aria-label={`${p.name}, ${p[lang].status}`}>
+              {p.live && <circle cx={st.x} cy={f(c.top - 12)} r={f(140 * st.s)} fill={`url(#${sc.k}-halo)`} class="lb__halo" />}
+              <ellipse cx={st.x} cy={f(st.y)} rx={f(50 * st.s)} ry={f(10 * st.s)} fill="#f0a24b" opacity={p.live ? 0.14 : 0.03} />
+              {c.stones.map((s) => <path d={s.d} fill={G(s.g)} stroke="#050608" stroke-width="0.7" />)}
+              {c.stones.map((s) => <path d={s.edge} stroke="#ffbb6b" stroke-opacity={(s.o * (p.live ? 0.6 : 0.12)).toFixed(2)} stroke-width="1" stroke-linecap="round" fill="none" />)}
+              <path d={c.lip} fill={R.fill} />
+              {c.rubble.map((s) => <path d={s.d} fill={G(s.g)} />)}
+              {c.logs.map((l) => <rect x={f(l.x)} y={f(l.y)} width={f(l.w)} height={f(l.h)} rx={f(l.h / 2)} fill={`url(#${sc.k}-log)`} transform={`rotate(${l.a} ${f(l.x)} ${f(l.y + l.h / 2)})`} />)}
+              {p.live && <g transform={`translate(${st.x} ${f(c.top + 1)}) scale(${(0.5 * st.s).toFixed(2)})`}>{tongues.map(([g, d], k) => <path d={d} fill={`url(#${sc.k}-${g})`} class={`lt lt${k + 1}`} />)}</g>}
+              <text x={st.a === 'middle' ? st.x : st.a === 'start' ? st.x - 40 * st.s : st.x + 40 * st.s} y={f(c.top - 54 * st.s)} text-anchor={st.a} class="lb__name" font-size={f(sc.label * st.lbl)}>{p.name}</text>
+              <text x={st.a === 'middle' ? st.x : st.a === 'start' ? st.x - 40 * st.s : st.x + 40 * st.s} y={f(c.top - 32 * st.s)} text-anchor={st.a} class="lb__status" font-size={f(sc.label * 0.46 * st.lbl)}>{p[lang].status}</text>
+            </a>
+          );
+        })}
+      </>
+    ))}
+    <rect x="0" y="0" width={sc.W} height={sc.H} fill={`url(#${sc.k}-fade)`} pointer-events="none" />
+  </svg>
+))}
+
+<style>
+  .labscene { display: block; width: 100%; height: 100%; }
+  .labscene--wide { display: none; }
+  @media (min-width: 1024px) { .labscene--wide { display: block; } .labscene--tall { display: none; } }
+  .lb { cursor: pointer; }
+  .lb__name { font-family: var(--serif); fill: #e6e3dc; letter-spacing: 0.01em; paint-order: stroke; stroke: #02040a; stroke-width: 4px; stroke-linejoin: round; }
+  .lb__status { font-family: var(--mono); fill: #8d98ad; letter-spacing: 0.08em; text-transform: uppercase; paint-order: stroke; stroke: #02040a; stroke-width: 3px; stroke-linejoin: round; }
+  .lb--lit .lb__status { fill: #f5b36a; }
+  .lb:not(.lb--lit) .lb__name { fill: #7b8599; }
+  .lb:hover .lb__name, .lb:focus-visible .lb__name { fill: #ffe2b8; }
+  .lb:focus-visible { outline: none; }
+  .lb__halo { transform-box: fill-box; transform-origin: center; animation: lh 6s ease-in-out infinite; }
+  @keyframes lh { 50% { opacity: 0.7; transform: scale(0.94); } }
+  .lt { transform-box: fill-box; transform-origin: 50% 100%; animation: lf 2.2s ease-in-out infinite; }
+  .lt1 { animation-duration: 2.6s; } .lt2 { animation-duration: 1.7s; animation-delay: -0.4s; } .lt3 { animation-duration: 1.4s; animation-delay: -0.9s; }
+  @keyframes lf { 0%, 100% { transform: scale(1, 1) skewX(0deg); } 25% { transform: scale(0.95, 1.08) skewX(3deg); } 50% { transform: scale(1.03, 0.95) skewX(-2deg); } 75% { transform: scale(0.97, 1.05) skewX(-3deg); } }
+</style>

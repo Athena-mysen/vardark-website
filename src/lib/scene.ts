@@ -15,7 +15,7 @@ export const f = (n: number) => n.toFixed(1);
 
 type Bump = { x: number; h: number; w: number };
 type Seat = { x: number; w: number };
-function ridge(seed: number, base: number, amp: number, bumps: Bump[], rock = 1, seats: Seat[] = []) {
+export function ridge(seed: number, base: number, amp: number, bumps: Bump[], rock = 1, seats: Seat[] = []) {
   const r = rng(seed);
   const oct = [0, 1, 2, 3].map((i) => ({ k: (i + 1) * 1.7 + r(), p: r() * 6.28, a: amp / (i + 1) ** 1.3 }));
   oct.push({ k: 19 + r() * 3, p: r() * 6.28, a: amp * 0.09 * rock }, { k: 43 + r() * 5, p: r() * 6.28, a: amp * 0.05 * rock });

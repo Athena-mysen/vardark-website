@@ -1,5 +1,5 @@
 ---
-// Lab: vardekjeden øverst (fem varder, tent for det som er i drift), så hvert prosjekt som et vindu i natten.
+// Lab: vardekjeden øverst (seks varder, tent for det som er i drift), så hvert prosjekt som et vindu i natten.
 import Layout from '../layouts/Layout.astro';
 import Labscene from '../components/Labscene.astro';
 import Varde from '../components/Varde.astro';
@@ -7,14 +7,14 @@ import { projects } from '../data/lab';
 import { paths, other, type Lang } from '../i18n';
 const { lang } = Astro.props as { lang: Lang };
 const nb = lang === 'nb';
-const roman = ['I', 'II', 'III', 'IV', 'V'];
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 ---
-<Layout lang={lang} title={nb ? 'Lab: prototyper av Kristian Høegh Mysen · Vardark' : 'Lab: prototypes by Kristian Høegh Mysen · Vardark'} description={nb ? 'Prototyper og eksperimenter av Kristian Høegh Mysen: Lomma flomvakt, Singularity Tracker, Council, Geopolitikk og Athena.' : 'Prototypes and experiments by Kristian Høegh Mysen: Lomma flood watch, Singularity Tracker, Council, Geopolitics and Athena.'} alt={paths[other(lang)].lab} overlay>
+<Layout lang={lang} title={nb ? 'Lab: prototyper av Kristian Høegh Mysen · Vardark' : 'Lab: prototypes by Kristian Høegh Mysen · Vardark'} description={nb ? 'Prototyper og eksperimenter av Kristian Høegh Mysen: Lomma flomvakt, Singularity Tracker, Council, Geopolitikk, Athena og Hyttespeider.' : 'Prototypes and experiments by Kristian Høegh Mysen: Lomma flood watch, Singularity Tracker, Council, Geopolitics, Athena and Hyttespeider.'} alt={paths[other(lang)].lab} overlay>
   <section class="hero">
     <div class="hero__scene"><Labscene lang={lang} /></div>
     <div class="hero__text wrap">
       <h1>Lab</h1>
-      <p class="hero__lede">{nb ? 'Fem varder. De som brenner, er i drift. Prototyper jeg bygger for å forstå, ikke for å selge.' : 'Five cairns. The ones that burn are live. Prototypes I build to understand, not to sell.'}</p>
+      <p class="hero__lede">{nb ? 'Seks varder. De som brenner, er i drift. Prototyper jeg bygger for å forstå, ikke for å selge.' : 'Six cairns. The ones that burn are live. Prototypes I build to understand, not to sell.'}</p>
     </div>
   </section>
 

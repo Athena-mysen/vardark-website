@@ -1,5 +1,5 @@
 ---
-// Vardekjeden for laben: fem varder på fjellryggen, tent for det som er i drift. Hver varde er en lenke ned til prosjektet.
+// Vardekjeden for laben: seks varder på fjellryggen, tent for det som er i drift. Hver varde er en lenke ned til prosjektet.
 // To komposisjoner av samme generator: bred (desktop) og stående (telefon); CSS viser én av dem.
 import { ridge, cairn, f, stars } from '../lib/scene';
 import { projects } from '../data/lab';
@@ -10,9 +10,9 @@ const tongues = [
   ['fm', 'M-6 -70 C3 -54 15 -40 15 -24 C15 -9 8 0 -2 0 C-12 0 -17 -9 -17 -22 C-17 -36 -10 -48 -6 -70Z'],
   ['fi', 'M0 -52 C7 -38 12 -28 12 -18 C12 -7 7 0 0 0 C-7 0 -12 -7 -12 -18 C-12 -28 -7 -38 0 -52Z'],
 ];
-// Bred: én rygg, fem varder på rad. Stående: tre rygger i dybden, vardene klatrer oppover.
+// Bred: én rygg, seks varder på rad. Stående: tre rygger i dybden, vardene klatrer oppover.
 const wide = (() => {
-  const W = 1600, H = 560, xs = [540, 760, 980, 1200, 1420];
+  const W = 1600, H = 560, xs = [450, 644, 838, 1032, 1226, 1420];
   const far = ridge(61, 330, 34, [...xs, 150, 330].map((x) => ({ x, h: 40, w: 70 })), 1.2);
   const near = ridge(73, 430, 26, xs.map((x, i) => ({ x, h: 100 + (i % 2) * 40, w: 95 })), 2, xs.map((x) => ({ x, w: 34 })));
   const seats = xs.map((x) => ({ x, y: near.at(x), g: near.at, s: 0.78, rows: 8, lbl: 1, a: 'middle' }));
@@ -20,7 +20,7 @@ const wide = (() => {
 })();
 const tall = (() => {
   const W = 600, H = 1000;
-  const pos = [{ x: 300, l: 2, a: 'middle' }, { x: 110, l: 1, a: 'start' }, { x: 490, l: 1, a: 'end' }, { x: 200, l: 0, a: 'middle' }, { x: 410, l: 0, a: 'middle' }]; // Lomma fremst, så to og to bakover
+  const pos = [{ x: 300, l: 2, a: 'middle' }, { x: 110, l: 1, a: 'start' }, { x: 490, l: 1, a: 'end' }, { x: 110, l: 0, a: 'start' }, { x: 300, l: 0, a: 'middle' }, { x: 510, l: 0, a: 'end' }]; // Lomma fremst, så to og tre bakover
   const far = ridge(81, 470, 26, pos.filter((p) => p.l === 0).map((p) => ({ x: p.x, h: 70, w: 60 })), 1.2, pos.filter((p) => p.l === 0).map((p) => ({ x: p.x, w: 24 })));
   const mid = ridge(91, 640, 28, pos.filter((p) => p.l === 1).map((p) => ({ x: p.x, h: 90, w: 70 })), 1.5, pos.filter((p) => p.l === 1).map((p) => ({ x: p.x, w: 30 })));
   const near = ridge(101, 820, 26, [{ x: 300, h: 130, w: 100 }], 2, [{ x: 300, w: 40 }]);
@@ -31,7 +31,7 @@ const tall = (() => {
 const scenes = [{ k: 'wide', ...wide }, { k: 'tall', ...tall }];
 ---
 {scenes.map((sc) => (
-  <svg class={`labscene labscene--${sc.k}`} viewBox={`0 0 ${sc.W} ${sc.H}`} preserveAspectRatio={sc.k === 'wide' ? 'xMidYMax meet' : 'xMidYMax slice'} role="img" aria-label={lang === 'nb' ? 'Fem varder på fjellet, tent for prosjektene som er i drift' : 'Five cairns on the mountain, lit for the projects that are live'}>
+  <svg class={`labscene labscene--${sc.k}`} viewBox={`0 0 ${sc.W} ${sc.H}`} preserveAspectRatio={sc.k === 'wide' ? 'xMidYMax meet' : 'xMidYMax slice'} role="img" aria-label={lang === 'nb' ? 'Seks varder på fjellet, tent for prosjektene som er i drift' : 'Six cairns on the mountain, lit for the projects that are live'}>
     <defs>
       <linearGradient id={`${sc.k}-sky`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#02040a" /><stop offset="0.6" stop-color="#0a1426" /><stop offset="1" stop-color="#16253f" /></linearGradient>
       <linearGradient id={`${sc.k}-g0`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3a2d" /><stop offset="0.3" stop-color="#1e1b1c" /><stop offset="1" stop-color="#0a0a0d" /></linearGradient>
@@ -53,7 +53,7 @@ const scenes = [{ k: 'wide', ...wide }, { k: 'tall', ...tall }];
         {R.fog && <rect x="0" y={R.y} width={sc.W} height="140" fill={`url(#${sc.k}-fog)`} />}
         {R.line && <path d={R.line} fill="none" stroke="#f0a24b" stroke-opacity="0.18" stroke-width="1" />}
         {sc.seats.map((st, i) => {
-          const onThis = sc.k === 'wide' ? ri === 1 : [2, 1, 1, 0, 0][i] === ri;
+          const onThis = sc.k === 'wide' ? ri === 1 : [2, 1, 1, 0, 0, 0][i] === ri;
           if (!onThis) return null;
           const p = projects[i];
           const c = cairn(40 + i, st.x, st.y + 2, st.s, st.rows, st.g);

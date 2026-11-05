@@ -34,3 +34,6 @@ Oppdateres etter hver kodeøkt. Leses ved oppstart.
 - **Posisjoner uten style-attributter (CSP):** utregnede koordinater skrives som CSS-variabler fra et statisk endepunkt (`src/pages/scene.css.ts` → `/scene.css`), ikke `define:vars` (som lager inline style).
 - **To språk:** norsk på `/`, engelsk på `/en/` med engelske adresser; `essaysEn` har `nb:` som peker på originalen, og `lib/essays.ts` gir hver side `alt` til hreflang og språkknappen.
 - **Forhåndsvisninger** på `*.pages.dev` får `X-Robots-Tag: noindex` i `_headers`; bare vardark.no skal indekseres.
+
+## 2026-11-05 (Hyttespeider)
+- Lab-prosjektene deles av forsiden og begge lab-språkene. Ved nytt prosjekt må også nummereringen i `Lab.astro` og plassene i begge `Labscene.astro`-komposisjonene følge med. Privat app bruker eksisterende varde uten skjermbilde.

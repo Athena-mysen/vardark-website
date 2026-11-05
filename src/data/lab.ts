@@ -31,4 +31,9 @@ export const projects: Project[] = [
       story: 'Ingen nettside, bare et nærvær: hun leser kalenderen, svarer familien, holder vakt over jobbene om natten og publiserer det som står på denne siden. Alt det andre i laben er bygget med henne.' },
     en: { what: 'My own agent platform on local and open models. It runs our home and underpins most of what is here.', status: 'live',
       story: 'No website, just a presence: she reads the calendar, answers the family, keeps watch over the night jobs and publishes what is on this site. Everything else in the lab was built with her.' } },
+  { name: 'Hyttespeider', live: true, href: 'https://hyttespeider.vardark.no/',
+    nb: { what: '3D-terreng, sol og utsikt for hyttetomter i Lommedalen.', status: 'privat',
+      story: 'Privat, krever passord.' },
+    en: { what: '3D terrain, sun and views for cabin plots in Lommedalen.', status: 'private',
+      story: 'Private, password required.' } },
 ];
